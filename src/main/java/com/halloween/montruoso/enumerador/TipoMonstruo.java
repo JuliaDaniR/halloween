@@ -21,4 +21,7 @@ public enum TipoMonstruo {
         TipoMonstruo(String nombre){
                 this.nombre = nombre;
         }
+        public String getNombre() {
+                return nombre;
+        }
 }

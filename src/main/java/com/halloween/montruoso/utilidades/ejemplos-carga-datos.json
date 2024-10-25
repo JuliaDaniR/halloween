@@ -1,0 +1,579 @@
+[
+  {
+    "nombre": "Conde Vlad",
+    "tipo": "VAMPIRO",
+    "nivelDeTerror": 9,
+    "poderes": [
+      "VUELO",
+      "HIPNOSIS"
+    ],
+    "debilidades": [
+      "LUZ_SOLAR",
+      "AGUA_BENDITA"
+    ],
+    "descripcion": "Un vampiro noble con un oscuro secreto.",
+    "imagenUrl": "https://img.freepik.com/premium-photo/closeup-portrait-scary-vampire-dark-room-halloween_768540-12271.jpg",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "CONTROLAR_MENTES"
+    ],
+    "historia": "El Conde Vlad fue un príncipe que, tras perder a su amada en una guerra, hizo un pacto oscuro para traerla de vuelta. Sin embargo, su desesperación lo llevó a convertirse en un ser sediento de sangre, acechando a los inocentes en la oscuridad de la noche. Su castillo, envuelto en niebla, es un lugar donde el eco de sus lamentos resuena eternamente.",
+    "apariencia": "Alto y delgado, con piel pálida y ojos que brillan como la luna llena.",
+    "sonido": "Susurros inquietantes en el viento."
+  },
+  {
+    "nombre": "Lamia",
+    "tipo": "VAMPIRO",
+    "nivelDeTerror": 8,
+    "poderes": [
+      "HIPNOSIS",
+      "VUELO",
+      "SUPER_FUERZA"
+    ],
+    "debilidades": [
+      "AJO",
+      "LUZ_SOLAR"
+    ],
+    "descripcion": "Una seductora vampira que atrae a sus víctimas con su belleza.",
+    "imagenUrl": "https://img.freepik.com/premium-photo/woman-with-black-hair-black-makeup-has-black-makeup-her-face_973047-40421.jpg",
+    "nivelDePeligro": "MEDIO",
+    "habilidadesEspeciales": [
+      "CONTROL_DE_SUEÑOS"
+    ],
+    "historia": "Una vez una hermosa mujer, Lamia fue maldecida por los dioses por su vanidad. Convertida en vampira, ahora se esconde en la sombra, seduciendo a hombres jóvenes para robarles su energía vital. Aquellos que escuchan su canto son arrastrados a su perdición, y sus almas quedan atrapadas en su jardín de espejos rotos.",
+    "apariencia": "De aspecto etéreo, con cabellos largos y sedosos, su mirada puede hipnotizar a cualquiera.",
+    "sonido": "El canto melódico que seduce a los desprevenidos."
+  },
+  {
+    "nombre": "Zombi del Apocalipsis",
+    "tipo": "ZOMBIE",
+    "nivelDeTerror": 8,
+    "poderes": [
+      "RESILIENCIA",
+      "MORDIDA_INFECTADA"
+    ],
+    "debilidades": [
+      "DISPARO_CABEZA",
+      "FUEGO"
+    ],
+    "descripcion": "Una abominación reanimada por un virus mortal.",
+    "imagenUrl": "https://th.bing.com/th/id/OIP.HpvfnhUxvIGV7wi-BlcqPAAAAA?w=474&h=629&rs=1&pid=ImgDetMain",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "CREACION_DE_ZOMBIS"
+    ],
+    "historia": "En un mundo devastado por una pandemia, los muertos se levantaron de sus tumbas, arrastrándose para devorar a los vivos. El Zombi del Apocalipsis es el líder de esta horda, con un insaciable hambre que no conoce límites. Cada mordisco que da no solo causa un dolor agudo, sino que también marca el inicio de una nueva condena para aquellos que se convierten en sus sirvientes.",
+    "apariencia": "Descompuesto y putrefacto, con partes de su piel colgando y ojos enrojecidos por la rabia.",
+    "sonido": "Gruñidos y susurros de lamentos."
+  },
+  {
+    "nombre": "Zombi del Cementerio",
+    "tipo": "ZOMBIE",
+    "nivelDeTerror": 7,
+    "poderes": [
+      "MORDIDA_INFECTADA",
+      "RESURRECCION"
+    ],
+    "debilidades": [
+      "FUEGO",
+      "AGUA_BENDITA"
+    ],
+    "descripcion": "Una sombra de lo que alguna vez fue un ser humano.",
+    "imagenUrl": "https://img.freepik.com/premium-photo/eerie-glow-halloween-night-resurrecting-zombies-cemetery_997071-1524.jpg",
+    "nivelDePeligro": "MEDIO",
+    "habilidadesEspeciales": [
+      "LLAMAR_A_LA_HORDAS"
+    ],
+    "historia": "Desenterrado por un ritual oscuro, este zombi camina entre las tumbas, buscando revivir a otros muertos y aumentar su legión. Su risa macabra resuena en el aire mientras busca almas frescas para satisfacer su sed insaciable. Los que cruzan su camino a menudo quedan atrapados en su horror, sumergidos en un mundo de terror eterno.",
+    "apariencia": "Cuerpo putrefacto, con ojos vacíos y movimientos torpes.",
+    "sonido": "El crujido de huesos rotos y el arrastre de pies descalzos."
+  },
+  {
+    "nombre": "Licántropo de la Noche",
+    "tipo": "HOMBRE_LOBO",
+    "nivelDeTerror": 10,
+    "poderes": [
+      "CAMBIO_DE_FORMA",
+      "SUPER_FUERZA"
+    ],
+    "debilidades": [
+      "PLATA",
+      "LUZ_SOLAR"
+    ],
+    "descripcion": "Un hombre atormentado por una maldición ancestral.",
+    "imagenUrl": "https://th.bing.com/th/id/OIP.5Pz1cPXtjba66zUDmrNLigAAAA?rs=1&pid=ImgDetMain",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "REGENERACION"
+    ],
+    "historia": "Maldecido por un antiguo hechizo, el Licántropo de la Noche se transforma en una bestia feroz cada luna llena. Su naturaleza humana lucha por salir, pero el instinto animal lo consume, dejándolo atrapado en un ciclo de destrucción y horror. Se dice que, en noches de luna llena, sus aullidos pueden escucharse a kilómetros de distancia, presagiando desgracias para los que se atreven a acercarse.",
+    "apariencia": "Musculoso, con pelaje oscuro y ojos amarillos que brillan en la oscuridad.",
+    "sonido": "Aullidos desgarradores que hacen eco en la noche."
+  },
+  {
+    "nombre": "Lobo Sanguinario",
+    "tipo": "HOMBRE_LOBO",
+    "nivelDeTerror": 9,
+    "poderes": [
+      "AGILIDAD",
+      "VISION_NOCTURNA"
+    ],
+    "debilidades": [
+      "PLATA",
+      "FUEGO"
+    ],
+    "descripcion": "Un hombre lobo que acecha en la oscuridad, buscando venganza.",
+    "imagenUrl": "https://images.nightcafe.studio/jobs/dXfvD7xVNQKDzYV1J3tc/dXfvD7xVNQKDzYV1J3tc-Jt6xq.jpg?tr=w-1600,c-at_max",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "CAMUFLAJE"
+    ],
+    "historia": "Un antiguo guerrero que fue traicionado por su propia tribu, se convirtió en el Lobo Sanguinario, un ser que se alimenta de la ira y el dolor. Su sed de venganza es insaciable, y cada víctima que cae ante sus garras alimenta su rabia y su sed de sangre. Los que cruzan su camino se encuentran atrapados en un juego mortal, donde la supervivencia es una lucha constante.",
+    "apariencia": "Feroz y ágil, con colmillos afilados y un pelaje gris que lo camufla en la oscuridad.",
+    "sonido": "El crujido de ramas bajo sus patas mientras acecha a su presa."
+  },
+  {
+    "nombre": "Espíritu Errante",
+    "tipo": "FANTASMA",
+    "nivelDeTerror": 8,
+    "poderes": [
+      "TELETRANSPORTACION",
+      "INVISIBILIDAD"
+    ],
+    "debilidades": [
+      "RITUALES_SAGRADOS",
+      "RUIDOS_FUERTES"
+    ],
+    "descripcion": "Un alma en pena atrapada entre dos mundos.",
+    "imagenUrl": "https://img.freepik.com/premium-vector/black-white-drawing-man-forest_1058796-5607.jpg",
+    "nivelDePeligro": "MEDIO",
+    "habilidadesEspeciales": [
+      "CONTROLAR_SOMBRA"
+    ],
+    "historia": "El Espíritu Errante es un alma atormentada que no encontró descanso después de su muerte. Se dice que vaga por los lugares donde vivió, atormentando a quienes se atreven a entrar en su morada. Aquellos que se cruzan en su camino a menudo sienten una presencia fría y escalofriante, como si el mismo miedo los estuviera abrazando.",
+    "apariencia": "Un espectro pálido y etéreo, con ojos vacíos y una expresión de tristeza.",
+    "sonido": "Susurros de lamentos que resuenan en la noche."
+  },
+  {
+    "nombre": "Dama de Blanco",
+    "tipo": "FANTASMA",
+    "nivelDeTerror": 9,
+    "poderes": [
+      "APARICIONES",
+      "CONTROL_DE_VIENTO"
+    ],
+    "debilidades": [
+      "FUEGO_SAGRADO",
+      "AMULETOS_PROTECTORES"
+    ],
+    "descripcion": "El espíritu de una mujer que busca venganza por su muerte.",
+    "imagenUrl": "https://i.pinimg.com/736x/51/1b/6f/511b6f5e17cdb79484e9b6c6af8e99fa.jpg",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "LLAMAR_A_LOS_MUERTOS"
+    ],
+    "historia": "La Dama de Blanco fue asesinada por su amante celoso y ahora busca venganza. Se manifiesta en noches de tormenta, arrastrando a los hombres que la ven hacia su destino trágico. Aquellos que la ven suelen experimentar un terror profundo, y muchos nunca regresan de su encuentro.",
+    "apariencia": "Vestida con un largo vestido blanco, su rostro esbelto está enmarcado por un cabello oscuro y flotante.",
+    "sonido": "El lamento de una mujer que se mezcla con el viento."
+  },
+  {
+    "nombre": "La Hechicera",
+    "tipo": "BRUJA",
+    "nivelDeTerror": 8,
+    "poderes": [
+      "HECHICERIAS",
+      "CONJUROS"
+    ],
+    "debilidades": [
+      "SAL_SAGRADA",
+      "FUEGO_SAGRADO"
+    ],
+    "descripcion": "Una bruja antigua con un conocimiento prohibido.",
+    "imagenUrl": "https://cdn.wallpapersafari.com/34/62/8DpAGL.png",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "CONTROL_DE_MENTES"
+    ],
+    "historia": "La Hechicera ha vivido por siglos, recopilando secretos oscuros de magia antigua. Se dice que aquellos que cruzan su camino son víctimas de su magia oscura, llevándolos a un destino de locura y desesperación. Sus rituales, realizados bajo la luz de la luna llena, atraen sombras que son aún más aterradoras que ella misma.",
+    "apariencia": "De rostro arrugado y ojos penetrantes, siempre viste con una capa negra que le permite camuflarse en la oscuridad.",
+    "sonido": "El susurro de conjuros antiguos que resuena en la noche."
+  },
+  {
+    "nombre": "Bruja del Pantano",
+    "tipo": "BRUJA",
+    "nivelDeTerror": 7,
+    "poderes": [
+      "CONJUROS",
+      "CAMBIO_DE_FORMA"
+    ],
+    "debilidades": [
+      "PLATA",
+      "RITUALES_SAGRADOS"
+    ],
+    "descripcion": "Una bruja que habita en un pantano, controlando a las criaturas que lo rodean.",
+    "imagenUrl": "https://i.pinimg.com/originals/39/c3/e5/39c3e598b048321eca8fd011c5ee3a4f.jpg",
+    "nivelDePeligro": "MEDIO",
+    "habilidadesEspeciales": [
+      "LLAMAR_A_CRIATURAS"
+    ],
+    "historia": "La Bruja del Pantano, conocida por sus pociones y maldiciones, se alimenta del miedo de los incautos que entran en su dominio. Se dice que sus ojos verdes pueden ver el alma de cada criatura y que tiene el poder de transformarlas en monstruos. Muchos han desaparecido en sus pantanos, devorados por criaturas que ella misma controla.",
+    "apariencia": "Con un cuerpo encorvado y piel cubierta de lodo, su aspecto es repugnante y terrorífico.",
+    "sonido": "Ruidos extraños de criaturas que la rodean."
+  },
+  {
+    "nombre": "Ghoul de la Cripta",
+    "tipo": "GHOUL",
+    "nivelDeTerror": 8,
+    "poderes": [
+      "CREACION_DE_ILUSIONES",
+      "INVISIBILIDAD"
+    ],
+    "debilidades": [
+      "LUZ_SAGRADA",
+      "FUEGO"
+    ],
+    "descripcion": "Un espíritu macabro que se alimenta de los muertos.",
+    "imagenUrl": "https://i.ytimg.com/vi/IHAzpfcxeiw/maxresdefault.jpg",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "OCULTAR_AURA_DE_MUERTE"
+    ],
+    "historia": "El Ghoul de la Cripta merodea por los cementerios, buscando cuerpos frescos para devorar. Con un apetito insaciable por la carne, se esconde en las sombras y ataca a los incautos que se aventuran cerca de las tumbas. Los rumores dicen que susurros de los muertos lo guían hacia sus víctimas.",
+    "apariencia": "Cuerpo descompuesto y demacrado, con ojos que brillan en la oscuridad.",
+    "sonido": "Susurros escalofriantes que provocan un escalofrío en la espalda."
+  },
+  {
+    "nombre": "Ghoul del Desierto",
+    "tipo": "GHOUL",
+    "nivelDeTerror": 7,
+    "poderes": [
+      "CONTROL_MENTAL",
+      "APARICIONES"
+    ],
+    "debilidades": [
+      "AGUA_BENDITA",
+      "FUEGO"
+    ],
+    "descripcion": "Una entidad devoradora que acecha en las arenas del desierto.",
+    "imagenUrl": "https://i.pinimg.com/736x/80/df/f7/80dff73ba2495e61e173459955bce9a4.jpg",
+    "nivelDePeligro": "MEDIO",
+    "habilidadesEspeciales": [
+      "ENGAÑO_MENTAL"
+    ],
+    "historia": "El Ghoul del Desierto es un ser que atrae a los viajeros a su trampa mortal. Se alimenta de su miedo, despojando a sus víctimas de su vida antes de consumir sus cuerpos. Muchos han desaparecido en las arenas, dejando solo ecos de sus gritos en la noche.",
+    "apariencia": "Cuerpo cubierto de arena y huesos, con una mirada vacía que hipnotiza a quienes la ven.",
+    "sonido": "El susurro del viento en el desierto, a veces mezclado con lamentos."
+  },
+  {
+    "nombre": "La Momia Maldita",
+    "tipo": "MOMIA",
+    "nivelDeTerror": 9,
+    "poderes": [
+      "REGENERACION",
+      "RESURRECCION"
+    ],
+    "debilidades": [
+      "FUEGO",
+      "AGUA_BENDITA"
+    ],
+    "descripcion": "El espíritu de un faraón antiguo que busca venganza.",
+    "imagenUrl": "https://img.europapress.es/fotoweb/fotonoticia_20170403105928_640.jpg",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "INVOCAR_FANTASMAS"
+    ],
+    "historia": "La Momia Maldita fue enterrada con un tesoro y un oscuro secreto. Aquellos que la despiertan de su sueño eterno deben enfrentar su ira. Su maldición se extiende más allá de la muerte, condenando a aquellos que osan entrar en su tumba a una eternidad de sufrimiento.",
+    "apariencia": "Cuerpo envuelto en vendas, con ojos que brillan como joyas perdidas.",
+    "sonido": "Susurros antiguos y ecos de llantos perdidos."
+  },
+  {
+    "nombre": "Guardiana de la Tumba",
+    "tipo": "MOMIA",
+    "nivelDeTerror": 8,
+    "poderes": [
+      "HIPNOSIS",
+      "REGENERACION"
+    ],
+    "debilidades": [
+      "FUEGO_SAGRADO",
+      "PLATA"
+    ],
+    "descripcion": "Una madre protectora de un antiguo reino que no puede descansar.",
+    "imagenUrl": "https://store-images.s-microsoft.com/image/apps.31137.14438452378934472.fff81a11-59e5-449d-bc55-ecbfd84e5742.06db8a71-215c-4cef-9020-26455976b854?q=90&w=480&h=270",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "PREDICCION_DEL_FUTURO"
+    ],
+    "historia": "La Guardiana de la Tumba fue una madre devota que se sacrificó por su familia. Ahora, su espíritu permanece atrapado entre el mundo de los vivos y los muertos, protegiendo su tumba de aquellos que intentan profanarla. Su llanto puede escucharse entre las sombras, y aquellos que se acercan pueden sentir su dolor y su ira.",
+    "apariencia": "Envuelta en vendajes, su forma es etérea, y lleva joyas antiguas.",
+    "sonido": "Un lamento suave que se convierte en un grito desgarrador."
+  },
+  {
+    "nombre": "Demonio del Abismo",
+    "tipo": "DEMONIO",
+    "nivelDeTerror": 10,
+    "poderes": [
+      "CONTROL_DE_ALMAS",
+      "MANIPULACION_DE_TEMPERATURA"
+    ],
+    "debilidades": [
+      "LUZ_SAGRADA",
+      "FUEGO_SAGRADO"
+    ],
+    "descripcion": "Un ser oscuro que devora almas.",
+    "imagenUrl": "https://i.pinimg.com/736x/44/22/e0/4422e0beaa2c92e564b2ce2a0ed533d9--character-modeling-student-work.jpg",
+    "nivelDePeligro": "EXTREMO",
+    "habilidadesEspeciales": [
+      "INFLUENCIA_MENTAL"
+    ],
+    "historia": "El Demonio del Abismo fue una vez un ángel caído, ahora desterrado en la oscuridad eterna. Se alimenta del dolor y la desesperación de los mortales, ofreciendo deseos a cambio de sus almas. Su risa resuena en la oscuridad, y aquellos que lo oyen quedan atrapados en su juego mortal.",
+    "apariencia": "Con cuernos retorcidos y una piel oscura, sus ojos brillan como brasas en la oscuridad.",
+    "sonido": "Risas demoníacas que reverberan en el aire, llenas de malicia."
+  },
+  {
+    "nombre": "Demonio del Fuego",
+    "tipo": "DEMONIO",
+    "nivelDeTerror": 9,
+    "poderes": [
+      "FUEGO_INFERNAL",
+      "INMORTALIDAD"
+    ],
+    "debilidades": [
+      "AGUA_BENDITA",
+      "SAL_SAGRADA"
+    ],
+    "descripcion": "Un demonio que controla las llamas del infierno.",
+    "imagenUrl": "https://i.pinimg.com/736x/6b/c8/6e/6bc86e4608106bfe2adb3626889d523b.jpg",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "INCENDIO_INFERNAL"
+    ],
+    "historia": "El Demonio del Fuego fue creado a partir del caos primordial, sus llamas son el reflejo de la destrucción y el dolor. Se dice que su ira puede arrasar ciudades y que su presencia se siente incluso en los sueños de aquellos que lo han ofendido.",
+    "apariencia": "Rodeado de llamas, su forma es cambiante, a menudo esbozando una sonrisa maliciosa.",
+    "sonido": "El crujir del fuego y gritos de aquellos que han caído en su trampa."
+  },
+  {
+    "nombre": "El Monstruo de Frankenstein",
+    "tipo": "FRANKENSTEIN",
+    "nivelDeTerror": 8,
+    "poderes": [
+      "SUPER_FUERZA",
+      "REGENERACION"
+    ],
+    "debilidades": [
+      "FUEGO",
+      "RAYOS"
+    ],
+    "descripcion": "Un ser creado por la ciencia que busca su lugar en el mundo.",
+    "imagenUrl": "https://www.creativefabrica.com/wp-content/uploads/2023/04/12/Frankensteins-Monster-By-Bernie-Wrightson-Approaches-Walking-Towards-Wearing-A-67011788-1.png",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "EMOCIONES_INTENSAS"
+    ],
+    "historia": "El Monstruo de Frankenstein fue creado por un científico loco que buscaba desafiar la muerte. Sin embargo, su creador lo rechazó, dejándolo solo y buscando aceptación. Su viaje lo lleva a enfrentar el miedo de los hombres, quienes lo ven como un monstruo en lugar de un ser que busca amor y comprensión.",
+    "apariencia": "De cuerpo robusto y cicatrices visibles, su mirada refleja un profundo dolor.",
+    "sonido": "El eco de pasos pesados y susurros de desesperación."
+  },
+  {
+    "nombre": "El Experimento Fallido",
+    "tipo": "FRANKENSTEIN",
+    "nivelDeTerror": 7,
+    "poderes": [
+      "RESILIENCIA",
+      "SUPER_FUERZA"
+    ],
+    "debilidades": [
+      "LUZ_SOLAR",
+      "FUEGO"
+    ],
+    "descripcion": "Un ser creado por error, que lucha por entender su existencia.",
+    "imagenUrl": "https://yt3.ggpht.com/a/AATXAJz0TrdTEadJCum3JP3ZKH4lNh_iILYmBt1GnQ=s900-c-k-c0xffffffff-no-rj-mo",
+    "nivelDePeligro": "MEDIO",
+    "habilidadesEspeciales": [
+      "INVISIBILIDAD"
+    ],
+    "historia": "El Experimento Fallido fue una creación que nunca debió existir. Sus partes, unidas sin sentido, buscan un propósito en un mundo que no lo acepta. Su búsqueda de respuestas lo lleva a cruzar caminos con los vivos, pero su apariencia provoca terror y rechazo.",
+    "apariencia": "Una amalgama de partes humanas y mecánicas, su aspecto es grotesco y confuso.",
+    "sonido": "Un gorgoteo inquietante y el sonido de piezas chirriantes."
+  },
+  {
+    "nombre": "Esqueleto del Cementerio",
+    "tipo": "ESQUELETO",
+    "nivelDeTerror": 7,
+    "poderes": [
+      "REGENERACION",
+      "RESURRECCION"
+    ],
+    "debilidades": [
+      "FUEGO_SAGRADO",
+      "AGUA_BENDITA"
+    ],
+    "descripcion": "Un esqueleto que ha cobrado vida para buscar venganza.",
+    "imagenUrl": "https://th.bing.com/th/id/OIP.A0IZcBDMtdnJEgp9uoanRgHaE7?rs=1&pid=ImgDetMain",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "EXTRACCIÓN_DE_HUESOS"
+    ],
+    "historia": "El Esqueleto del Cementerio fue una víctima de una traición. Al levantarse de su tumba, busca vengar su muerte y atormentar a aquellos que lo traicionaron. Su risa hueca resuena en la oscuridad, y aquellos que lo oyen saben que sus días están contados.",
+    "apariencia": "Un esqueleto blanquecino, con huesos desgastados y una expresión de odio.",
+    "sonido": "Ruidos de huesos crujientes que resuenan en la noche."
+  },
+  {
+    "nombre": "El Caballero Esqueleto",
+    "tipo": "ESQUELETO",
+    "nivelDeTerror": 8,
+    "poderes": [
+      "MAESTRIA_CON_EL_ARMAMENTO",
+      "RESURRECCION"
+    ],
+    "debilidades": [
+      "FUEGO",
+      "SAL_SAGRADA"
+    ],
+    "descripcion": "Un guerrero caído que busca recuperar su honor.",
+    "imagenUrl": "https://wallpaperaccess.com/full/5705082.jpg",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "INVOCAR_SOLDADOS_ESQUELETICOS"
+    ],
+    "historia": "El Caballero Esqueleto fue un noble guerrero que murió en la batalla. Ahora, su espíritu busca redención, luchando contra aquellos que le hicieron daño. Con cada enemigo que derrota, su honor se restablece, pero su ansia de venganza lo consume.",
+    "apariencia": "Armado con una armadura desgastada, su cráneo es la única parte visible de su cuerpo.",
+    "sonido": "El sonido del metal chocando y un eco de guerra que nunca cesa."
+  },
+  {
+    "nombre": "Duende del Bosque",
+    "tipo": "DUENDE",
+    "nivelDeTerror": 6,
+    "poderes": [
+      "CREACION_DE_ILUSIONES",
+      "MAGIA"
+    ],
+    "debilidades": [
+      "LUZ_SAGRADA",
+      "PLATA"
+    ],
+    "descripcion": "Un duende travieso que juega con la mente de los incautos.",
+    "imagenUrl": "https://lavozdetarija.com/wp-content/uploads/2022/02/duende.jpeg",
+    "nivelDePeligro": "MEDIO",
+    "habilidadesEspeciales": [
+      "ENGAÑO_VISUAL"
+    ],
+    "historia": "El Duende del Bosque es conocido por sus trucos maliciosos. Se esconde entre los árboles y atrae a los viajeros con sus ilusiones, llevándolos a perderse en su propio terror. Los que caen en su trampa pueden ser víctima de una maldición que los persigue hasta el final de sus días.",
+    "apariencia": "Pequeño y ágil, con orejas puntiagudas y una risa burlona.",
+    "sonido": "El tintineo de campanillas que se mezcla con risas infantiles."
+  },
+  {
+    "nombre": "Duende de las Sombras",
+    "tipo": "DUENDE",
+    "nivelDeTerror": 5,
+    "poderes": [
+      "INVISIBILIDAD",
+      "MANIPULACION_DE_SOMBRAS"
+    ],
+    "debilidades": [
+      "LUZ_SOLAR",
+      "AMULETOS_PROTECTORES"
+    ],
+    "descripcion": "Un ser astuto que habita en la oscuridad.",
+    "imagenUrl": "https://images.nightcafe.studio/jobs/aMWeugdP1FkY15ADTgXs/aMWeugdP1FkY15ADTgXs--1--mybzl.jpg?tr=w-1600,c-at_max",
+    "nivelDePeligro": "BAJO",
+    "habilidadesEspeciales": [
+      "FUGA_RAPIDA"
+    ],
+    "historia": "El Duende de las Sombras es un espíritu de la oscuridad que juega con la luz y la sombra. Se alimenta del miedo de los mortales, haciéndolos dudar de sus propios sentidos. Sus travesuras a menudo resultan en terror y confusión.",
+    "apariencia": "Casi invisible en la oscuridad, su forma es etérea y cambiante.",
+    "sonido": "Susurros apagados que parecen provenir de todas direcciones."
+  },
+  {
+    "nombre": "El Troll del Bosque",
+    "tipo": "TROLL",
+    "nivelDeTerror": 5,
+    "poderes": [
+      "SUPER_FUERZA",
+      "REGENERACION"
+    ],
+    "debilidades": [
+      "FUEGO",
+      "LUZ_SOLAR"
+    ],
+    "descripcion": "Un troll gigante que habita en los bosques oscuros, temido por su enorme fuerza y su capacidad de regeneración.",
+    "imagenUrl": "https://img.freepik.com/fotos-premium/personaje-mitico-troll-bosque_880127-423.jpg",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "CAMUFLAJE"
+    ],
+    "historia": "Este troll ha vagado por los bosques durante siglos, evitando la luz del sol y el fuego. Su piel gruesa y su capacidad de regeneración lo hacen difícil de derrotar.",
+    "apariencia": "Una criatura enorme y musculosa con piel verde y verrugas, que se mueve sigilosamente a pesar de su tamaño.",
+    "sonido": "Un gruñido profundo seguido de pisadas pesadas."
+  },
+  {
+    "nombre": "El Dragón de Fuego",
+    "tipo": "DRAGON",
+    "nivelDeTerror": 10,
+    "poderes": [
+      "ALIENTO_DE_FUEGO",
+      "VUELO"
+    ],
+    "debilidades": [
+      "AGUA_BENDITA",
+      "SIMBOLOS_SAGRADOS"
+    ],
+    "descripcion": "Un dragón que domina los cielos y lanza llamaradas de fuego desde sus fauces.",
+    "imagenUrl": "https://th.bing.com/th/id/OIP.5UDMlEWc1M7Z1SIhex6_6wAAAA?rs=1&pid=ImgDetMain",
+    "nivelDePeligro": "EXTREMO",
+    "habilidadesEspeciales": [
+      "CONTROL_DEL_CLIMA"
+    ],
+    "historia": "Este dragón ha aterrorizado reinos enteros, quemando ciudades con su aliento de fuego. Se dice que solo el agua bendita y los símbolos sagrados pueden detener su furia.",
+    "apariencia": "Una criatura gigantesca con escamas rojas y negras, alas enormes y ojos brillantes que reflejan su furia interna.",
+    "sonido": "El rugido ensordecedor de un dragón seguido del silbido de las llamas."
+  },
+  {
+    "nombre": "El Troll de las Cavernas",
+    "tipo": "TROLL",
+    "nivelDeTerror": 6,
+    "poderes": [
+      "RESILIENCIA",
+      "TOQUE_VENENOSO"
+    ],
+    "debilidades": [
+      "RUIDOS_FUERTES",
+      "LUZ_SOLAR"
+    ],
+    "descripcion": "Este troll vive en la oscuridad de las cavernas más profundas, con un toque venenoso que puede paralizar a sus víctimas.",
+    "imagenUrl": "https://th.bing.com/th/id/OIP.ZY3bwaVO7nD6e7VZObioDAHaF6?rs=1&pid=ImgDetMain",
+    "nivelDePeligro": "ALTO",
+    "habilidadesEspeciales": [
+      "APARICIONES"
+    ],
+    "historia": "El Troll de las Cavernas es una bestia solitaria, rara vez vista por los humanos. Vive en las sombras, acechando a cualquiera que se aventure demasiado lejos en sus dominios.",
+    "apariencia": "Deforme y de piel grisácea, con ojos rojos que brillan en la oscuridad y un cuerpo cubierto de espinas venenosas.",
+    "sonido": "Un silbido bajo y aterrador, seguido de gruñidos retumbantes desde las profundidades de la caverna."
+  },
+  {
+    "nombre": "El Dragón de las Sombras",
+    "tipo": "DRAGON",
+    "nivelDeTerror": 9,
+    "poderes": [
+      "MANIPULACION_DE_SOMBRAS",
+      "INMORTALIDAD"
+    ],
+    "debilidades": [
+      "HIERRO_FRIO",
+      "FUEGO_SAGRADO"
+    ],
+    "descripcion": "Este dragón se oculta en las sombras, utilizando la oscuridad para cazar y aterrorizar a sus presas. Se dice que es inmortal.",
+    "imagenUrl": "https://th.bing.com/th/id/OIP.JCVxuHffKsbFGbQR9vBpEgAAAA?w=210&h=240&rs=1&pid=ImgDetMain",
+    "nivelDePeligro": "EXTREMO",
+    "habilidadesEspeciales": [
+      "CREACION_DE_ILUSIONES"
+    ],
+    "historia": "El Dragón de las Sombras ha existido durante milenios, inmortal y casi imposible de atrapar. Vive en lugares oscuros y desolados, donde controla las sombras y confunde a sus enemigos con ilusiones.",
+    "apariencia": "Un dragón esbelto y oscuro, cuyas escamas parecen fundirse con la sombra misma. Sus ojos son pozos negros que absorben la luz.",
+    "sonido": "Un susurro sombrío seguido del aleteo suave de sus alas invisibles entre las sombras."
+  }
+
+
+
+
+]

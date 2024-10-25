@@ -1,4 +1,4 @@
 package com.halloween.montruoso.security;
 
-public record DatosJWTtoken(String jwtToken) {
+public record DatosJWTtoken(String jwtToken, String nombre) {
 }

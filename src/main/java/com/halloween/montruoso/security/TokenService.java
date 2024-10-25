@@ -24,7 +24,7 @@ public class TokenService {
             var algoritmo = Algorithm.HMAC256(apiSecret);
             return JWT.create()
                     .withIssuer("API halloween")
-                    .withSubject(usuario.getLogin())
+                    .withSubject(usuario.getCorreoElectronico())
                     .withExpiresAt(fechaExpiracion())
                     .sign(algoritmo);
         } catch (JWTCreationException exception) {

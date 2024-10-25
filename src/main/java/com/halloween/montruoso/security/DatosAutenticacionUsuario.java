@@ -1,7 +1,7 @@
-package com.halloween.montruoso.dto;
+package com.halloween.montruoso.security;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
-public record DatosAutenticacionUsuario(String login ,
+public record DatosAutenticacionUsuario(String email ,
                                         @JsonAlias({"password","contraseña"})String clave) {
 }
