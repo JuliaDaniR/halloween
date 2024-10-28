@@ -5,9 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class MontruosoApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(MontruosoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MontruosoApplication.class, args);
+    }
 
 }

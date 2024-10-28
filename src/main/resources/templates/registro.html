@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html
+        lang="es"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Únete a Halloween - Registro</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+            rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="navbar">
+    <div class="contain-logo">
+        <span class="fa-ghost" onmouseenter="playGhostSound()"
+        ><i class="fas fa-ghost"></i
+        ></span>
+        <a th:href="@{/}" class="logo" onmouseenter="playLogoSound()">
+            Halloween
+        </a>
+    </div>
+    <div class="contain-enlaces-nav">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="items" id="navbarLinks">
+            <a
+                    th:href="@{/loguearUsuario}"
+                    id="loginLink"
+                    onmouseenter="playClickSound()"
+            >👻 Ingresar</a
+            >
+            <a
+                    th:href="@{/registrarUsuario}"
+                    id="registerLink"
+                    onmouseenter="playClickSound()"
+            >🎃 Regístrate</a
+            >
+        </div>
+    </div>
+</div>
+<header>
+    <div class="container">
+        <h1 style="font-family: 'Nosifer', cursive; font-size: 3rem">
+            ¡Únete a los Habitantes de la Oscuridad!
+        </h1>
+        <p>Regístrate para ser parte de la comunidad más espeluznante.</p>
+    </div>
+</header>
+<div class="temas">
+    <h2
+            style="
+          text-align: center;
+          color: orange;
+          font-family: 'New Rocker', cursive;
+          font-size: 2rem;
+        "
+    >
+        ¡Forma parte de los espíritus oscuros!
+    </h2>
+</div>
+<section class="container-login">
+    <div class="wrapper">
+        <span class="bg-animate"></span>
+        <div class="form-box login">
+            <h2 style="font-family: 'Uncial Antiqua', cursive; font-size: 2rem">
+                <i class="fas fa-user-plus"></i> Registro de Usuario
+            </h2>
+            <form id="registroForm">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="nombre" class="form-label"
+                        ><i class="fas fa-user"></i> Nombre</label
+                        >
+                        <input
+                                style="
+                    padding: 0.3rem;
+                    margin-top: 1rem;
+                    background-color: #ffffff79;
+                    border-radius: 10px;
+                  "
+                                type="text"
+                                class="form-control"
+                                id="nombre"
+                                name="nombre"
+                                placeholder="Nombre Fantasmagórico"
+                                required
+                        />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="exampleInputEmail1" class="form-label"
+                        ><i class="fas fa-envelope"></i> Correo</label
+                        >
+                        <input
+                                style="
+                    padding: 0.3rem;
+                    margin-top: 1rem;
+                    background-color: #ffffff79;
+                    border-radius: 10px;
+                  "
+                                type="email"
+                                class="form-control"
+                                id="exampleInputEmail1"
+                                name="email"
+                                placeholder="Correo Oscuro"
+                                required
+                        />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="password1" class="form-label"
+                        ><i class="fas fa-lock"></i> Contraseña</label
+                        >
+                        <input
+                                style="
+                    padding: 0.3rem;
+                    margin-top: 1rem;
+                    background-color: #ffffff79;
+                    border-radius: 10px;
+                  "
+                                type="password"
+                                class="form-control"
+                                id="password1"
+                                name="password"
+                                placeholder="Clave Espectral"
+                                required
+                        />
+                    </div>
+                </div>
+                <button
+                        type="submit"
+                        class="btn btn-primary"
+                        onmouseenter="playLoginSound()"
+                >
+                    🎃 Registrar
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <p>
+        Desarrollado por Julia Daniela Rodriguez | © Halloween API 2024 🎃👻
+    </p>
+</footer>
+
+<audio id="ghostSound" src="/audios/sonido-fantasma.mp3"></audio>
+<audio id="loginSound" src="/audios/sonido-login.m4a"></audio>
+<audio id="logoSound" src="/audios/sonido-logo.wav"></audio>
+<audio id="clickSound" src="/audios/sonido-click.mp3"></audio>
+
+<script>
+    function playGhostSound() {
+      const ghostSound = document.getElementById("ghostSound");
+      ghostSound.currentTime = 0;
+      ghostSound.play();
+    }
+
+    function playLoginSound() {
+      const loginSound = document.getElementById("loginSound");
+      loginSound.currentTime = 0;
+      loginSound.play();
+    }
+
+    function playLogoSound() {
+      const logoSound = document.getElementById("logoSound");
+      logoSound.currentTime = 0;
+      logoSound.play();
+    }
+
+    function playClickSound() {
+      const clickSound = document.getElementById("clickSound");
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+    document
+      .getElementById("registroForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault(); // Evita el envío estándar del formulario
+
+        // Crea un objeto FormData para capturar los datos del formulario
+        const formData = new FormData(this);
+
+        fetch("/usuario/registrar", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (response.ok) {
+              // Si la respuesta es exitosa (status 201), redirige al index
+              window.location.href = "/?mensaje=¡Registro+exitoso!";
+            } else {
+              // Si la respuesta no es exitosa, muestra un mensaje de error
+              alert(
+                "Hubo un problema con el registro. Inténtalo nuevamente."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("Error en la solicitud:", error);
+            alert("Error en el servidor. Por favor, intenta más tarde.");
+          });
+      });
+</script>
+</body>
+</html>

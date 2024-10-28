@@ -24,6 +24,7 @@ public class AutenticacionController {
 
     @PostMapping
     public ResponseEntity<DatosJWTtoken> autenticarUsuario(@RequestBody DatosAutenticacionUsuario datosAutenticacionUsuario) {
+        System.out.println("Intentando autenticar usuario: " + datosAutenticacionUsuario.email());
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken(datosAutenticacionUsuario.email(), datosAutenticacionUsuario.clave());
         Authentication usuarioAutenticado = authenticationManager.authenticate(authenticationToken);
         String tokenJWT = tokenService.generarToken((Usuario) usuarioAutenticado.getPrincipal());

@@ -1,0 +1,848 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: black;
+}
+
+.page-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Efecto de linterna */
+.page-container::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.5) 20%,
+    rgba(0, 0, 0, 0.6) 80%
+  );
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: moveLight 8s ease-in-out infinite alternate;
+}
+
+/* Estilos para el texto */
+h1 {
+  font-size: 3rem;
+  text-align: center;
+}
+
+/* Animación que cambia la posición de la luz */
+@keyframes moveLight {
+  0% {
+    top: 20%;
+    left: 30%;
+  }
+  25% {
+    top: 80%;
+    left: 50%;
+  }
+  50% {
+    top: 30%;
+    left: 80%;
+  }
+  75% {
+    top: 50%;
+    left: 10%;
+  }
+  100% {
+    top: 20%;
+    left: 70%;
+  }
+}
+
+/* Navbar */
+.navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.contain-logo {
+  display: flex; /* Usar flexbox para alinear el icono y el texto */
+  align-items: center; /* Centrar verticalmente */
+}
+
+.contain-enlaces-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  font-family: "Creepster", cursive; /* Fuente espeluznante */
+  font-size: 3rem; /* Tamaño de la fuente */
+  background: linear-gradient(
+    90deg,
+    black,
+    #660000,
+    #ff3333,
+    #660000,
+    black
+  ); /* Gradiente negro y rojo */
+  background-size: 400%; /* Tamaño del fondo para la animación */
+  -webkit-background-clip: text; /* Recorta el fondo al texto */
+  -webkit-text-fill-color: transparent; /* Texto transparente para mostrar el fondo */
+  animation: redBlackRainbow 3s ease-in-out infinite; /* Animación del fondo */
+  display: inline-block; /* Para que el hover funcione correctamente */
+  transition: transform 0.3s; /* Transición suave para el efecto hover */
+  margin-left: 10px; /* Espacio entre el fantasma y la palabra */
+  cursor: pointer;
+}
+
+@keyframes redBlackRainbow {
+  0% {
+    background-position: 0%; /* Posición inicial del fondo */
+  }
+  100% {
+    background-position: 100%; /* Posición final del fondo */
+  }
+}
+
+.logo:hover {
+  background: linear-gradient(
+    -90deg,
+    white,
+    #660000,
+    #ff3333,
+    #660000,
+    white
+  ); /* Cambia a gradiente blanco al pasar el mouse */
+  background-size: 400%; /* Tamaño del fondo */
+  -webkit-background-clip: text; /* Recorta el fondo al texto */
+  -webkit-text-fill-color: transparent;
+  animation: redBlackRainbow 3s ease-in-out infinite;
+  transform: scale(1.1) rotate(-3deg);
+}
+
+.fa-ghost {
+  color: transparent;
+  padding: 0 1rem;
+  font-size: 2.5rem;
+  animation: ghostAnimation 5s ease-in-out infinite;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.fa-ghost i {
+  color: white;
+}
+
+.fa-ghost i:hover {
+  color: #ffcc00;
+  text-shadow: 0 0 20px rgba(255, 204, 0, 0.8), 0 0 40px rgba(255, 204, 0, 0.5);
+  transform: scale(1.3);
+}
+
+@keyframes ghostAnimation {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+  50% {
+    transform: translate(20px, -5px) rotate(-5deg);
+  }
+  75% {
+    transform: translate(-20px, -5px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.menu-icon {
+  display: none;
+}
+
+.menu-icon,
+.items a {
+  color: #fff;
+  font-family: "Creepster", cursive;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.items {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon:hover,
+.items a:hover {
+  color: #ff6347;
+}
+
+.logout-button {
+  margin: 0 1rem;
+  background: rgba(255, 0, 0, 0.4);
+  padding: 0.3rem;
+  font-size: 1.5rem;
+  font-family: "Creepster", cursive;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Header (landing page) */
+.header {
+  text-align: center;
+  padding: 100px 20px;
+  background: url("https://static.vecteezy.com/system/resources/previews/001/331/268/original/happy-halloween-from-the-spooky-castle-free-vector.jpg")
+    no-repeat center center/cover;
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 5rem;
+}
+
+.header h1 {
+  font-size: 3.5rem;
+  margin-bottom: 25px;
+  text-shadow: 20px 40px 60px black;
+  font-family: "Nosifer", cursive;
+}
+
+.header p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px 20px;
+  text-shadow: 20px 40px 60px black;
+}
+
+.cta-button {
+  background-color: #ff6347;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #e5533d;
+}
+
+/* Features and About Sections */
+.features {
+  padding: 40px 20px;
+  background: linear-gradient(to bottom, #ff0000, #000000, #ffffff);
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 75% 100%, 50% 80%, 25% 100%, 0 80%);
+  text-align: center;
+  padding-bottom: 10rem;
+  margin-bottom: 5rem;
+}
+.about {
+  padding: 40px 20px;
+  text-align: center;
+  width: 60%;
+  margin: 5rem auto;
+}
+.features h2,
+.about h2 {
+  color: white;
+  font-size: 3rem;
+  font-family: "Creepster", cursive;
+  margin-bottom: 20px;
+}
+
+.about p {
+  color: white;
+}
+
+.feature-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@keyframes movingShadow {
+  0% {
+    box-shadow: 4px 8px 12px rgba(255, 125, 0, 0.6);
+  }
+  100% {
+    box-shadow: 8px 16px 24px rgba(255, 125, 0, 0.6);
+  }
+}
+
+.feature {
+  background-color: black;
+  border-radius: 30px;
+  padding: 20px;
+  margin: 10px;
+  flex: 1 1 300px;
+  max-width: 300px;
+  color: white;
+  animation: movingShadow 4s infinite ease-in;
+}
+
+.feature h3 {
+  color: #ff6347;
+  font-size: 1.3em;
+  margin-bottom: 10px;
+  padding: 0.5rem;
+  background: rgba(255, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+.footer {
+  background-color: #333;
+  color: red;
+  font-family: "Creepster", cursive;
+  font-size: 2rem;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.card {
+  flex-direction: column;
+}
+
+/* Form Styles (Login/Register) */
+.container {
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem auto;
+  font-family: "Nosifer", cursive;
+}
+
+.wrapper {
+  color: white;
+  display: flex;
+  background: url("https://png.pngtree.com/thumb_back/fw800/background/20210912/pngtree-free-vector-halloween-cobweb-on-red-background-image_877141.jpg");
+  justify-content: center;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 2rem auto;
+}
+
+.form-box {
+  width: 70%;
+  background: linear-gradient(to bottom, #000000, #ffffff);
+  text-align: center;
+  padding: 6rem;
+  border-radius: 20px;
+  margin: 6rem auto;
+}
+
+form {
+  max-width: 70%;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+  -webkit-box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+  -moz-box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+}
+
+fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 1rem;
+}
+
+form h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  font-size: 1.5rem;
+  font-family: "New Rocker", cursive;
+  color: black;
+  margin-bottom: 5px;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  font-family: "New Rocker", cursive;
+  color: purple;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: gray;
+}
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 5px 0; /* Espaciado entre checkboxes */
+}
+
+.custom-checkbox input {
+  display: none;
+}
+
+.custom-checkbox span {
+  position: relative;
+  padding-left: 25px; /* Espacio para el checkbox */
+  cursor: pointer;
+}
+
+.loading {
+  text-align: center;
+  position: relative;
+  margin: 20px 0;
+}
+
+.pumpkin-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  animation: girar 2s linear infinite;
+}
+
+.icon {
+  font-size: 40px; /* Ajusta el tamaño del emoji 🎃 */
+  position: absolute;
+}
+
+.icon:nth-child(1) {
+  transform: rotate(0deg) translate(40px) rotate(0deg);
+}
+.icon:nth-child(2) {
+  transform: rotate(90deg) translate(40px) rotate(-90deg);
+}
+.icon:nth-child(3) {
+  transform: rotate(180deg) translate(40px) rotate(-180deg);
+}
+.icon:nth-child(4) {
+  transform: rotate(270deg) translate(40px) rotate(-270deg);
+}
+
+@keyframes girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Estilo del checkbox personalizado */
+.custom-checkbox span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px; /* Ancho del checkbox */
+  height: 20px; /* Alto del checkbox */
+  border: 2px solid purple; /* Borde morado */
+  border-radius: 3px; /* Bordes redondeados */
+  background-color: transparent; /* Color de fondo */
+}
+
+/* Estilo cuando el checkbox está marcado */
+.custom-checkbox input:checked + span::before {
+  background-color: purple; /* Color de fondo morado al estar checked */
+}
+
+form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff6347;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  font-family: "New Rocker", cursive;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #e5533d;
+}
+
+.register-link {
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-family: "New Rocker", cursive;
+  color: black;
+}
+
+.mensaje-exito {
+  background: linear-gradient(to bottom, #000, #fff);
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  padding: 1rem;
+  width: 50%;
+  margin: 1rem auto;
+  border: 2px solid red;
+}
+
+.nueva-card {
+  border: 2px solid #ff7518;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-direction: column;
+  background-color: #333;
+  color: #ffeb3b;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s ease;
+}
+
+.nueva-card h2 {
+  font-size: 2rem;
+  font-family: "Creepster", cursive;
+  text-align: center;
+}
+
+.nueva-card p {
+  font-size: 1.3rem;
+  padding: 0.3rem;
+  font-family: "New Rocker", cursive;
+}
+
+.nueva-card:hover {
+  transform: scale(1.05);
+}
+
+.nueva-card img {
+  width: 80%;
+  height: 600px;
+  margin: 2rem auto;
+  border-radius: 5px;
+  box-shadow: 6px 8px 12px black;
+}
+
+.boton-cerrar-card {
+  background-color: #8b000078;
+  color: #ffde00;
+  font-weight: bold;
+  border: 2px solid #8b6900;
+  padding: 0.2rem;
+  border-radius: 15px;
+  font-size: 2rem;
+  margin: 0.3rem 0;
+  font-family: "New Rocker", cursive;
+  cursor: pointer;
+}
+
+.actualizarCard {
+  background-color: #28a7455c;
+  color: #2bee17;
+  border: 2px solid #24e624;
+  padding: 0.2rem;
+  font-weight: bold;
+  font-family: "New Rocker", cursive;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-top: 3rem;
+  font-size: 2rem;
+}
+.mensaje-aterrador {
+  font-size: 1.2rem;
+  color: #ff5733;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.grid-item {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.grid-item:hover {
+  transform: scale(1.05);
+}
+
+.page-inicio h3 {
+  font-size: 3rem;
+  font-family: "Nosifer", cursive;
+  text-align: center;
+  background: linear-gradient(
+    90deg,
+    red,
+    white,
+    darkred
+  ); /* Degradado de rojo a negro y blanco */
+  -webkit-background-clip: text; /* Hace que el color de fondo solo aparezca en el texto */
+  -webkit-text-fill-color: transparent; /* Deja el color del texto transparente para mostrar el degradado */
+  margin: 5rem auto;
+}
+
+.page-inicio h4 {
+  font-size: 2rem;
+  font-family: "New Rocker", cursive;
+  text-align: center;
+}
+.parent-container {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  align-self: center;
+  padding: 3rem;
+}
+
+#prevPage,
+#nextPage {
+  font-size: 2rem;
+  font-family: "Creepster";
+  padding: 0.5rem;
+  margin: 2rem;
+  font-weigh: bold;
+  border-radius: 20px;
+  background: transparent;
+  color: #451f91;
+  border: 2px solid #451f91;
+  cursor: pointer;
+}
+
+#prevPage:disabled,
+#nextPage:disabled {
+  color: gray;
+  border: 2px solid gray;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem;
+}
+
+#seccion2 h2 {
+  font-size: 2.5rem;
+  font-family: "Creepster";
+  padding: 0.5rem;
+  margin: 2rem auto;
+  text-align: center;
+  color: darkorange;
+}
+
+.parrafo-presentacion {
+  font-size: 1.5rem;
+  font-family: "New Rocker";
+  padding: 0.5rem 5rem;
+  margin: 2rem auto;
+  text-align: center;
+  color: #ff7518;
+}
+
+.botones-options {
+  font-size: 1.5rem;
+  margin: 1rem;
+  padding: 0.5rem;
+  background: #f1ebeb2e;
+  color: #d50a2b;
+  border-radius: 10px;
+  border: 3px dotted #d50a2b;
+  font-family: "New Rocker";
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.botones-options:hover {
+  color: darkorange;
+  border: 3px dotted darkorange;
+  transform: scale(1.1);
+}
+
+.estadisticas-card {
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #f00;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  display: flex;
+  width: 70%;
+  text-align: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 6rem auto;
+  flex-direction: column;
+  align-items: center;
+}
+
+.estadisticas-card canvas {
+  border: 2px solid rgba(255, 0, 0, 0.7);
+  border-radius: 10px;
+  flex: 1 1 45%;
+  max-width: 600px; /* Limita el tamaño del gráfico */
+  min-width: 400px; /* Ancho mínimo para evitar tamaños excesivamente pequeños */
+  margin: 10px 0; /* Espaciado vertical */
+}
+
+#lista-monstruos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 1rem auto;
+}
+
+.resultado-duelo {
+  width: 90%;
+  padding: 4rem;
+  display: flex;
+  gap: 4rem;
+  margin: 2rem auto;
+}
+
+.monstruo-card {
+  background-color: #333;
+  border-radius: 10px;
+  border: 2px solid darkorange;
+  margin: 10px;
+  padding: 2rem;
+  text-align: center;
+  width: 250px;
+  box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center; /* Alinear el checkbox y el texto */
+}
+
+.custom-checkbox-duelo {
+  display: none;
+  background: #dd1313;
+}
+
+.custom-checkbox-duelo + span {
+  display: inline-block;
+  border: 2px solid #dd1313; /* Borde blanco */
+  border-radius: 4px; /* Bordes redondeados */
+  margin-right: 10px; /* Espaciado a la derecha del checkbox */
+  position: relative; /* Necesario para el efecto */
+  cursor: pointer; /* Cambiar cursor a pointer */
+  padding: 0.5rem;
+  font-family: "New Rocker", cursive;
+  font-weight: bolder;
+  color: #dd1313;
+}
+
+.custom-checkbox-duelo:checked + span {
+  background-color: #dd1313;
+  color: white;
+  border: 2px solid white;
+}
+
+.custom-checkbox-duelo:checked + span:after {
+  content: ""; /* Agregar un pseudo-elemento */
+  position: absolute; /* Posicionamiento absoluto */
+  top: 4px; /* Ajustar posición */
+  left: 4px; /* Ajustar posición */
+  width: 10px; /* Ancho del check */
+  height: 10px; /* Alto del check */
+  background-color: #dd1313; /* Color de check */
+  border-radius: 2px; /* Bordes redondeados del check */
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contain-enlaces-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-direction: row-reverse;
+
+    .menu-icon {
+      display: block;
+    }
+
+    .items {
+      display: none;
+    }
+
+    .items.active {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      z-index: 1000;
+      align-items: stretch;
+      z-index: 1000;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(1);
+      gap: 15px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .feature-list {
+      flex-direction: column;
+    }
+
+    .header h1 {
+      font-size: 2em;
+    }
+
+    .header p,
+    .cta-button {
+      font-size: 1em;
+    }
+  }
+}

@@ -24,7 +24,17 @@ public class MonstruoService {
     private MonstruoRepository monstruoRepo;
 
     public DatosRespuestaMonstruo registrarMonstruo(DatosRegistroMonstruo datosRegistroMonstruo) {
-        Monstruo monstruo = monstruoRepo.save(new Monstruo(datosRegistroMonstruo));
+        Monstruo monstruo = new Monstruo(datosRegistroMonstruo);
+
+        if (datosRegistroMonstruo.poderes() != null) {
+            monstruo.setPoderes(datosRegistroMonstruo.poderes());
+        }
+
+        if (datosRegistroMonstruo.debilidades() != null) {
+            monstruo.setDebilidades(datosRegistroMonstruo.debilidades());
+        }
+
+        monstruoRepo.save(monstruo);
         return new DatosRespuestaMonstruo(monstruo);
     }
 

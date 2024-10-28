@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monstruos de Halloween</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+            rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="page-container">
+<div class="navbar">
+    <div class="contain-logo">
+        <span class="fa-ghost" onmouseenter="playGhostSound()"
+        ><i class="fas fa-ghost"></i
+        ></span>
+        <a th:href="@{/}" class="logo" onmouseenter="playLogoSound()">
+            Halloween
+        </a>
+    </div>
+    <div class="contain-enlaces-nav">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="items" id="navbarLinks">
+            <a
+                    th:href="@{/loguearUsuario}"
+                    id="loginLink"
+                    onmouseenter="playClickSound()"
+            >👻 Ingresar</a
+            >
+            <a
+                    th:href="@{/registrarUsuario}"
+                    id="registerLink"
+                    onmouseenter="playClickSound()"
+            >🎃 Regístrate</a
+            >
+        </div>
+    </div>
+</div>
+<header class="header">
+    <h1>🧟 Monstruos de Halloween 🎃</h1>
+    <p>
+        Explora la API de Monstruos más terrorífica, donde encontrarás una gran
+        variedad de criaturas con sus atributos, poderes y debilidades.
+        ¡Autenticación segura y estadísticas incluidas!
+    </p>
+    <a href="#funcionalidades" class="cta-button">Ver Funcionalidades</a>
+    <div class="alerta">
+        <p id="mensaje" class="mensaje-exito" style="display: none"></p>
+    </div>
+</header>
+
+<section id="funcionalidades" class="features">
+    <h2>Funcionalidades de la API</h2>
+    <div class="feature-list">
+        <div class="feature" onmouseenter="playCardSound()">
+            <h3>Registro de Monstruos 👹</h3>
+            <p>
+                Agrega nuevos monstruos con sus respectivos poderes, debilidades y
+                nivel de peligro.
+            </p>
+        </div>
+        <div class="feature" onmouseenter="playCardSound()">
+            <h3>Filtrado por Atributos 🧛</h3>
+            <p>
+                Busca monstruos filtrando por nombre, tipo, nivel de peligro,
+                debilidades y poderes.
+            </p>
+        </div>
+        <div class="feature" onmouseenter="playCardSound()">
+            <h3>Estadísticas 📊</h3>
+            <p>
+                Consulta estadísticas detalladas sobre el nivel de peligro y tipo de
+                monstruos en la base de datos.
+            </p>
+        </div>
+        <div class="feature" onmouseenter="playCardSound()">
+            <h3>Top Monstruos Más Terroríficos 👻</h3>
+            <p>Descubre el top 10 de los monstruos más peligrosos y temibles.</p>
+        </div>
+        <div class="feature" onmouseenter="playCardSound()">
+            <h3>Monstruo Aleatorio 🎲</h3>
+            <p>
+                Obtén un monstruo al azar y conoce sus habilidades especiales y
+                debilidades.
+            </p>
+        </div>
+        <div class="feature" onmouseenter="playCardSound()">
+            <h3>Comparación de Monstruos ⚔️</h3>
+            <p>
+                Compara las características de dos monstruos para ver sus fortalezas
+                y debilidades.
+            </p>
+        </div>
+        <div class="feature" onmouseenter="playCardSound()">
+            <h3>Búsqueda por Habilidad Especial 🧙‍♂️</h3>
+            <p>
+                Busca monstruos por habilidades especiales como invisibilidad o
+                control mental.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="about">
+    <h2>Acerca de</h2>
+    <p>
+        Esta API ha sido desarrollada, pensada para la gestión y exploración de
+        criaturas míticas de Halloween. El proyecto incluye autenticación
+        mediante tokens y documentación interactiva con Swagger.
+    </p>
+</section>
+
+<footer class="footer">
+    <p>
+        Desarrollado por Julia Daniela Rodriguez | © Halloween API 2024 🎃👻
+    </p>
+</footer>
+
+<audio id="ghostSound" src="/audios/sonido-fantasma.mp3"></audio>
+<audio id="cardSound" src="/audios/sonido-card.wav"></audio>
+<audio id="logoSound" src="/audios/sonido-logo.wav"></audio>
+<audio id="clickSound" src="/audios/sonido-click.mp3"></audio>
+
+<script>
+    function toggleMenu() {
+      const navbarLinks = document.getElementById("navbarLinks");
+      navbarLinks.classList.toggle("active");
+    }
+    const flashlight = document.querySelector(".page-container::before");
+
+    function getRandomPosition() {
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      return { top, left };
+    }
+
+    function updateFlashlightPosition() {
+      const { top, left } = getRandomPosition();
+      flashlight.style.top = `${top}%`;
+      flashlight.style.left = `${left}%`;
+    }
+
+    setInterval(updateFlashlightPosition, 3000); // Cambia cada 3 segundos
+
+    function playGhostSound() {
+      const ghostSound = document.getElementById("ghostSound");
+      ghostSound.currentTime = 0;
+      ghostSound.play();
+    }
+
+    function playCardSound() {
+      const cardSound = document.getElementById("cardSound");
+      cardSound.currentTime = 0;
+      cardSound.play();
+    }
+
+    function playLoginSound() {
+      const loginSound = document.getElementById("loginSound");
+      loginSound.currentTime = 0;
+      loginSound.play();
+    }
+
+    function playLogoSound() {
+      const logoSound = document.getElementById("logoSound");
+      logoSound.currentTime = 0;
+      logoSound.play();
+    }
+    function playClickSound() {
+      const clickSound = document.getElementById("clickSound");
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const mensaje = params.get("mensaje");
+
+    if (mensaje) {
+      const mensajeElement = document.getElementById("mensaje");
+      mensajeElement.textContent = decodeURIComponent(mensaje);
+
+      // Haz que el mensaje desaparezca después de 2 segundos
+      setTimeout(() => {
+        mensajeElement.style.display = "none";
+      }, 8000);
+    }
+</script>
+</body>
+</html>

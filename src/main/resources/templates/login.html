@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html
+        lang="es"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bienvenido a Halloween - Login</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+            rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="navbar">
+    <div class="contain-logo">
+        <span class="fa-ghost" onmouseenter="playGhostSound()"
+        ><i class="fas fa-ghost"></i
+        ></span>
+        <a th:href="@{/}" class="logo" onmouseenter="playLogoSound()">
+            Halloween
+        </a>
+    </div>
+    <div class="contain-enlaces-nav">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="items" id="navbarLinks">
+            <a
+                    th:href="@{/loguearUsuario}"
+                    id="loginLink"
+                    onmouseenter="playClickSound()"
+            >👻 Ingresar</a
+            >
+            <a
+                    th:href="@{/registrarUsuario}"
+                    id="registerLink"
+                    onmouseenter="playClickSound()"
+            >🎃 Regístrate</a
+            >
+        </div>
+    </div>
+</div>
+<header>
+    <div class="container">
+        <h1>Bienvenido al Mundo de los Espíritus</h1>
+        <p>
+            ¡Adéntrate en el misterio y la oscuridad! Inicia sesión para
+            continuar.
+        </p>
+    </div>
+</header>
+<section class="container-login">
+    <div class="wrapper">
+        <span class="bg-animate"></span>
+        <div class="form-box login">
+            <h2 style="font-family: 'Uncial Antiqua', cursive; font-size: 2rem">
+                <i class="fas fa-sign-in-alt"></i> Ingresar
+            </h2>
+            <form id="loginForm" onsubmit="autenticarUsuario(event)">
+                <div class="input-box">
+                    <label><i class="fas fa-user"></i> Usuario</label>
+                    <input
+                            type="email"
+                            id="email"
+                            name="correoElectronico"
+                            placeholder="Correo Oscuro"
+                            required
+                    />
+                </div>
+                <div class="input-box">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input
+                            type="password"
+                            id="clave"
+                            name="password"
+                            placeholder="Clave Espectral"
+                            required
+                    />
+                </div>
+                <button type="submit" class="btn" onmouseenter="playLoginSound()">
+                    🕸️ Entrar
+                </button>
+                <div class="logreg-link">
+                    <p>
+                        ¿Eres nuevo en la mansión?
+                        <a th:href="@{/registrarUsuario}" class="register-link"
+                        >Regístrate</a
+                        >
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>
+        Desarrollado por Julia Daniela Rodriguez | © Halloween API 2024 🎃👻
+    </p>
+</footer>
+
+<audio id="ghostSound" src="/audios/sonido-fantasma.mp3"></audio>
+<audio id="loginSound" src="/audios/sonido-login.m4a"></audio>
+<audio id="logoSound" src="/audios/sonido-logo.wav"></audio>
+<audio id="clickSound" src="/audios/sonido-click.mp3"></audio>
+
+<script>
+    function playLoginSound() {
+      const loginSound = document.getElementById("loginSound");
+      loginSound.currentTime = 0;
+      loginSound.play();
+    }
+
+    async function autenticarUsuario(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("clave").value;
+
+      console.log("Intentando autenticar usuario:", { email, password });
+
+      try {
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            clave: password,
+          }),
+        });
+
+        console.log("Respuesta del servidor:", response);
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Datos devueltos:", data);
+          if (data.nombre) {
+            localStorage.setItem("nombreUsuario", data.nombre); // Guardar nombre del usuario
+            console.log("Usuario autenticado:", data.nombre);
+            window.location.href =
+              "/inicio?mensaje=" +
+              encodeURIComponent("¡Bienvenido a la mansión oscura!");
+          } else {
+            alert("No se pudo obtener el nombre del usuario.");
+            console.log("Nombre de usuario no recibido");
+          }
+        } else {
+          const errorData = await response.json();
+          alert(
+            "Credenciales incorrectas. Intenta nuevamente. " +
+              (errorData.message || "")
+          );
+          console.log("Error en credenciales:", errorData);
+        }
+      } catch (error) {
+        console.error("Error en la autenticación:", error);
+        alert("Error al intentar iniciar sesión.");
+      }
+    }
+</script>
+</body>
+</html>

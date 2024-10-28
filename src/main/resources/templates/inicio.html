@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio - Monstruos de Halloween</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+            rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="page-container page-inicio">
+<div class="navbar">
+    <div class="contain-logo">
+        <span class="fa-ghost" onmouseenter="playGhostSound()"
+        ><i class="fas fa-ghost"></i
+        ></span>
+        <a th:href="@{/}" class="logo" onmouseenter="playLogoSound()">
+            Halloween
+        </a>
+    </div>
+    <div class="contain-enlaces-nav">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="items" id="navbarLinks">
+            <a href="#seccion1" onmouseenter="playClickSound()">Inicio</a>
+            <a href="#seccion2" onmouseenter="playClickSound()"
+            >Funcionalidades</a
+            >
+            <button
+                    class="logout-button"
+                    onclick="logout()"
+                    onmouseenter="playClickSound()"
+            >
+                Salir
+            </button>
+        </div>
+    </div>
+</div>
+<header
+        class="header"
+        id="seccion1"
+        style="
+        background: url('https://img.freepik.com/premium-vector/vector-art-halloween-witch-pumpkin-spider-illustration-horror-candlelight-spooky_613585-1123.jpg')
+          no-repeat bottom center/cover;
+      "
+>
+    <h1>🧟 Monstruos de Halloween 🎃</h1>
+    <p>
+        Explora la API de Monstruos más terrorífica, donde encontrarás una gran
+        variedad de criaturas con sus atributos, poderes y debilidades.
+        ¡Autenticación segura y estadísticas incluidas!
+    </p>
+    <p id="saludo"></p>
+    <div class="alerta">
+        <p id="mensaje" class="mensaje-exito" style="display: none"></p>
+    </div>
+</header>
+
+<section id="seccion2">
+    <h2>Conjuros y Rituales de Invocación</h2>
+    <p class="parrafo-presentacion">
+        “Bienvenidos a la guarida de los monstruos, donde secretos oscuros y
+        criaturas que acechan en la noche esperan a ser revelados. A través de
+        estos conjuros y rituales, tendrás el poder de invocar, rastrear y
+        estudiar a estas espeluznantes entidades. ¿Te atreves a adentrarte? Pero
+        recuerda: cada consulta, cada invocación, puede despertar a aquellos que
+        prefieren permanecer ocultos en las sombras...”
+    </p>
+    <div class="options">
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('registrar')"
+        >
+            Registrar
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('listar')"
+        >
+            Listar
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('buscar')"
+        >
+            Buscar
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('aleatorio')"
+        >
+            Monstruo Aleatorio
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('mostrarMasTerrorificos')"
+        >
+            Más terroríficos
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('estadisticas')"
+        >
+            Estadísticas
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('duelo')"
+        >
+            Duelo
+        </button>
+    </div>
+
+    <div class="card" id="listar" style="display: none">
+        <h3>Estos son todos los montruos disponibles</h3>
+        <div id="monstruos-grid" class="grid-container"></div>
+        <div class="pagination">
+            <button id="prevPage" disabled>Anterior</button>
+            <button id="nextPage">Siguiente</button>
+        </div>
+    </div>
+
+    <div class="card" id="duelo" style="display: none">
+        <h3>Estos son todos los monstruos disponibles</h3>
+        <h4 style="color: white">Elige dos para el combate</h4>
+
+        <div
+                id="lista-monstruos"
+                class="monstruos-seleccion"
+                style="display: flex; flex-wrap: wrap"
+        ></div>
+
+        <button
+                id="btn-comparar"
+                onmouseenter="playCompararSound()"
+                style="
+            width: 50%;
+            margin: 2rem auto;
+            color: purple;
+            background: #5111515e;
+            border: 3px groove purple;
+          "
+                class="botones-options"
+                onclick="compararMonstruos()"
+                disabled
+        >
+            Comparar
+        </button>
+
+        <div id="resultado-comparacion" style="display: none"></div>
+    </div>
+
+    <div id="cards-container">
+        <div class="card" id="registrar" style="display: none">
+            <div id="formContainer">
+                <h3>Agrega un nuevo monstruo a tu lista</h3>
+                <div
+                        class="form-box login"
+                        style="
+                background: linear-gradient(
+                  to right,
+                  darkred,
+                  #000000,
+                  #ffffff,
+                  #000000,
+                  darkred
+                );
+              "
+                >
+                    <form
+                            id="formRegistrarMonstruo"
+                            style="
+                  box-shadow: 4px 8px 12px black;
+                  box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+                  -webkit-box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+                  -moz-box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+                "
+                    >
+                        <label for="nombre">Nombre del Monstruo:</label>
+                        <input
+                                type="text"
+                                id="nombre"
+                                name="nombre"
+                                placeholder="Ingresa el nombre del monstruo"
+                                required
+                        />
+
+                        <label for="tipo">Tipo de Monstruo:</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="" disabled selected>
+                                Selecciona un tipo de monstruo
+                            </option>
+                            <th:block th:each="tipo : ${tiposMonstruo}">
+                                <option
+                                        th:value="${tipo}"
+                                        th:text="${tipo.getNombre()}"
+                                ></option>
+                            </th:block>
+                        </select>
+
+                        <label for="nivelDeTerror">Nivel de Terror:</label>
+                        <input
+                                type="number"
+                                id="nivelDeTerror"
+                                name="nivelDeTerror"
+                                placeholder="Un número del 1 al 10"
+                                required
+                                min="1"
+                                max="10"
+                        />
+
+                        <fieldset>
+                            <legend>Poderes:</legend>
+                            <th:block th:each="poder : ${poderes}">
+                                <label class="custom-checkbox">
+                                    <input
+                                            type="checkbox"
+                                            th:name="poderes"
+                                            th:value="${poder}"
+                                    />
+                                    <span th:text="${poder.getNombre()}"></span>
+                                </label>
+                            </th:block>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Debilidades:</legend>
+                            <th:block th:each="debilidad : ${debilidades}">
+                                <label class="custom-checkbox">
+                                    <input
+                                            type="checkbox"
+                                            th:name="debilidades"
+                                            th:value="${debilidad}"
+                                    />
+                                    <span th:text="${debilidad.getNombre()}"></span>
+                                </label>
+                            </th:block>
+                        </fieldset>
+
+                        <label for="nivelDePeligro">Nivel de Peligro:</label>
+                        <select id="nivelDePeligro" name="nivelDePeligro" required>
+                            <option value="" disabled selected>
+                                Selecciona un nivel de peligro
+                            </option>
+                            <th:block th:each="nivel : ${nivelesDePeligro}">
+                                <option
+                                        th:value="${nivel}"
+                                        th:text="${nivel.getNombre()}"
+                                ></option>
+                            </th:block>
+                        </select>
+
+                        <label for="descripcion">Descripción:</label>
+                        <textarea
+                                id="descripcion"
+                                name="descripcion"
+                                placeholder="Describe al monstruo..."
+                                required
+                        ></textarea>
+
+                        <label for="imagenUrl">URL de Imagen:</label>
+                        <input
+                                type="url"
+                                id="imagenUrl"
+                                name="imagenUrl"
+                                placeholder="https://ejemplo.com/imagen.jpg"
+                                required
+                        />
+
+                        <label for="habilidadesEspeciales"
+                        >Habilidades Especiales (Separadas por coma):</label
+                        >
+                        <input
+                                type="text"
+                                id="habilidadesEspeciales"
+                                name="habilidadesEspeciales"
+                                placeholder="Ej: invisibilidad, teletransportación"
+                        />
+
+                        <label for="historia">Historia:</label>
+                        <textarea
+                                id="historia"
+                                name="historia"
+                                placeholder="Historia del monstruo..."
+                                required
+                        ></textarea>
+
+                        <label for="apariencia">Apariencia:</label>
+                        <textarea
+                                id="apariencia"
+                                name="apariencia"
+                                placeholder="Apariencia física del monstruo..."
+                                required
+                        ></textarea>
+
+                        <label for="sonido">Sonido:</label>
+                        <input
+                                type="text"
+                                id="sonido"
+                                name="sonido"
+                                placeholder="Descripción del sonido..."
+                                required
+                        />
+
+                        <button type="submit" onmouseenter="playCardSound()">
+                            Registrar Monstruo
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div id="nueva-card-container" style="display: none"></div>
+        </div>
+
+        <div class="card" id="buscar" style="display: none">
+            <h3>Este es el buscador de Monstruos</h3>
+            <div
+                    class="form-box login"
+                    style="
+              background: linear-gradient(
+                to right,
+                darkred,
+                #000000,
+                #ffffff,
+                #000000,
+                darkred
+              );
+            "
+            >
+                <form
+                        id="buscar-monstruo-form"
+                        style="
+                box-shadow: 4px 8px 12px black;
+                box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+                -webkit-box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+                -moz-box-shadow: -2px -1px 56px 0px rgba(0, 0, 0, 1) inset;
+              "
+                >
+                    <label for="nombre">Nombre:</label>
+                    <input
+                            type="text"
+                            id="nombreMonstruo"
+                            name="nombre"
+                            placeholder="Ingresa el nombre del monstruo"
+                    />
+
+                    <label for="tipo">Tipo:</label>
+                    <select id="tipoMonstruo" name="tipo">
+                        <option value="">Seleccione un tipo</option>
+                        <!-- Iterar sobre los tipos de monstruos -->
+                        <th:block th:each="tipo : ${tiposMonstruo}">
+                            <option
+                                    th:value="${tipo}"
+                                    th:text="${tipo.getNombre()}"
+                            ></option>
+                        </th:block>
+                    </select>
+
+                    <label for="nivelDePeligro">Nivel de Peligro:</label>
+                    <select id="nivelDePeligroMonstruo" name="nivelDePeligro">
+                        <option value="">Seleccione un nivel de peligro</option>
+                        <!-- Iterar sobre los niveles de peligro -->
+                        <th:block th:each="nivel : ${nivelesDePeligro}">
+                            <option
+                                    th:value="${nivel}"
+                                    th:text="${nivel.getNombre()}"
+                            ></option>
+                        </th:block>
+                    </select>
+
+                    <label for="debilidad">Debilidad:</label>
+                    <select id="debilidad" name="debilidad">
+                        <option value="">Seleccione una debilidad</option>
+                        <!-- Iterar sobre las debilidades -->
+                        <th:block th:each="debilidad : ${debilidades}">
+                            <option
+                                    th:value="${debilidad}"
+                                    th:text="${debilidad.getNombre()}"
+                            ></option>
+                        </th:block>
+                    </select>
+
+                    <label for="poder">Poder:</label>
+                    <select id="poder" name="poder">
+                        <option value="">Seleccione un poder</option>
+                        <!-- Iterar sobre los poderes -->
+                        <th:block th:each="poder : ${poderes}">
+                            <option
+                                    th:value="${poder}"
+                                    th:text="${poder.getNombre()}"
+                            ></option>
+                        </th:block>
+                    </select>
+
+                    <button type="submit" onmouseenter="playLogoSound()">
+                        Buscar
+                    </button>
+                </form>
+            </div>
+            <div id="resultados-busqueda" class="grid-container"></div>
+        </div>
+
+        <div
+                id="formActualizarMonstruo"
+                class="form-box login"
+                style="
+            display: none;
+            background: linear-gradient(
+              to right,
+              darkred,
+              #000000,
+              #ffffff,
+              #000000,
+              darkred
+            );
+          "
+        >
+            <h3>Actualizar Monstruo</h3>
+            <form>
+                <label for="nombreActualizar">Nombre:</label>
+                <input type="text" id="nombreActualizar" required />
+                <label for="tipoActualizar">Tipo:</label>
+                <input type="text" id="tipoActualizar" required />
+                <label for="nivelDeTerrorActualizar">Nivel de Terror:</label>
+                <input type="number" id="nivelDeTerrorActualizar" required />
+                <label for="descripcionActualizar">Descripción:</label>
+                <textarea id="descripcionActualizar" required></textarea>
+                <label for="imagenUrlActualizar">URL de Imagen:</label>
+                <input type="text" id="imagenUrlActualizar" required />
+                <button
+                        type="submit"
+                        class="actualizarCard"
+                        onmouseenter="playCardSound()"
+                >
+                    Actualizar Monstruo
+                </button>
+            </form>
+        </div>
+
+        <div class="card" id="aleatorio" style="display: none">
+            <h3>Mira qué monstruo te toca</h3>
+            <div
+                    id="loading"
+                    class="loading"
+                    style="display: none; margin: 3rem auto"
+            >
+                <div class="pumpkin-icons">
+                    <div class="icon">🎃</div>
+                    <div class="icon">🎃</div>
+                    <div class="icon">🎃</div>
+                    <div class="icon">🎃</div>
+                </div>
+            </div>
+            <div
+                    id="monstruoDetalles"
+                    style="width: 60%; margin: 2rem auto"
+            ></div>
+            <button
+                    class="boton-cerrar-card"
+                    onmouseenter="playCardSound()"
+                    id="btnObtenerMonstruo"
+                    onclick="obtenerMonstruoAleatorio()"
+                    style="
+              width: 60%;
+              text-align: center;
+              margin: 1rem auto;
+              color: #ff00a3;
+            "
+            >
+                Obtener Monstruo Aleatorio
+            </button>
+        </div>
+
+        <div class="card" id="mostrarMasTerrorificos" style="display: none">
+            <h3>Estos son los monstruos más temibles</h3>
+            <div id="resultados-top-monstruos" class="grid-container"></div>
+        </div>
+
+        <div class="parent-container">
+            <div
+                    class="card estadisticas-card"
+                    id="estadisticas"
+                    style="display: none"
+            >
+                <h3>Estadísticas de Monstruos</h3>
+                <h4>Nivel de Peligro</h4>
+                <canvas id="nivelDePeligroChart" width="600" height="500"></canvas>
+                <h4>Tipo de Monstruos</h4>
+                <canvas id="tipoDeMonstruoChart" width="600" height="500"></canvas>
+                <h4>Por Poderes</h4>
+                <canvas id="poderDeMonstruoChart" width="600" height="500"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>
+        Desarrollado por Julia Daniela Rodriguez | © Halloween API 2024 🎃👻
+    </p>
+</footer>
+<audio
+        id="ghostSound"
+        src="/audios/sonido-fantasma.mp3"
+        preload="auto"
+></audio>
+<audio id="loginSound" src="/audios/sonido-login.m4a"></audio>
+<audio id="logoSound" src="/audios/sonido-logo.wav" preload="auto"></audio>
+<audio
+        id="clickSound"
+        src="/audios/sonido-click.mp3"
+        preload="auto"
+></audio>
+<audio id="cardSound" src="/audios/sonido-card.wav" preload="auto"></audio>
+<audio
+        id="botonesSound"
+        src="/audios/sonido-botones.wav"
+        preload="auto"
+></audio>
+<audio
+        id="misterioSound"
+        src="/audios/sonido-misterioso.mp3"
+        preload="auto"
+></audio>
+<audio
+        id="compararSound"
+        src="/audios/sonido-comparar.wav"
+        preload="auto"
+></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    //Actualizar
+    function mostrarFormularioActualizar(monstruo) {
+      const formActualizar = document.getElementById(
+        "formActualizarMonstruo"
+      );
+
+      // Rellenar el formulario con los datos del monstruo
+      document.getElementById("nombreActualizar").value = monstruo.nombre;
+      document.getElementById("tipoActualizar").value = monstruo.tipo;
+      document.getElementById("nivelDeTerrorActualizar").value =
+        monstruo.nivelDeTerror;
+      document.getElementById("descripcionActualizar").value =
+        monstruo.descripcion;
+      document.getElementById("imagenUrlActualizar").value =
+        monstruo.imagenUrl;
+
+      console.log("Formulario de actualización mostrado para:", monstruo);
+
+      // Ocultar otros elementos de la página
+      const contenidoActual = document.querySelectorAll(".contenido");
+      contenidoActual.forEach((element) => {
+        element.style.display = "none";
+      });
+
+      // Mostrar el formulario
+      formActualizar.style.display = "block";
+
+      // Llevar al usuario a la posición del formulario
+      formActualizar.scrollIntoView({ behavior: "smooth" });
+
+      // Agregar evento para manejar el envío del formulario
+      formActualizar.onsubmit = async (event) => {
+        event.preventDefault();
+        console.log("Formulario de actualización enviado");
+
+        const datosActualizar = {
+          nombre: document.getElementById("nombreActualizar").value,
+          tipo: document.getElementById("tipoActualizar").value,
+          nivelDeTerror: parseInt(
+            document.getElementById("nivelDeTerrorActualizar").value
+          ),
+          descripcion: document.getElementById("descripcionActualizar").value,
+          imagenUrl: document.getElementById("imagenUrlActualizar").value,
+        };
+
+        console.log("Datos a actualizar:", datosActualizar);
+
+        try {
+          const actualizarResponse = await fetch(
+            `/monstruos/${monstruo.id}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(datosActualizar),
+            }
+          );
+
+          console.log("Respuesta de actualización:", actualizarResponse);
+
+          if (actualizarResponse.ok) {
+            // Mostrar mensaje de éxito
+            mostrarMensaje("Monstruo actualizado correctamente", "success");
+            formActualizar.reset();
+            fetchMonstruos(currentPage); // Recargar los monstruos
+          } else {
+            const errorData = await actualizarResponse.json();
+            mostrarMensaje(
+              "Error al actualizar el monstruo: " +
+                (errorData.message || "Revisa los datos ingresados."),
+              "error"
+            );
+          }
+        } catch (error) {
+          console.error("Error en la conexión:", error);
+        } finally {
+          // Cerrar el formulario y volver a mostrar el contenido
+          formActualizar.style.display = "none"; // Ocultar el formulario
+          contenidoActual.forEach((element) => {
+            element.style.display = "block"; // Volver a mostrar el contenido
+          });
+        }
+      };
+    }
+</script>
+<script>
+    //Registrar Monstruo
+    document
+      .getElementById("formRegistrarMonstruo")
+      .addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const datosMonstruo = {
+          nombre: document.getElementById("nombre").value,
+          tipo: document.getElementById("tipo").value,
+          nivelDeTerror: parseInt(
+            document.getElementById("nivelDeTerror").value
+          ),
+
+          poderes: Array.from(
+            document.querySelectorAll("input[name='poderes']:checked")
+          ).map((option) => option.value),
+          debilidades: Array.from(
+            document.querySelectorAll("input[name='debilidades']:checked")
+          ).map((option) => option.value),
+
+          descripcion: document.getElementById("descripcion").value,
+          imagenUrl: document.getElementById("imagenUrl").value,
+          nivelDePeligro: document.getElementById("nivelDePeligro").value,
+
+          habilidadesEspeciales: document
+            .getElementById("habilidadesEspeciales")
+            .value.split(",")
+            .map((hab) => hab.trim()),
+          historia: document.getElementById("historia").value,
+          apariencia: document.getElementById("apariencia").value,
+          sonido: document.getElementById("sonido").value,
+        };
+
+        try {
+          const response = await fetch("/monstruos", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datosMonstruo),
+          });
+
+          if (response.ok) {
+            const nuevoMonstruo = await response.json();
+            document.getElementById("formRegistrarMonstruo").reset();
+
+            // Crear la card del nuevo monstruo
+            const cardHtml = `
+                  <div class="nueva-card">
+                      <p class="mensaje-aterrador">¡Un nuevo monstruo ha sido creado!</p>
+                      <h2>${nuevoMonstruo.nombre}</h2>
+                      <img src="${nuevoMonstruo.imagenUrl}" alt="${nuevoMonstruo.nombre}">
+                      <p><strong>Tipo:</strong> ${nuevoMonstruo.tipo}</p>
+                      <p><strong>Nivel de Terror:</strong> ${nuevoMonstruo.nivelDeTerror}</p>
+                      <p><strong>Descripción:</strong> ${nuevoMonstruo.descripcion}</p>
+                      <p><strong>Historia:</strong> ${nuevoMonstruo.historia}</p>
+                      <p><strong>Apariencia:</strong> ${nuevoMonstruo.apariencia}</p>
+                      <p><strong>Sonido:</strong> ${nuevoMonstruo.sonido}</p>
+                      <button onmouseenter="playBotonesSound()" class="actualizarCard" data-id="${nuevoMonstruo.id}">Actualizar</button>
+                      <button id="cerrarCard" class="boton-cerrar-card">Cerrar</button>
+                  </div>
+              `;
+
+            // Insertar la card en el contenedor
+            const nuevaCardContainer = document.getElementById(
+              "nueva-card-container"
+            );
+            nuevaCardContainer.innerHTML = cardHtml;
+            nuevaCardContainer.style.display = "block"; // Mostrar la card
+
+            // Ocultar el formulario
+            document.getElementById("formContainer").style.display = "none";
+
+            // Reproducir el sonido
+            const sonidoCard = document.getElementById("ghostSound");
+            sonidoCard.currentTime = 0; // Reiniciar el sonido
+            sonidoCard.play();
+            asignarEventoCerrarCards();
+          } else {
+            const errorData = await response.json();
+            alert(
+              "Error al registrar el monstruo: " +
+                (errorData.message || "Revisa los datos ingresados.")
+            );
+          }
+        } catch (error) {
+          console.error("Error en la conexión:", error);
+          alert("Error en la conexión. Intenta nuevamente.");
+        }
+      });
+</script>
+<script>
+    function toggleCards(option) {
+      // Ocultar todas las tarjetas
+      const cards = document.querySelectorAll(".card");
+      cards.forEach((card) => {
+        card.style.display = "none";
+      });
+
+      // Mostrar la tarjeta correspondiente
+      const selectedCard = document.getElementById(option);
+      if (selectedCard) {
+        selectedCard.style.display = "flex";
+      }
+    }
+    function playGhostSound() {
+      const ghostSound = document.getElementById("ghostSound");
+      ghostSound.currentTime = 0;
+      ghostSound.play();
+    }
+
+    function playMisterioSound() {
+      const misterioSound = document.getElementById("misterioSound");
+      misterioSound.currentTime = 0;
+      misterioSound.play();
+    }
+
+    function playCardSound() {
+      const cardSound = document.getElementById("cardSound");
+      cardSound.currentTime = 0;
+      cardSound.play();
+    }
+
+    function playLogoSound() {
+      const logoSound = document.getElementById("logoSound");
+      logoSound.currentTime = 0;
+      logoSound.play();
+    }
+
+    function playCompararSound() {
+      const compararSound = document.getElementById("compararSound");
+      compararSound.currentTime = 0;
+      compararSound.play();
+    }
+
+    function playClickSound() {
+      const clickSound = document.getElementById("clickSound");
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+
+    function playLoginSound() {
+      const loginSound = document.getElementById("loginSound");
+      loginSound.currentTime = 0;
+      loginSound.play();
+    }
+
+    function playBotonesSound() {
+      const botonesSound = document.getElementById("botonesSound");
+      botonesSound.currentTime = 0;
+      botonesSound.play();
+    }
+</script>
+<script>
+    // Variables para la paginación y el estado de la selección
+    let paginaActual = 0;
+    let total = 1; // Inicializa el total de páginas
+
+    // Función para cargar monstruos desde la API
+    async function cargarMonstruosDuelo() {
+      try {
+        const listaMonstruos = document.getElementById("lista-monstruos");
+
+        // Limpiar la lista antes de agregar nuevos monstruos
+        listaMonstruos.innerHTML = "";
+
+        // Cargar monstruos mientras haya más páginas
+        while (paginaActual < total) {
+          // Realizar la llamada a la API para cargar monstruos de la página actual
+          const response = await fetch(`/monstruos?page=${paginaActual}`);
+          const data = await response.json();
+          total = data.totalPages; // Actualiza el total de páginas
+
+          // Agregar monstruos a la lista
+          data.content.forEach((monstruo) => {
+            const monstruoDiv = document.createElement("div");
+            monstruoDiv.className = "monstruo-card"; // Clase para la tarjeta del monstruo
+            monstruoDiv.innerHTML = `
+                      <img src="${monstruo.imagenUrl}" style="width: 200px; height: 350px; margin: 2rem auto;" alt="${monstruo.nombre}" class="foto-monstruo">
+                      <label class="checkbox-label" onmouseenter="playLogoSound()">
+                          <input type="checkbox" name="seleccion" value="${monstruo.id}" onchange="seleccionarMonstruo()" class="custom-checkbox-duelo">
+                          <span>${monstruo.nombre}</span>
+                      </label>
+                  `;
+            listaMonstruos.appendChild(monstruoDiv);
+          });
+
+          // Incrementar la página actual para la próxima iteración
+          paginaActual++;
+        }
+      } catch (error) {
+        console.error("Error al cargar los monstruos:", error);
+      }
+    }
+
+    // Función para manejar la selección de monstruos
+    function seleccionarMonstruo() {
+      const seleccionados = document.querySelectorAll(
+        'input[name="seleccion"]:checked'
+      );
+      console.log("Seleccionados:", seleccionados.length); // Para depurar
+      document.getElementById("btn-comparar").disabled =
+        seleccionados.length !== 2;
+    }
+
+    // Función para comparar los monstruos seleccionados
+    function compararMonstruos() {
+      const seleccionados = Array.from(
+        document.querySelectorAll('input[name="seleccion"]:checked')
+      ).map((input) => input.value);
+
+      const resultadoDiv = document.getElementById("resultado-comparacion");
+      resultadoDiv.style.display = "block";
+      resultadoDiv.innerHTML = "<p>Cargando...</p>";
+
+      fetch(
+        `/monstruos/comparar?idMonstruo1=${seleccionados[0]}&idMonstruo2=${seleccionados[1]}`
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error en la comparación");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const { monstruo1, monstruo2 } = data;
+          resultadoDiv.innerHTML = `
+                  <h3>Comparación de Monstruos</h3>
+                  <div class="resultado-duelo">
+                  ${crearCardMonstruo(monstruo1)}
+                  ${crearCardMonstruo(monstruo2)}
+                  </div>
+                  <h3>¿Quién es el más temido?</h3>
+                  <p style="color: purple;text-align: center; margin: 1rem auto; font-size: 3rem; font-family: 'New Rocker', cursive; font-weight: bolder;">${determinarMasTemido(
+                    monstruo1,
+                    monstruo2
+                  )} es el más temido.</p>
+              `;
+        })
+        .catch((error) => {
+          resultadoDiv.innerHTML = "<p>Error al cargar la comparación.</p>";
+          console.error("Error en comparación:", error);
+        });
+    }
+
+    // Lógica para determinar el monstruo más temido
+    function determinarMasTemido(monstruo1, monstruo2) {
+      return monstruo1.nivelTerror > monstruo2.nivelTerror
+        ? monstruo1.nombre
+        : monstruo2.nombre;
+    }
+
+    // Llamar a la función para cargar los monstruos al inicio
+    cargarMonstruosDuelo();
+</script>
+<script>
+    //Mostrar todos los monstruos
+    let currentPage = 0; // Página inicial
+    let totalPages = 0; // Total de páginas
+
+    async function fetchMonstruos(page) {
+      try {
+        const response = await fetch(`/monstruos?page=${page}`);
+        if (response.ok) {
+          const data = await response.json();
+          totalPages = data.totalPages;
+          currentPage = data.number;
+
+          const gridContainer = document.getElementById("monstruos-grid");
+          gridContainer.innerHTML = ""; // Limpiar el contenedor
+
+          // Crear tarjetas de monstruos y asignar evento de cierre
+          data.content.forEach((monstruo) => {
+            const cardHtml = crearCardMonstruo(monstruo);
+            gridContainer.insertAdjacentHTML("beforeend", cardHtml);
+          });
+          asignarEventoCerrarCards();
+
+          // Controlar botones de paginación
+          document.getElementById("prevPage").disabled = currentPage === 0;
+          document.getElementById("nextPage").disabled =
+            currentPage >= totalPages - 1;
+        } else {
+          console.error("Error al obtener los monstruos:", response.status);
+        }
+      } catch (error) {
+        console.error("Error en la conexión:", error);
+      }
+    }
+
+    // Eventos de los botones de paginación
+    document.getElementById("prevPage").addEventListener("click", () => {
+      if (currentPage > 0) fetchMonstruos(currentPage - 1);
+    });
+    document.getElementById("nextPage").addEventListener("click", () => {
+      if (currentPage < totalPages - 1) fetchMonstruos(currentPage + 1);
+    });
+
+    // Llamada inicial para cargar los monstruos
+    fetchMonstruos(currentPage);
+</script>
+<script>
+    //Funcion buscar por atributos
+    document
+      .getElementById("buscar-monstruo-form")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault(); // Evitar el envío del formulario
+
+        const nombre = document.getElementById("nombreMonstruo").value.trim();
+        const tipo = document.getElementById("tipoMonstruo").value;
+        const nivelDePeligro = document.getElementById(
+          "nivelDePeligroMonstruo"
+        ).value;
+        const debilidad = document.getElementById("debilidad").value;
+        const poder = document.getElementById("poder").value;
+
+        const queryParams = new URLSearchParams();
+
+        // Solo agregar parámetros si tienen un valor válido
+        if (nombre) queryParams.append("nombre", nombre);
+        if (tipo) queryParams.append("tipo", tipo);
+        if (nivelDePeligro)
+          queryParams.append("nivelDePeligro", nivelDePeligro);
+        if (debilidad) queryParams.append("debilidad", debilidad);
+        if (poder) queryParams.append("poder", poder);
+
+        try {
+          const response = await fetch(
+            `/monstruos/buscarPorAtributos?${queryParams.toString()}`
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            const resultadosContainer = document.getElementById(
+              "resultados-busqueda"
+            );
+            resultadosContainer.innerHTML = ""; // Limpiar resultados anteriores
+
+            // Ocultar el formulario al realizar la búsqueda
+            document.getElementById("formContainer").style.display = "none";
+
+            data.content.forEach((monstruo) => {
+              // Usar la función para crear la card
+              const cardHtml = crearCardMonstruo(monstruo);
+              resultadosContainer.insertAdjacentHTML("beforeend", cardHtml);
+
+              // Reproducir el sonido al crear cada tarjeta
+              const sonidoCard = document.getElementById("ghostSound");
+              sonidoCard.currentTime = 0; // Reiniciar el sonido
+              sonidoCard.play();
+              asignarEventoCerrarCards();
+            });
+          } else {
+            console.error("Error al buscar los monstruos:", response.status);
+          }
+        } catch (error) {
+          console.error("Error en la conexión:", error);
+        }
+      });
+</script>
+<script>
+    // Función para obtener y mostrar los monstruos más temibles
+    async function mostrarMonstruosTemibles() {
+      try {
+        const response = await fetch("/monstruos/top10MasTerrorificos");
+        if (response.ok) {
+          const monstruosTemibles = await response.json();
+          const resultadosContainer = document.getElementById(
+            "resultados-top-monstruos"
+          );
+          resultadosContainer.innerHTML = ""; // Limpiar resultados anteriores
+
+          monstruosTemibles.forEach((monstruo) => {
+            const cardHtml = crearCardMonstruo(monstruo);
+            resultadosContainer.insertAdjacentHTML("beforeend", cardHtml);
+          });
+
+          // Mostrar el contenedor de monstruos temibles
+          document.getElementById("mostrarMasTerrorificos").style.display =
+            "block";
+
+          // Reproducir el sonido
+          const sonidoMonstruo = document.getElementById("loginSound");
+          sonidoMonstruo.currentTime = 0; // Reiniciar el sonido
+          sonidoMonstruo.play(); // Reproducir el sonido
+          asignarEventoCerrarCards();
+        } else {
+          console.error(
+            "Error al obtener los monstruos temibles:",
+            response.status
+          );
+        }
+      } catch (error) {
+        console.error("Error en la conexión:", error);
+      }
+    }
+
+    // Llamar a la función para mostrar los monstruos temibles al cargar la página
+    window.onload = mostrarMonstruosTemibles;
+</script>
+<script>
+    //Aleatorio
+    async function obtenerMonstruoAleatorio() {
+      const card = document.getElementById("aleatorio");
+      const loading = document.getElementById("loading");
+      const monstruoDetalles = document.getElementById("monstruoDetalles");
+
+      // Limpiar cualquier detalle anterior
+      monstruoDetalles.innerHTML = "";
+
+      // Mostrar el contenedor de carga
+      loading.style.display = "flex";
+
+      // Deshabilitar el botón mientras se obtiene el monstruo
+      const btnObtenerMonstruo =
+        document.getElementById("btnObtenerMonstruo");
+      btnObtenerMonstruo.disabled = true;
+
+      // Esperar 5 segundos antes de obtener el monstruo
+      setTimeout(async () => {
+        try {
+          const response = await fetch("/monstruos/aleatorio"); // Cambiado a /monstruos/aleatorio
+          if (response.ok) {
+            const monstruo = await response.json();
+            mostrarMonstruo(monstruo); // Llama a la función para mostrar el monstruo
+          } else {
+            console.error(
+              "Error al obtener el monstruo aleatorio:",
+              response.status
+            );
+          }
+        } catch (error) {
+          console.error("Error de conexión:", error);
+        } finally {
+          // Ocultar el contenedor de carga después de obtener el monstruo
+          loading.style.display = "none";
+          btnObtenerMonstruo.disabled = false; // Habilitar el botón nuevamente
+        }
+      }, 5000); // Retraso de 5 segundos
+    }
+
+    function mostrarMonstruo(monstruo) {
+      const monstruoDetalles = document.getElementById("monstruoDetalles");
+
+      // Usar el método crearCardMonstruo para crear la tarjeta
+      const cardHTML = crearCardMonstruo(monstruo);
+
+      // Agregar la tarjeta al contenedor
+      monstruoDetalles.innerHTML = cardHTML;
+
+      // Mostrar la tarjeta
+      const card = document.getElementById("aleatorio");
+      card.style.display = "flex";
+      asignarEventoCerrarCards();
+      // Llevar al usuario a la posición del monstruo
+      card.scrollIntoView({ behavior: "smooth" });
+    }
+</script>
+<script>
+    function crearCardMonstruo(monstruo) {
+      return `
+      <div class="nueva-card">
+          <h2>${monstruo.nombre}</h2>
+          <img src="${monstruo.imagenUrl}" alt="${monstruo.nombre}">
+          <p><strong>Tipo:</strong> ${monstruo.tipo}</p>
+          <p><strong>Nivel de Terror:</strong> ${monstruo.nivelDeTerror}</p>
+          <p><strong>Descripción:</strong> ${monstruo.descripcion}</p>
+          <p><strong>Historia:</strong> ${monstruo.historia}</p>
+          <p><strong>Apariencia:</strong> ${monstruo.apariencia}</p>
+          <p><strong>Sonido:</strong> ${monstruo.sonido}</p>
+          <button onmouseenter="playBotonesSound()" class="actualizarCard" data-id="${monstruo.id}">Actualizar</button>
+          <button onmouseenter="playClickSound()" class="boton-cerrar-card">Cerrar</button>
+      </div>
+  `;
+    }
+    // Manejo del Saludo
+    document.addEventListener("DOMContentLoaded", () => {
+      const nombreUsuario = localStorage.getItem("nombreUsuario");
+      if (nombreUsuario) {
+        document.getElementById(
+          "saludo"
+        ).innerText = `¡Bienvenido, ${nombreUsuario}!`;
+      } else {
+        document.getElementById("saludo").innerText =
+          "¡Bienvenido! Por favor inicia sesión.";
+      }
+
+      // Mensaje de redirección
+      const params = new URLSearchParams(window.location.search);
+      const mensaje = params.get("mensaje");
+
+      if (mensaje) {
+        const mensajeElement = document.getElementById("mensaje");
+        mensajeElement.textContent = decodeURIComponent(mensaje);
+
+        // Haz que el mensaje desaparezca después de 2 segundos
+        setTimeout(() => {
+          mensajeElement.style.display = "none";
+        }, 8000);
+      }
+    });
+
+    // Función para mostrar mensajes
+    function mostrarMensaje(mensaje, tipo) {
+      const mensajeElement = document.getElementById("mensaje");
+      mensajeElement.textContent = mensaje;
+      mensajeElement.className = tipo; // Puedes agregar estilos CSS según el tipo
+      mensajeElement.style.display = "block";
+
+      // Haz que el mensaje desaparezca después de 8 segundos
+      setTimeout(() => {
+        mensajeElement.style.display = "none";
+      }, 8000);
+    }
+
+    // Función para manejar el clic en el botón de actualización
+    document.addEventListener("click", async (event) => {
+      if (event.target.classList.contains("actualizarCard")) {
+        const id = event.target.getAttribute("data-id");
+        const response = await fetch(`/monstruos/${id}`);
+
+        if (response.ok) {
+          const monstruo = await response.json();
+          mostrarFormularioActualizar(monstruo);
+        } else {
+          console.error("Error al obtener el monstruo:", response.status);
+        }
+      }
+    });
+
+    // Función para cerrar sesión
+    function logout() {
+      // Implementa la lógica de cierre de sesión aquí
+      alert("Has cerrado sesión.");
+      window.location.href = "/";
+    }
+
+    function asignarEventoCerrarCards() {
+      document.querySelectorAll(".boton-cerrar-card").forEach((button) => {
+        button.addEventListener("click", function () {
+          const card = this.closest(".nueva-card"); // Selecciona el elemento card más cercano
+          if (card) {
+            card.style.display = "none"; // Oculta la card
+            document.getElementById("formContainer").style.display = "block"; // Muestra el formulario
+          }
+        });
+      });
+    }
+</script>
+<script>
+    // Cargar estadísticas
+    async function cargarEstadisticas() {
+      try {
+        const response = await fetch("/monstruos/estadisticas");
+        if (!response.ok) throw new Error("Error al cargar las estadísticas");
+
+        const data = await response.json();
+        console.log("Datos de estadísticas:", data); // Log para depuración
+
+        // Gráfico de barras por nivel de peligro
+        const ctxNivelDePeligro = document
+          .getElementById("nivelDePeligroChart")
+          .getContext("2d");
+        const nivelDePeligroChart = new Chart(ctxNivelDePeligro, {
+          type: "bar",
+          data: {
+            labels: Object.keys(data["Por nivel de peligro: "]),
+            datasets: [
+              {
+                label: "Cantidad",
+                data: Object.values(data["Por nivel de peligro: "]),
+                backgroundColor: "rgba(255, 0, 0, 0.8)", // Rojo sangre
+              },
+            ],
+          },
+          options: {
+            responsive: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: "rgba(255, 255, 255, 0.3)", // Color de la cuadrícula
+                },
+              },
+              x: {
+                grid: {
+                  color: "rgba(255, 255, 255, 0.3)", // Color de la cuadrícula
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  color: "white", // Cambia el color del texto
+                },
+              },
+            },
+          },
+        });
+
+        // Gráfico de pastel por tipo de monstruo
+        const ctxTipoDeMonstruo = document
+          .getElementById("tipoDeMonstruoChart")
+          .getContext("2d");
+        const tipoDeMonstruoChart = new Chart(ctxTipoDeMonstruo, {
+          type: "pie",
+          data: {
+            labels: Object.keys(data["Por Tipo: "]),
+            datasets: [
+              {
+                label: "Cantidad",
+                data: Object.values(data["Por Tipo: "]),
+                backgroundColor: [
+                  "rgba(0, 255, 0, 0.8)",
+                  "rgba(128, 0, 128, 0.8)",
+                  "rgba(0, 0, 0, 1)",
+                  "rgba(255, 165, 0, 0.8)",
+                ], // Colores oscuros
+              },
+            ],
+          },
+          options: {
+            responsive: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: "white", // Cambia el color del texto
+                },
+              },
+            },
+          },
+        });
+
+        // Gráfico de barras por poder de monstruo
+        const ctxPoderDeMonstruo = document
+          .getElementById("poderDeMonstruoChart")
+          .getContext("2d");
+        const poderDeMonstruoChart = new Chart(ctxPoderDeMonstruo, {
+          type: "bar",
+          data: {
+            labels: Object.keys(data["Por Poder: "]),
+            datasets: [
+              {
+                label: "Cantidad",
+                data: Object.values(data["Por Poder: "]),
+                backgroundColor: "rgba(255, 165, 0, 0.8)", // Naranja oscuro
+              },
+            ],
+          },
+          options: {
+            responsive: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: "rgba(255, 255, 255, 0.3)", // Color de la cuadrícula
+                },
+              },
+              x: {
+                grid: {
+                  color: "rgba(255, 255, 255, 0.3)", // Color de la cuadrícula
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  color: "white", // Cambia el color del texto
+                },
+              },
+            },
+          },
+        });
+      } catch (error) {
+        console.error("Error al cargar las estadísticas:", error);
+      }
+    }
+
+    // Llama a la función para cargar las estadísticas
+    cargarEstadisticas();
+</script>
+</body>
+</html>

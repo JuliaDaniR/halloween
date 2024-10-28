@@ -7,16 +7,13 @@ import com.halloween.montruoso.enumerador.Debilidades;
 import com.halloween.montruoso.enumerador.NivelDePeligro;
 import com.halloween.montruoso.enumerador.Poderes;
 import com.halloween.montruoso.enumerador.TipoMonstruo;
-import com.halloween.montruoso.repository.MonstruoRepository;
 import com.halloween.montruoso.services.MonstruoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.net.URI;
 import org.springframework.http.HttpStatus;
 
@@ -121,13 +117,10 @@ public class MonstruoController {
         Map<String, Long> estadisticasPorTipo = monstruoService.obtenerEstadisticasPorTipo();
         estadisticas.put("Por Tipo: ", estadisticasPorTipo);
 
-        return ResponseEntity.ok(estadisticas);
-    }
-
-    @GetMapping("/estadisticas/poderes")
-    public ResponseEntity<Map<String, Long>> obtenerEstadisticasPorPoderes() {
         Map<String, Long> estadisticasPorPoder = monstruoService.obtenerEstadisticasPorPoder();
-        return ResponseEntity.ok(estadisticasPorPoder);
+        estadisticas.put("Por Poder: ", estadisticasPorPoder);
+
+        return ResponseEntity.ok(estadisticas);
     }
 
     @GetMapping("/aleatorio")
