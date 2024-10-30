@@ -8,6 +8,7 @@ import com.halloween.montruoso.enumerador.NivelDePeligro;
 import com.halloween.montruoso.enumerador.Poderes;
 import com.halloween.montruoso.enumerador.TipoMonstruo;
 import com.halloween.montruoso.repository.MonstruoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ public class MonstruoService {
     @Autowired
     private MonstruoRepository monstruoRepo;
 
+    @Transactional
     public DatosRespuestaMonstruo registrarMonstruo(DatosRegistroMonstruo datosRegistroMonstruo) {
         Monstruo monstruo = new Monstruo(datosRegistroMonstruo);
 
@@ -42,13 +44,13 @@ public class MonstruoService {
         Page<Monstruo> monstruos = monstruoRepo.findAll(paginacion);
         return monstruos.map(DatosRespuestaMonstruo::new);
     }
-
+    @Transactional
     public DatosRespuestaMonstruo actualizarMonstruo(Long id, DatosRegistroMonstruo.DatosActualizarMonstruo datosActualizarMonstruo) {
         Monstruo monstruo = monstruoRepo.getReferenceById(id);
         monstruo.actualizarDatos(datosActualizarMonstruo);
         return new DatosRespuestaMonstruo(monstruo);
     }
-
+    @Transactional
     public boolean eliminarMonstruo(Long id) {
         Optional<Monstruo> monstruo = monstruoRepo.findById(id);
         if (monstruo.isEmpty()) {
