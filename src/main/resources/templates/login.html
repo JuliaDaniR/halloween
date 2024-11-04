@@ -137,54 +137,65 @@
       loginSound.currentTime = 0;
       loginSound.play();
     }
+      console.log("Token almacenado:", sessionStorage.getItem("tokenJWT"));
+     console.log("Nombre usuario:", sessionStorage.getItem("nombre"));
+ console.log("Id usuario:", sessionStorage.getItem("id"));
 
-    async function autenticarUsuario(event) {
-      event.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("clave").value;
+// Función para autenticar al usuario
+async function autenticarUsuario(event) {
+    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
 
-      console.log("Intentando autenticar usuario:", { email, password });
+    const correoElectronico = document.querySelector("input[name='correoElectronico']").value;
+    const password = document.querySelector("input[name='password']").value;
 
-      try {
-        const response = await fetch("/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            clave: password,
-          }),
+    const datosUsuario = {
+        email: correoElectronico,
+        password: password
+    };
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(datosUsuario)
         });
 
-        console.log("Respuesta del servidor:", response);
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Datos devueltos:", data);
-          if (data.nombre) {
-            localStorage.setItem("nombreUsuario", data.nombre); // Guardar nombre del usuario
-            console.log("Usuario autenticado:", data.nombre);
-            window.location.href =
-              "/inicio?mensaje=" +
-              encodeURIComponent("¡Bienvenido a la mansión oscura!");
-          } else {
-            alert("No se pudo obtener el nombre del usuario.");
-            console.log("Nombre de usuario no recibido");
-          }
-        } else {
-          const errorData = await response.json();
-          alert(
-            "Credenciales incorrectas. Intenta nuevamente. " +
-              (errorData.message || "")
-          );
-          console.log("Error en credenciales:", errorData);
+        if (!response.ok) {
+            const errorMessage = await response.text(); // Obtén el mensaje de error del servidor
+            throw new Error(`Error en la autenticación: ${errorMessage}`);
         }
-      } catch (error) {
-        console.error("Error en la autenticación:", error);
-        alert("Error al intentar iniciar sesión.");
-      }
+
+        const data = await response.json();
+        console.log(data); // Verifica la respuesta
+
+        // Guardar el token JWT y el nombre del usuario en sessionStorage
+        sessionStorage.setItem('tokenJWT', data.jwtToken);
+        sessionStorage.setItem('nombre', data.nombre);
+        sessionStorage.setItem('id', data.id);
+        const usuarioAutenticado = {
+        id: data.id,
+        tokenJWT: data.jwtToken,
+        nombre: data.nombre
+    };
+    localStorage.setItem('usuarioAutenticado', JSON.stringify(usuarioAutenticado));
+
+        // Reproduce el sonido de inicio de sesión
+        playLoginSound();
+
+        // Redirigir al inicio
+        window.location.href = '/inicio'; // redirige a la página de inicio
+    } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        // Manejar el error adecuadamente
+        alert('Error al iniciar sesión. Verifica tus credenciales.');
     }
-</script>
+}
+
+// Inicializa el evento de envío del formulario
+document.querySelector("form").addEventListener("submit", autenticarUsuario);
+
+    </script>
 </body>
 </html>

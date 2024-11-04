@@ -21,4 +21,5 @@ public class UsuarioService {
     public Usuario obtenerPorCorreoElectronico(String username) {
         return (Usuario) usuarioRepo.findByCorreoElectronico(username);
     }
+
 }

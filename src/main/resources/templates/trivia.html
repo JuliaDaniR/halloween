@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio - Monstruos de Halloween</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+            rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="page-container">
+<div class="navbar">
+    <div class="contain-logo">
+        <span class="fa-ghost" onmouseenter="playGhostSound()"
+        ><i class="fas fa-ghost"></i
+        ></span>
+        <a th:href="@{/}" class="logo" onmouseenter="playLogoSound()">
+            Halloween
+        </a>
+    </div>
+    <div class="contain-enlaces-nav">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="items" id="navbarLinks">
+            <a href="#seccion1" onmouseenter="playClickSound()">Inicio</a>
+            <a href="#seccion2" onmouseenter="playClickSound()"
+            >Funcionalidades</a
+            >
+            <button
+                    class="logout-button"
+                    onclick="logout()"
+                    onmouseenter="playClickSound()"
+            >
+                Salir
+            </button>
+        </div>
+    </div>
+</div>
+<header
+        class="header"
+        id="seccion1"
+        style="
+        background: url('https://static.vecteezy.com/system/resources/previews/027/220/257/non_2x/halloween-background-with-lantern-hanging-from-a-tree-with-pumpkins-and-bats-free-photo.jpg')
+          no-repeat center center/cover;
+      "
+>
+    <h1>🧟👻 Trivia de Halloween 👻🎃</h1>
+    <p>
+        ¡Bienvenido a la trivia más espeluznante! Responde preguntas aterradoras
+        sobre mitos, leyendas y cuentos de Halloween. Elige tu nivel de
+        dificultad y demuestra tu valentía ganando puntos por cada respuesta
+        correcta.
+    </p>
+    <p id="saludo"></p>
+    <div class="alerta">
+        <p id="mensaje" class="mensaje-exito" style="display: none"></p>
+    </div>
+</header>
+<section id="seccion2">
+    <h2>Reto de Sabiduría Oscura</h2>
+    <p class="parrafo-presentacion">
+        "Prepárate para enfrentar desafíos de conocimiento oscuro sobre
+        Halloween. Aquí, en esta trivia hechizante, te sumergirás en preguntas
+        sobre mitos, leyendas y cuentos antiguos que despiertan la imaginación y
+        el miedo. ¿Tienes lo necesario para salir victorioso y obtener puntos en
+        cada ronda? Pero ten cuidado, cada respuesta incorrecta puede atraer la
+        atención de seres sobrenaturales que habitan en las sombras. ¡Adéntrate
+        en la trivia y demuestra tu sabiduría sobre lo oculto!”
+    </p>
+    <div class="options">
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('registrarPregunta')"
+                style="color: #d5d30a; border: 3px dotted #d5d30a"
+        >
+            Registrar Pregunta
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('listarPreguntas')"
+                style="color: #d5d30a; border: 3px dotted #d5d30a"
+        >
+            Listar Preguntas
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('obtenerPreguntaAleatoria')"
+                style="color: #d5d30a; border: 3px dotted #d5d30a"
+        >
+            Pregunta Aleatoria
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('obtenerPuntajes')"
+                style="color: #d5d30a; border: 3px dotted #d5d30a"
+        >
+            Puntajes
+        </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="toggleCards('obtenerEstadisticas')"
+                style="color: #d5d30a; border: 3px dotted #d5d30a"
+        >
+            Estadísticas
+        </button>
+    </div>
+</section>
+<section>
+    <div id="registrarPregunta" class="card" style="display: none">
+        <h2>Registrar Nueva Pregunta</h2>
+        <form id="preguntaForm" style="width: 100%">
+            <label for="texto">Texto de la Pregunta:</label>
+            <input type="text" id="texto" name="texto" required />
+
+            <label for="dificultad">Dificultad:</label>
+            <select
+                    id="dificultad"
+                    name="dificultad"
+                    required
+                    onchange="ajustarOpciones()"
+            >
+                <option value="">Seleccione una dificultad</option>
+                <th:block th:each="dificultad : ${dificultades}">
+                    <option
+                            th:value="${dificultad}"
+                            th:text="${dificultad.getNombre()}"
+                    ></option>
+                </th:block>
+            </select>
+
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" name="tipo" required>
+                <option value="">Seleccione el tipo</option>
+                <th:block th:each="tipo : ${tipos}">
+                    <option th:value="${tipo}" th:text="${tipo.getNombre()}"></option>
+                </th:block>
+            </select>
+
+            <label for="breveHistoria">Breve Historia:</label>
+            <textarea id="breveHistoria" name="breveHistoria" required></textarea>
+
+            <div id="opciones">
+                <h3>Opciones de Respuesta</h3>
+            </div>
+
+            <button type="button" onclick="registrarPregunta()">
+                Enviar Pregunta
+            </button>
+        </form>
+    </div>
+</section>
+<section>
+    <div id="listarPreguntas" class="card" style="display: none">
+        <div id="preguntasList"></div>
+        <div class="paginacion">
+            <button onmouseenter="playLogoSound()" id="prevPage" disabled>Anterior</button>
+            <button onmouseenter="playLogoSound()" id="nextPage">Siguiente</button>
+        </div>
+    </div>
+</section>
+<section>
+    <div id="obtenerPreguntaAleatoria" class="card" style="display: none">
+    <h2>Escoge un tipo y nivel de oscuridad...</h2>
+        <p style="color: #d98509;">Puedes elegir solo uno de los campos, o ambos, para una experiencia más precisa.</p>
+        <form id="preguntaFormAleatoria" style="width: 100%">
+        <label for="dificultadAleatoria">Nivel de dificultad macabra:</label>
+        <select id="dificultadAleatoria" name="dificultad" required onchange="ajustarOpciones()">
+            <option value="">Escoge tu destino...</option>
+            <th:block th:each="dificultad : ${dificultades}">
+                <option th:value="${dificultad}" th:text="${dificultad.getNombre()}"></option>
+            </th:block>
+        </select>
+
+        <label for="tipoAleatoria">Elige tu tipo de pesadilla:</label>
+        <select id="tipoAleatoria" name="tipo" required>
+            <option value="">Selecciona el tipo sombrío...</option>
+            <th:block th:each="tipo : ${tipos}">
+                <option th:value="${tipo}" th:text="${tipo.getNombre()}"></option>
+            </th:block>
+        </select>
+    </form>
+
+    <h3>Enfrenta esta pregunta de ultratumba...</h3>
+    <button id="buscarPregunta" onclick="obtenerPreguntaAleatoria()" onmouseenter="playCardSound()" style="
+            width: 40%;
+            margin: 2rem auto;
+            color: purple;
+            padding: .5rem;
+            font-size: 2rem;
+            font-family: 'New Rocker', cursive;
+            font-weight: bolder;
+            background: #5111515e;
+            border: 3px groove purple;
+            cursor: pointer;
+          ">Invocar Pregunta</button>
+
+    <div id="loading-trivia" class="loading-trivia" style="display: none; margin: 2rem auto;">
+        <div class="halloween-icons">
+            <div class="icon">🎃</div>
+            <div class="icon">👻</div>
+            <div class="icon">🕸️</div>
+            <div class="icon">🧛</div>
+        </div>
+    </div>
+
+    <div id="preguntaDetalles" style="display: flex; flex-direction: column; align-items: center; margin: 2rem auto;"></div>
+
+    <div id="resultado"></div>
+    </div>
+</section>
+<section>
+    <div id="obtenerPuntajes" class="card" style="display: none; padding: 1rem; align-items: center;">
+        <h2 style="color: #d5650a;text-align: center;font-size: 2.2rem;font-family: 'New Rocker';">"¿Listo para enfrentar la oscuridad y ver cómo te comparas con los demás?</h2>
+        <p style="padding: 2rem;text-align: center; color: #e81616;font-size: 1.5rem;font-family: 'Creepster';">
+            Sumérgete en el ranking de los osados y descubre si tu destreza es suficiente para escalar entre las sombras...<br>
+            <span style="font-weight: bold; color: #d00;">Solo los más valientes se atreverán a mirar.</span>
+        </p>
+        <button class="boton-cerrar-card" onclick="obtenerDatosPuntajesYLogros()" onmouseenter="playLogoSound()">Ver Puntajes y Logros</button>
+        <div id="obtenerPuntajesDelButton" style="display: none;padding: 3rem 8rem;"></div>
+    </div>
+</section>
+<footer class="footer">
+    <p>
+        Desarrollado por Julia Daniela Rodriguez | © Halloween API 2024 🎃👻
+    </p>
+</footer>
+<audio
+        id="ghostSound"
+        src="/audios/sonido-fantasma.mp3"
+        preload="auto"
+></audio>
+<audio id="loginSound" src="/audios/sonido-login.m4a"></audio>
+<audio id="logoSound" src="/audios/sonido-logo.wav" preload="auto"></audio>
+<audio
+        id="clickSound"
+        src="/audios/sonido-click.mp3"
+        preload="auto"
+></audio>
+<audio id="cardSound" src="/audios/sonido-card.wav" preload="auto"></audio>
+<audio
+        id="botonesSound"
+        src="/audios/sonido-botones.wav"
+        preload="auto"
+></audio>
+<audio
+        id="misterioSound"
+        src="/audios/sonido-misterioso.mp3"
+        preload="auto"
+></audio>
+<audio
+        id="compararSound"
+        src="/audios/sonido-comparar.wav"
+        preload="auto"
+></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+ document.addEventListener("DOMContentLoaded", () => {
+    const usuarioAutenticado = JSON.parse(localStorage.getItem("usuarioAutenticado"));
+
+    if (usuarioAutenticado && usuarioAutenticado.tokenJWT) {
+        console.log("Token almacenado:", usuarioAutenticado.tokenJWT);
+        console.log("Nombre usuario:", usuarioAutenticado.nombre);
+        console.log("Id usuario:", usuarioAutenticado.id);
+
+        // Aquí puedes proceder con las llamadas necesarias usando los datos del usuario
+    } else {
+        console.error("No se encontró un usuario autenticado");
+        alert("Debes estar autenticado para acceder a esta sección.");
+        window.location.href = "/inicio"; // Redirige a inicio si no está autenticado
+    }
+});
+let paginaActual = 0; // Página inicial
+let totalPaginas = 0; // Total de páginas
+
+function listarPreguntas() {
+    fetch(`/preguntas/listar?page=${paginaActual}&size=10`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Error al listar preguntas");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            totalPaginas = data.totalPages;
+            console.log(data);
+            mostrarPreguntas(data);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+            alert("Hubo un problema al listar las preguntas.");
+        });
+}
+
+function mostrarPreguntas(data) {
+const contenedorPreguntas = document.getElementById("listarPreguntas");
+contenedorPreguntas.style.display = "block"; // Asegurarnos de que se muestra
+
+const preguntasList = document.getElementById("preguntasList");
+preguntasList.innerHTML = ""; // Limpiar contenido previo
+
+data.content.forEach((pregunta) => {
+    const preguntaDiv = document.createElement("div");
+    preguntaDiv.classList.add("pregunta-item");
+
+    preguntaDiv.innerHTML = `
+        <h3>${pregunta.texto}</h3>
+        <p>Dificultad: ${pregunta.dificultad}</p>
+        <p>Tipo: ${pregunta.tipo}</p>
+        <h4>Opciones:</h4>
+        <ul>
+            ${pregunta.opciones ? pregunta.opciones.map((opcion) => `<li>${opcion.texto}</li>`).join("") : "No hay opciones"}
+        </ul>
+    `;
+    preguntasList.appendChild(preguntaDiv);
+});
+
+actualizarBotonesPaginacion();
+}
+function actualizarBotonesPaginacion() {
+    const prevButton = document.getElementById("prevPage");
+    const nextButton = document.getElementById("nextPage");
+
+    if (prevButton && nextButton) {
+        prevButton.disabled = paginaActual === 0;
+        nextButton.disabled = paginaActual >= totalPaginas - 1;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("prevPage").addEventListener("click", () => {
+        if (paginaActual > 0) {
+            paginaActual--;
+            listarPreguntas();
+        }
+    });
+
+    document.getElementById("nextPage").addEventListener("click", () => {
+        if (paginaActual < totalPaginas - 1) {
+            paginaActual++;
+            listarPreguntas();
+        }
+    });
+
+    listarPreguntas();
+});
+</script>
+<script>
+    // Función para obtener el usuario autenticado desde localStorage
+    function obtenerUsuarioAutenticado() {
+        const usuarioData = localStorage.getItem("usuarioAutenticado");
+        return usuarioData ? JSON.parse(usuarioData) : null;
+    }
+
+    const usuario = obtenerUsuarioAutenticado();
+    const userId = usuario ? usuario.id : null;
+
+    if (userId) {
+        console.log("Usuario autenticado ID:", userId);
+    } else {
+        console.log("No hay usuario autenticado");
+    }
+
+    // Función para obtener los datos de puntajes y logros
+    async function obtenerDatosPuntajesYLogros() {
+        const usuario = obtenerUsuarioAutenticado();
+        const userId = usuario ? usuario.id : null;
+
+        if (!userId) {
+            console.error("No se encontró un usuario autenticado");
+            return;
+        }
+
+        try {
+            // Llamada al endpoint de puntajes globales (ranking)
+            const puntajesGlobalResponse = await fetch('/preguntas/puntajes');
+            const puntajesGlobales = puntajesGlobalResponse.ok ? await puntajesGlobalResponse.json() : [];
+            console.log("Puntajes Globales:", puntajesGlobales);
+
+            // Llamada al endpoint de puntajes específicos del usuario
+            const puntajesUsuarioResponse = await fetch(`/preguntas/puntajes/${userId}`);
+            const puntajesUsuario = puntajesUsuarioResponse.ok ? await puntajesUsuarioResponse.json() : [];
+            console.log("Puntajes Usuario:", puntajesUsuario);
+
+            // Llamada al endpoint de logros del usuario
+            const logrosResponse = await fetch(`/preguntas/logros/${userId}`);
+            const logros = logrosResponse.ok ? await logrosResponse.json() : [];
+            console.log("Logros:", logros);
+
+            // Mostrar los resultados en el frontend
+            mostrarTablasYLogros(puntajesUsuario, puntajesGlobales, logros);
+
+            // Mostrar el contenedor de puntajes y logros
+            const container = document.getElementById("obtenerPuntajesDelButton");
+            container.style.display = "block"; // Mostrar el contenedor
+
+        } catch (error) {
+            console.error("Error al obtener los datos de puntajes o logros:", error);
+        }
+    }
+
+    // Función para mostrar puntajes y logros en la interfaz
+    function mostrarTablasYLogros(puntajesUsuario, puntajesGlobales, logros) {
+        const container = document.getElementById("obtenerPuntajesDelButton");
+
+        if (!container) {
+            console.error("Contenedor de puntajes no encontrado en el DOM.");
+            return;
+        }
+
+        // Verificar si hay puntajes para el usuario
+        const usuarioPuntajes = puntajesUsuario[0] || {}; // Acceder al primer elemento o usar un objeto vacío
+
+        // Tabla para mostrar los puntajes del usuario
+        let tablaUsuarioHtml = `
+            <h3>Mis Puntajes</h3>
+            <table border="1" style="width: 100%; margin-bottom: 1rem;">
+                <tr>
+                    <th>Nombre de Usuario</th>
+                    <th>Puntaje Total</th>
+                    <th>Puntaje Fácil</th>
+                    <th>Puntaje Medio</th>
+                    <th>Puntaje Difícil</th>
+                </tr>`;
+
+        const totalPuntaje = (usuarioPuntajes.puntosFacil || 0) + (usuarioPuntajes.puntosMedio || 0) + (usuarioPuntajes.puntosDificil || 0);
+        tablaUsuarioHtml += `
+            <tr>
+                <td>${usuarioPuntajes.nombreUsuario || 'N/A'}</td>
+                <td>${totalPuntaje}</td>
+                <td>${usuarioPuntajes.puntosFacil || 'N/A'}</td>
+                <td>${usuarioPuntajes.puntosMedio || 'N/A'}</td>
+                <td>${usuarioPuntajes.puntosDificil || 'N/A'}</td>
+            </tr>`;
+
+        tablaUsuarioHtml += `</table>`;
+
+        // Crear tabla de ranking global
+        let rankingHtml = `
+            <h3>Ranking Global</h3>
+            <table border="1" style="width: 100%; margin-bottom: 1rem;">
+                <tr>
+                    <th>Posición</th>
+                    <th>Usuario</th>
+                    <th>Puntaje</th>
+                </tr>`;
+
+        puntajesGlobales.forEach((puntaje, index) => {
+            rankingHtml += `
+                <tr ${puntaje.usuarioId === userId ? 'style="background-color: #f0e68c;"' : ''}>
+                    <td>${index + 1}</td>
+                    <td>${puntaje.nombreUsuario ?? 'N/A'}</td>
+                    <td>${puntaje.puntosFacil + puntaje.puntosMedio + puntaje.puntosDificil}</td>
+                </tr>`;
+        });
+        rankingHtml += `</table>`;
+
+        // Crear carteles para los logros
+        let logrosHtml = "<h3>Mis Logros</h3><div style='display: flex; gap: 1rem; align-items: stretch;justify-content: center;font-family: 'New Rocker', cursive;'>";
+        logros.forEach(logro => {
+            logrosHtml += `
+                <div style="padding: 0.5rem 1rem; border-radius: 8px; background: #4caf5029; box-shadow: 4px 6px 8px #71c57b;">
+                    <strong style="
+                    display: inline-block;
+                    padding: .5rem;
+                    text-align: center;
+                    width: 100%;
+                    margin-bottom: 1rem;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    color: black;
+                    background: #137426;
+                    border-radius: 20px 7px;">${logro.nombre}</strong><br>
+                    <span style="
+                    display: inline-block;
+                    padding: .5rem;
+                    text-align: center;
+                    width: 100%;
+                    margin-bottom: 1rem;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    color: #f3eeee;
+                    background: #741313;
+                    border-radius: 8px 27px;">${logro.descripcion}</span>
+                </div>`;
+        });
+        logrosHtml += "</div>";
+
+        // Insertar el contenido en el contenedor
+        container.innerHTML = tablaUsuarioHtml + rankingHtml + logrosHtml;
+    }
+</script>
+<script>
+    function playGhostSound() {
+      const ghostSound = document.getElementById("ghostSound");
+      ghostSound.currentTime = 0;
+      ghostSound.play();
+    }
+
+    function playMisterioSound() {
+      const misterioSound = document.getElementById("misterioSound");
+      misterioSound.currentTime = 0;
+      misterioSound.play();
+    }
+
+    function playCardSound() {
+      const cardSound = document.getElementById("cardSound");
+      cardSound.currentTime = 0;
+      cardSound.play();
+    }
+
+    function playLogoSound() {
+      const logoSound = document.getElementById("logoSound");
+      logoSound.currentTime = 0;
+      logoSound.play();
+    }
+
+    function playCompararSound() {
+      const compararSound = document.getElementById("compararSound");
+      compararSound.currentTime = 0;
+      compararSound.play();
+    }
+
+    function playClickSound() {
+      const clickSound = document.getElementById("clickSound");
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+
+    function playLoginSound() {
+      const loginSound = document.getElementById("loginSound");
+      loginSound.currentTime = 0;
+      loginSound.play();
+    }
+
+    function playBotonesSound() {
+      const botonesSound = document.getElementById("botonesSound");
+      botonesSound.currentTime = 0;
+      botonesSound.play();
+    }
+
+        function toggleCards(option) {
+      // Ocultar todas las tarjetas
+      const cards = document.querySelectorAll(".card");
+      cards.forEach((card) => {
+        card.style.display = "none";
+      });
+
+      // Mostrar la tarjeta correspondiente
+      const selectedCard = document.getElementById(option);
+      if (selectedCard) {
+        selectedCard.style.display = "flex";
+      }
+    }
+      // Manejo del Saludo
+        document.addEventListener("DOMContentLoaded", () => {
+        const nombreUsuario = sessionStorage.getItem("nombre");
+        document.getElementById("saludo").innerText = `¡Bienvenido, ${nombreUsuario}!`;
+
+        // Mensaje de redirección
+        const params = new URLSearchParams(window.location.search);
+        const mensaje = params.get("mensaje");
+
+        if (mensaje) {
+            mostrarMensaje(decodeURIComponent(mensaje), "informativo");
+        }
+    });
+
+    // Función para mostrar mensajes
+    function mostrarMensaje(mensaje, tipo) {
+        const mensajeElement = document.getElementById("mensaje");
+        mensajeElement.textContent = mensaje;
+        mensajeElement.className = tipo; // Clase para estilos
+        mensajeElement.style.display = "block";
+
+        // Desaparecer el mensaje después de 8 segundos
+        setTimeout(() => {
+            mensajeElement.style.display = "none";
+        }, 8000);
+    }
+
+     // Función para cerrar sesión
+    function logout() {
+      sessionStorage.removeItem('jwtToken');
+      sessionStorage.removeItem('nombre');
+      sessionStorage.removeItem('id');
+      alert("Has cerrado sesión.");
+      window.location.href = "/";
+    }
+</script>
+<script>
+   function registrarPregunta() {
+     const texto = document.getElementById("texto").value;
+     const dificultad = document.getElementById("dificultad").value;
+     const tipo = document.getElementById("tipo").value;
+     const breveHistoria = document.getElementById("breveHistoria").value;
+
+     const opcionesRespuesta = Array.from(
+       document.querySelectorAll(".opcionRespuesta")
+     ).map((opcion, index) => ({
+       texto: opcion.querySelector("input[name='opcionTexto']").value,
+       esCorrecta: opcion.querySelector("input[name='esCorrecta']").checked,
+     }));
+
+     // Validación en frontend del número de opciones para confirmar antes de enviar
+     const opcionesEsperadas = { FACIL: 3, MEDIO: 4, DIFICIL: 5 };
+     if (opcionesRespuesta.length !== opcionesEsperadas[dificultad]) {
+       alert(
+         `La dificultad seleccionada requiere ${opcionesEsperadas[dificultad]} opciones.`
+       );
+       return;
+     }
+
+     const datosRegistroPregunta = {
+       texto,
+       dificultad,
+       tipo,
+       opciones: opcionesRespuesta,
+       breveHistoria,
+     };
+
+     fetch("/preguntas", {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify(datosRegistroPregunta),
+     })
+       .then((response) => {
+         if (response.ok) {
+           alert("Pregunta registrada exitosamente.");
+           document.getElementById("preguntaForm").reset();
+           ajustarOpciones(); // Restablecer opciones después de enviar
+         } else {
+           return response.json().then((error) => {
+             alert("Error al registrar la pregunta: " + error.message);
+           });
+         }
+       })
+       .catch((error) => {
+         console.error("Error en la solicitud:", error);
+         alert(
+           "Hubo un problema al enviar la pregunta. Inténtalo nuevamente."
+         );
+       });
+   }
+</script>
+<script>
+    async function obtenerPreguntaAleatoria() {
+        const loading = document.getElementById("loading-trivia");
+        const preguntaDetalles = document.getElementById("preguntaDetalles");
+        const resultadoDiv = document.getElementById("resultado");
+
+        if (!loading || !preguntaDetalles || !resultadoDiv) {
+            console.error("Uno o más elementos no se encontraron en el DOM.");
+            return;
+        }
+
+        // Limpiar la sección de resultados y detalles de la pregunta
+        resultadoDiv.style.display = "none";
+        resultadoDiv.innerHTML = "";
+        preguntaDetalles.innerHTML = "";
+
+        // Mostrar el estado de carga
+        loading.style.display = "flex";
+
+        let dificultad, tipo;
+
+        try {
+            dificultad = document.getElementById("dificultadAleatoria").value;
+            tipo = document.getElementById("tipoAleatoria").value;
+
+            // Espera de 5 segundos antes de obtener la pregunta aleatoria
+            setTimeout(async () => {
+                let response;
+                try {
+                    if (dificultad && tipo) {
+                        response = await fetch(`/preguntas/aleatoria?dificultad=${dificultad}&tipo=${tipo}`);
+                    } else if (dificultad && !tipo) {
+                        response = await fetch(`/preguntas/aleatoria/dificultad?dificultad=${dificultad}`);
+                    } else if (!dificultad && tipo) {
+                        response = await fetch(`/preguntas/aleatoria/tipo?tipo=${tipo}`);
+                    } else {
+                        console.warn("No se seleccionaron ni dificultad ni tipo.");
+                        loading.style.display = "none";
+                        return;
+                    }
+
+                    if (response.ok) {
+                        const pregunta = await response.json();
+                        mostrarPregunta(pregunta);
+                    } else {
+                        console.error("Error al obtener la pregunta aleatoria:", response.status);
+                    }
+                } catch (error) {
+                    console.error("Error de conexión:", error);
+                } finally {
+                    loading.style.display = "none";
+                    document.getElementById("btnObtenerMonstruo").disabled = false;
+                }
+            }, 5000); // Retraso de 5 segundos
+        } catch (error) {
+            console.error("Error de conexión:", error);
+            loading.style.display = "none";
+        }
+    }
+
+    // Función para mostrar la pregunta
+    function mostrarPregunta(pregunta) {
+        const preguntaDetalles = document.getElementById("preguntaDetalles");
+
+        preguntaDetalles.innerHTML = `
+            <div class="pregunta-item" style="width: 100%">
+                <h3>${pregunta.texto}</h3>
+                <ul>
+                    ${pregunta.opciones.map((opcion) => `
+                        <li>
+                            <input type="radio" id="opcion${opcion.id}" name="opcion" value="${opcion.id}">
+                            <label for="opcion${opcion.id}">
+                                ${opcion.texto}
+                            </label>
+                        </li>
+                    `).join('')}
+                </ul>
+                <button id="verificarRespuesta"
+                        style="
+                        width: 40%;
+                        margin: 1rem auto;
+                        color: #dd1313;
+                        padding: .5rem;
+                        font-size: 1rem;
+                        font-family: 'New Rocker', cursive;
+                        font-weight: bolder;
+                        background: #5111515e;
+                        border: 3px groove #dd1313;" onclick="verificarRespuesta(${pregunta.id})"
+                        onmouseenter="playLoginSound()">Revelar Destino</button>
+            </div>
+        `;
+        window.preguntaActual = pregunta; // Almacenar la pregunta para usar en la verificación
+    }
+
+    // Listener para resetear cuando se cambie dificultad o tipo
+    document.getElementById("dificultadAleatoria").addEventListener("change", resetPregunta);
+    document.getElementById("tipoAleatoria").addEventListener("change", resetPregunta);
+
+    function resetPregunta() {
+        const preguntaDetalles = document.getElementById("preguntaDetalles");
+        const resultadoDiv = document.getElementById("resultado");
+
+        // Limpiar contenido de pregunta y resultado
+        preguntaDetalles.innerHTML = "";
+        resultadoDiv.style.display = "none";
+        resultadoDiv.innerHTML = "";
+    }
+
+    // Función para verificar respuesta
+    async function verificarRespuesta(preguntaId) {
+        const opciones = document.querySelectorAll('input[name="opcion"]');
+        let respuestaId = null;
+
+        opciones.forEach((opcion) => {
+            if (opcion.checked) {
+                respuestaId = opcion.value; // Guardar el id de la opción seleccionada
+            }
+        });
+
+        if (!respuestaId) {
+            alert("Por favor, selecciona una opción antes de verificar.");
+            return;
+        }
+
+        try {
+            const response = await fetch("/preguntas/responder", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    preguntaId: preguntaId,
+                    respuestaId: respuestaId
+                })
+            });
+
+            const mensaje = await response.text();
+            mostrarResultado(mensaje);
+        } catch (error) {
+            console.error("Error al verificar la respuesta:", error);
+        }
+    }
+
+    // Función para mostrar el resultado de la respuesta
+    function mostrarResultado(mensaje) {
+        const resultadoDiv = document.getElementById("resultado");
+        resultadoDiv.style.display = "block";
+        if (mensaje.includes("Respuesta correcta")) {
+            resultadoDiv.innerHTML = `
+                <div style="
+                background: url(/img/pergamino.png);
+                background-size: cover;
+                background-repeat: no-repeat;
+                padding: 4rem 8rem;">
+                <p style="color: green; font-size: 1.2rem; margin-top: 4rem; padding-top: 3rem;">¡Correcto! Has revelado el destino.</p>
+                <p><strong>Historia:</strong> ${window.preguntaActual.breveHistoria}</p>
+                </div>
+            `;
+        } else {
+            resultadoDiv.innerHTML = `
+             <div style="border: 2px solid red; padding: 2rem;">
+                <p style="color: red; font-size: 1.2rem;">Incorrecto. ¡Inténtalo de nuevo!</p>
+                <p style="color: red; font-size: 1.2rem;">Se han descontado puntos</p>
+             </div>
+            `;
+        }
+    }
+</script>
+</body>
+</html>

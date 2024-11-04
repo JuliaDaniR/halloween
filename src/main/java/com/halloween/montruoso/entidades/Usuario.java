@@ -8,7 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity(name = "Usuario")
 @Table(name = "usuarios")
@@ -33,6 +35,9 @@ public class Usuario implements UserDetails {
     private String password;
 
     private Boolean activo;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Puntaje> puntajes = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -80,6 +85,7 @@ public class Usuario implements UserDetails {
         this.correoElectronico = datosRegistroUsuario.email();
         this.password = new BCryptPasswordEncoder().encode(datosRegistroUsuario.password());
         this.activo = true;
+        this.puntajes = new ArrayList<>();
     }
 
     public void actualizarDatos(DatosRegistroUsuario.DatosActualizarUsuario datosActualizarUsuario) {

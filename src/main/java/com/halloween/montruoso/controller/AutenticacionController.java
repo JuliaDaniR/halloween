@@ -26,9 +26,13 @@ public class AutenticacionController {
     public ResponseEntity<DatosJWTtoken> autenticarUsuario(@RequestBody DatosAutenticacionUsuario datosAutenticacionUsuario) {
         System.out.println("Intentando autenticar usuario: " + datosAutenticacionUsuario.email());
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken(datosAutenticacionUsuario.email(), datosAutenticacionUsuario.clave());
+        System.out.println("Autenticacion token "+ authenticationToken);
         Authentication usuarioAutenticado = authenticationManager.authenticate(authenticationToken);
+        System.out.println("Usuario autenticado "+ usuarioAutenticado);
         String tokenJWT = tokenService.generarToken((Usuario) usuarioAutenticado.getPrincipal());
-        DatosJWTtoken response = new DatosJWTtoken(tokenJWT, ((Usuario) usuarioAutenticado.getPrincipal()).getNombre());
+        System.out.println("Token JWT" + tokenJWT);
+        DatosJWTtoken response = new DatosJWTtoken( ((Usuario) usuarioAutenticado.getPrincipal()).getId(),tokenJWT, ((Usuario) usuarioAutenticado.getPrincipal()).getNombre());
+        System.out.println("Response "+response);
         return ResponseEntity.ok(response);
     }
 

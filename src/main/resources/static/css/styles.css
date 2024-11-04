@@ -406,7 +406,7 @@ textarea::placeholder {
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 5px 0; /* Espaciado entre checkboxes */
+  margin: 5px 0;
 }
 
 .custom-checkbox input {
@@ -415,7 +415,7 @@ textarea::placeholder {
 
 .custom-checkbox span {
   position: relative;
-  padding-left: 25px; /* Espacio para el checkbox */
+  padding-left: 25px;
   cursor: pointer;
 }
 
@@ -469,16 +469,16 @@ textarea::placeholder {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 20px; /* Ancho del checkbox */
-  height: 20px; /* Alto del checkbox */
-  border: 2px solid purple; /* Borde morado */
-  border-radius: 3px; /* Bordes redondeados */
-  background-color: transparent; /* Color de fondo */
+  width: 20px;
+  height: 20px;
+  border: 2px solid purple;
+  border-radius: 3px;
+  background-color: transparent;
 }
 
 /* Estilo cuando el checkbox está marcado */
 .custom-checkbox input:checked + span::before {
-  background-color: purple; /* Color de fondo morado al estar checked */
+  background-color: purple;
 }
 
 form button {
@@ -516,47 +516,6 @@ form button:hover {
   border: 2px solid red;
 }
 
-.nueva-card {
-  border: 2px solid #ff7518;
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  flex-direction: column;
-  background-color: #333;
-  color: #ffeb3b;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 10px;
-  width: 100%;
-  height: 100%;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-  transition: transform 0.3s ease;
-}
-
-.nueva-card h2 {
-  font-size: 2rem;
-  font-family: "Creepster", cursive;
-  text-align: center;
-}
-
-.nueva-card p {
-  font-size: 1.3rem;
-  padding: 0.3rem;
-  font-family: "New Rocker", cursive;
-}
-
-.nueva-card:hover {
-  transform: scale(1.05);
-}
-
-.nueva-card img {
-  width: 80%;
-  height: 600px;
-  margin: 2rem auto;
-  border-radius: 5px;
-  box-shadow: 6px 8px 12px black;
-}
-
 .boton-cerrar-card {
   background-color: #8b000078;
   color: #ffde00;
@@ -589,13 +548,63 @@ form button:hover {
   text-align: center;
   margin-top: 15px;
 }
+.carrusel-monstruos {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.nueva-card {
+  border: 2px solid #ff7518;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-direction: column;
+  background-color: #333;
+  color: #ffeb3b;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 10px;
+  width: 650px;
+  min-width: 530px;
+  height: 1400px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.nueva-card h2 {
+  font-size: 2rem;
+  font-family: "Creepster", cursive;
+  text-align: center;
+}
+
+.nueva-card p {
+  font-size: 1.3rem;
+  padding: 0.3rem;
+  font-family: "New Rocker", cursive;
+}
+
+.nueva-card:hover {
+  transform: scale(1.05);
+}
+
+.nueva-card img {
+  width: 80%;
+  height: 400px;
+  margin: 2rem auto;
+  border-radius: 5px;
+  box-shadow: 6px 8px 12px black;
+}
+
 
 .grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
-  width: 80%;
+  display: flex;
+  transition: transform 0.8s ease;
+  gap: 80px;
   margin: 0 auto;
+  padding: 0 0 1rem 4rem;
+  will-change: transform;
 }
 
 .grid-item {
@@ -634,7 +643,8 @@ form button:hover {
 }
 
 .pagination {
-  align-self: center;
+  display: flex;
+  justify-content: center;
   padding: 3rem;
 }
 
@@ -766,11 +776,11 @@ form button:hover {
 
 .custom-checkbox-duelo + span {
   display: inline-block;
-  border: 2px solid #dd1313; /* Borde blanco */
-  border-radius: 4px; /* Bordes redondeados */
-  margin-right: 10px; /* Espaciado a la derecha del checkbox */
-  position: relative; /* Necesario para el efecto */
-  cursor: pointer; /* Cambiar cursor a pointer */
+  border: 2px solid #dd1313;
+  border-radius: 4px;
+  margin-right: 10px;
+  position: relative;
+  cursor: pointer;
   padding: 0.5rem;
   font-family: "New Rocker", cursive;
   font-weight: bolder;
@@ -784,14 +794,14 @@ form button:hover {
 }
 
 .custom-checkbox-duelo:checked + span:after {
-  content: ""; /* Agregar un pseudo-elemento */
-  position: absolute; /* Posicionamiento absoluto */
-  top: 4px; /* Ajustar posición */
-  left: 4px; /* Ajustar posición */
-  width: 10px; /* Ancho del check */
-  height: 10px; /* Alto del check */
-  background-color: #dd1313; /* Color de check */
-  border-radius: 2px; /* Bordes redondeados del check */
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  background-color: #dd1313;
+  border-radius: 2px;
 }
 
 @media (max-width: 768px) {
@@ -845,4 +855,235 @@ form button:hover {
       font-size: 1em;
     }
   }
+}
+
+/*Trivia*/
+
+#listarPreguntas{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+}
+#preguntasList{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+}
+.pregunta-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    padding: 2rem;
+    font-family: "New Rocker", cursive;
+    width: 40%;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 9px 7px 35px 27px rgba(0,0,0,0.75) inset;
+    -webkit-box-shadow: 9px 7px 35px 27px rgba(0,0,0,0.75) inset;
+    -moz-box-shadow: 9px 7px 35px 27px rgba(0,0,0,0.75) inset;
+}
+
+.pregunta-item h3 {
+    font-size: 1.8rem;
+    margin: 0 0 5px;
+}
+
+.pregunta-item p {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
+.pregunta-item ul {
+    padding-left: 20px;
+}
+
+.pregunta-item h4{
+    font-size: 1.5rem;
+}
+
+.pregunta-item li {
+    font-size: 1.2rem;
+    margin: .3rem;
+    border: 2px solid darkorange;
+    padding: .3rem;
+    list-style: none;
+}
+.loading-trivia {
+  text-align: center;
+  position: relative;
+  margin: 20px 0;
+}
+
+.halloween-icons .icon {
+  font-size: 40px;
+  position: absolute;
+}
+
+.halloween-icons .icon:nth-child(1) {
+  transform: rotate(0deg) translate(40px) rotate(0deg);
+}
+.halloween-icons .icon:nth-child(2) {
+  transform: rotate(90deg) translate(40px) rotate(-90deg);
+}
+.halloween-icons .icon:nth-child(3) {
+  transform: rotate(180deg) translate(40px) rotate(-180deg);
+}
+.halloween-icons .icon:nth-child(4) {
+  transform: rotate(270deg) translate(40px) rotate(-270deg);
+}
+
+.loading-trivia .halloween-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+     from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+}
+
+.paginacion {
+   display: flex;
+   justify-content: center;
+   margin: 1rem auto;
+   padding: 3rem;
+ }
+
+ #resultado {
+     display: none;
+     width: 60%;
+     font-family: "New Rocker";
+     margin: 1rem auto;
+     text-align: center;
+     font-size: 1.1rem;
+     border-radius: 8px;
+     position: relative;
+     overflow: hidden;
+ }
+ #obtenerPreguntaAleatoria h2{
+      color: #ea0d20;
+      font-family: 'Creepster';
+      margin: 1rem auto;
+      font-size: 3rem;
+      text-align: center;
+ }
+ #obtenerPreguntaAleatoria p{
+      font-family: "New Rocker", cursive;
+      margin: 1rem auto;
+      font-size: 1.3rem;
+      color: #312008;
+      text-align: center;
+  }
+
+#obtenerPuntajes .logro-badge {
+    padding: 0.5rem 1rem;
+    color: white;
+    margin: 0.5rem;
+    font-family: 'New Rocker', cursive;
+}
+
+#obtenerPuntajes h3{
+      color: #ea0d20;
+      margin: 1rem auto;
+      font-size: 2.5rem;
+      text-align: center;
+      font-family: 'New Rocker', cursive;
+}
+
+
+#obtenerPuntajes table {
+    width: 80%;
+    margin: 1rem auto;
+    border-collapse: collapse;
+    box-shadow: 4px 6px 8px saddlebrown;
+}
+
+#obtenerPuntajes table th,#obtenerPuntajes table td {
+        border: 2px solid black;
+        padding: 1rem;
+        text-align: center;
+        font-size: 1.2rem;
+        background-color: darkorange;
+        font-family: 'New Rocker', cursive;
+        margin: 3rem 5rem;
+}
+
+#obtenerPuntajes table th {
+      background-color: #620b0b;
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: white;
+}
+
+#obtenerPuntajes table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.pregunta-item ul{
+  text-align: left;
+}
+
+.pregunta-item ul li{
+padding: 1rem;
+}
+
+.pregunta-item ul li label {
+    position: relative;
+    padding-left: 2.5rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-family: 'New Rocker', cursive;
+    transition: color 0.3s;
+}
+
+.pregunta-item ul li label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid #dd1313;
+    border-radius: 25px 8px 10px 3px;
+    background: #333;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s, transform 0.2s;
+}
+
+.pregunta-item ul li label:hover {
+    color: #dd1313;
+}
+
+input[type="radio"]:checked + label::before {
+    background: #dd1313;
+    box-shadow: 0 0 8px rgba(221, 19, 19, 0.6);
+    transform: scale(1.1);
+}
+
+input[type="radio"]:checked + label::after {
+    content: '🧛';
+    position: absolute;
+    left: 0;
+    color: #f3eeee;
+    font-size: 1.8rem;
 }

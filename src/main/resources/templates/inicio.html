@@ -142,11 +142,20 @@
         >
             Duelo
         </button>
+        <button
+                class="botones-options"
+                onmouseenter="playMisterioSound()"
+                onclick="redirectToTrivia()"
+        >
+            Trivia
+        </button>
     </div>
 
     <div class="card" id="listar" style="display: none">
         <h3>Estos son todos los montruos disponibles</h3>
-        <div id="monstruos-grid" class="grid-container"></div>
+        <div class="carrusel-monstruos">
+            <div id="monstruos-grid" class="grid-container"></div>
+        </div>
         <div class="pagination">
             <button id="prevPage" disabled>Anterior</button>
             <button id="nextPage">Siguiente</button>
@@ -429,9 +438,20 @@
                     </button>
                 </form>
             </div>
-            <div id="resultados-busqueda" class="grid-container"></div>
+            <div class="carrusel-monstruos">
+                <div
+                        id="resultados-busqueda"
+                        class="grid-container"
+                        style="
+                display: grid;
+                justify-content: center;
+                margin: 0 9rem;
+                padding: 0;
+                grid-template-columns: repeat(2, 1fr);
+              "
+                ></div>
+            </div>
         </div>
-
         <div
                 id="formActualizarMonstruo"
                 class="form-box login"
@@ -485,7 +505,12 @@
             </div>
             <div
                     id="monstruoDetalles"
-                    style="width: 60%; margin: 2rem auto"
+                    style="
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              margin: 2rem auto;
+            "
             ></div>
             <button
                     class="boton-cerrar-card"
@@ -505,7 +530,9 @@
 
         <div class="card" id="mostrarMasTerrorificos" style="display: none">
             <h3>Estos son los monstruos más temibles</h3>
-            <div id="resultados-top-monstruos" class="grid-container"></div>
+            <div class="carrusel-monstruos">
+                <div id="resultados-top-monstruos" class="grid-container"></div>
+            </div>
         </div>
 
         <div class="parent-container">
@@ -562,91 +589,132 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    //Actualizar
-    function mostrarFormularioActualizar(monstruo) {
-      const formActualizar = document.getElementById(
-        "formActualizarMonstruo"
-      );
+    console.log("Token almacenado:", sessionStorage.getItem("tokenJWT"));
+console.log("Nombre usuario:", sessionStorage.getItem("nombre"));
+console.log("Id usuario:", sessionStorage.getItem("id"));
+async function fetchWithAuth(url, options = {}) {
+ const token = sessionStorage.getItem('tokenJWT');
+ const headers = {
+     'Content-Type': 'application/json',
+     'Authorization': token ? `Bearer ${token}` : ''
+ };
 
-      // Rellenar el formulario con los datos del monstruo
-      document.getElementById("nombreActualizar").value = monstruo.nombre;
-      document.getElementById("tipoActualizar").value = monstruo.tipo;
-      document.getElementById("nivelDeTerrorActualizar").value =
-        monstruo.nivelDeTerror;
-      document.getElementById("descripcionActualizar").value =
-        monstruo.descripcion;
-      document.getElementById("imagenUrlActualizar").value =
-        monstruo.imagenUrl;
+ const response = await fetch(url, {
+     ...options,
+     headers: {
+         ...headers,
+         ...options.headers
+     }
+ });
 
-      console.log("Formulario de actualización mostrado para:", monstruo);
+ if (!response.ok) {
+     const errorText = await response.text(); // Obtener el texto de error
+     console.error('Error en la solicitud:', errorText);
+     throw new Error(`Error en la solicitud: ${response.status}`);
+ }
 
-      // Ocultar otros elementos de la página
-      const contenidoActual = document.querySelectorAll(".contenido");
-      contenidoActual.forEach((element) => {
-        element.style.display = "none";
-      });
-
-      // Mostrar el formulario
-      formActualizar.style.display = "block";
-
-      // Llevar al usuario a la posición del formulario
-      formActualizar.scrollIntoView({ behavior: "smooth" });
-
-      // Agregar evento para manejar el envío del formulario
-      formActualizar.onsubmit = async (event) => {
-        event.preventDefault();
-        console.log("Formulario de actualización enviado");
-
-        const datosActualizar = {
-          nombre: document.getElementById("nombreActualizar").value,
-          tipo: document.getElementById("tipoActualizar").value,
-          nivelDeTerror: parseInt(
-            document.getElementById("nivelDeTerrorActualizar").value
-          ),
-          descripcion: document.getElementById("descripcionActualizar").value,
-          imagenUrl: document.getElementById("imagenUrlActualizar").value,
-        };
-
-        console.log("Datos a actualizar:", datosActualizar);
-
-        try {
-          const actualizarResponse = await fetch(
-            `/monstruos/${monstruo.id}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(datosActualizar),
-            }
-          );
-
-          console.log("Respuesta de actualización:", actualizarResponse);
-
-          if (actualizarResponse.ok) {
-            // Mostrar mensaje de éxito
-            mostrarMensaje("Monstruo actualizado correctamente", "success");
-            formActualizar.reset();
-            fetchMonstruos(currentPage); // Recargar los monstruos
-          } else {
-            const errorData = await actualizarResponse.json();
-            mostrarMensaje(
-              "Error al actualizar el monstruo: " +
-                (errorData.message || "Revisa los datos ingresados."),
-              "error"
-            );
-          }
-        } catch (error) {
-          console.error("Error en la conexión:", error);
-        } finally {
-          // Cerrar el formulario y volver a mostrar el contenido
-          formActualizar.style.display = "none"; // Ocultar el formulario
-          contenidoActual.forEach((element) => {
-            element.style.display = "block"; // Volver a mostrar el contenido
-          });
-        }
-      };
+ const contentType = response.headers.get("content-type");
+ if (contentType && contentType.includes("application/json")) {
+     return await response.json(); // Solo parsear si es JSON
+ } else {
+     throw new Error("La respuesta no es JSON");
+ }
+}
+function redirectToTrivia() {
+    const token = localStorage.getItem("tokenJWT");
+    if (!token) {
+        console.error("No hay token de autenticación disponible.");
+        alert("Debes estar autenticado para acceder a la trivia.");
+        return;
     }
+
+    window.location.href = "/trivia"; // Redirige sin `fetch`
+}
+ //Actualizar
+ function mostrarFormularioActualizar(monstruo) {
+   const formActualizar = document.getElementById(
+     "formActualizarMonstruo"
+   );
+
+   // Rellenar el formulario con los datos del monstruo
+   document.getElementById("nombreActualizar").value = monstruo.nombre;
+   document.getElementById("tipoActualizar").value = monstruo.tipo;
+   document.getElementById("nivelDeTerrorActualizar").value =
+     monstruo.nivelDeTerror;
+   document.getElementById("descripcionActualizar").value =
+     monstruo.descripcion;
+   document.getElementById("imagenUrlActualizar").value =
+     monstruo.imagenUrl;
+
+   console.log("Formulario de actualización mostrado para:", monstruo);
+
+   // Ocultar otros elementos de la página
+   const contenidoActual = document.querySelectorAll(".contenido");
+   contenidoActual.forEach((element) => {
+     element.style.display = "none";
+   });
+
+   // Mostrar el formulario
+   formActualizar.style.display = "block";
+
+   // Llevar al usuario a la posición del formulario
+   formActualizar.scrollIntoView({ behavior: "smooth" });
+
+   // Agregar evento para manejar el envío del formulario
+   formActualizar.onsubmit = async (event) => {
+     event.preventDefault();
+     console.log("Formulario de actualización enviado");
+
+     const datosActualizar = {
+       nombre: document.getElementById("nombreActualizar").value,
+       tipo: document.getElementById("tipoActualizar").value,
+       nivelDeTerror: parseInt(
+         document.getElementById("nivelDeTerrorActualizar").value
+       ),
+       descripcion: document.getElementById("descripcionActualizar").value,
+       imagenUrl: document.getElementById("imagenUrlActualizar").value,
+     };
+
+     console.log("Datos a actualizar:", datosActualizar);
+
+     try {
+       const actualizarResponse = await fetch(
+         `/monstruos/${monstruo.id}`,
+         {
+           method: "PUT",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify(datosActualizar),
+         }
+       );
+
+       console.log("Respuesta de actualización:", actualizarResponse);
+
+       if (actualizarResponse.ok) {
+         // Mostrar mensaje de éxito
+         mostrarMensaje("Monstruo actualizado correctamente", "success");
+         formActualizar.reset();
+         fetchMonstruos(currentPage); // Recargar los monstruos
+       } else {
+         const errorData = await actualizarResponse.json();
+         mostrarMensaje(
+           "Error al actualizar el monstruo: " +
+             (errorData.message || "Revisa los datos ingresados."),
+           "error"
+         );
+       }
+     } catch (error) {
+       console.error("Error en la conexión:", error);
+     } finally {
+       // Cerrar el formulario y volver a mostrar el contenido
+       formActualizar.style.display = "none"; // Ocultar el formulario
+       contenidoActual.forEach((element) => {
+         element.style.display = "block"; // Volver a mostrar el contenido
+       });
+     }
+   };
+ }
 </script>
 <script>
     //Registrar Monstruo
@@ -697,20 +765,20 @@
 
             // Crear la card del nuevo monstruo
             const cardHtml = `
-                  <div class="nueva-card">
-                      <p class="mensaje-aterrador">¡Un nuevo monstruo ha sido creado!</p>
-                      <h2>${nuevoMonstruo.nombre}</h2>
-                      <img src="${nuevoMonstruo.imagenUrl}" alt="${nuevoMonstruo.nombre}">
-                      <p><strong>Tipo:</strong> ${nuevoMonstruo.tipo}</p>
-                      <p><strong>Nivel de Terror:</strong> ${nuevoMonstruo.nivelDeTerror}</p>
-                      <p><strong>Descripción:</strong> ${nuevoMonstruo.descripcion}</p>
-                      <p><strong>Historia:</strong> ${nuevoMonstruo.historia}</p>
-                      <p><strong>Apariencia:</strong> ${nuevoMonstruo.apariencia}</p>
-                      <p><strong>Sonido:</strong> ${nuevoMonstruo.sonido}</p>
-                      <button onmouseenter="playBotonesSound()" class="actualizarCard" data-id="${nuevoMonstruo.id}">Actualizar</button>
-                      <button id="cerrarCard" class="boton-cerrar-card">Cerrar</button>
-                  </div>
-              `;
+              <div class="nueva-card">
+                  <p class="mensaje-aterrador">¡Un nuevo monstruo ha sido creado!</p>
+                  <h2>${nuevoMonstruo.nombre}</h2>
+                  <img src="${nuevoMonstruo.imagenUrl}" alt="${nuevoMonstruo.nombre}">
+                  <p><strong>Tipo:</strong> ${nuevoMonstruo.tipo}</p>
+                  <p><strong>Nivel de Terror:</strong> ${nuevoMonstruo.nivelDeTerror}</p>
+                  <p><strong>Descripción:</strong> ${nuevoMonstruo.descripcion}</p>
+                  <p><strong>Historia:</strong> ${nuevoMonstruo.historia}</p>
+                  <p><strong>Apariencia:</strong> ${nuevoMonstruo.apariencia}</p>
+                  <p><strong>Sonido:</strong> ${nuevoMonstruo.sonido}</p>
+                  <button onmouseenter="playBotonesSound()" class="actualizarCard" data-id="${nuevoMonstruo.id}">Actualizar</button>
+                  <button id="cerrarCard" class="boton-cerrar-card">Cerrar</button>
+              </div>
+          `;
 
             // Insertar la card en el contenedor
             const nuevaCardContainer = document.getElementById(
@@ -801,6 +869,41 @@
       botonesSound.currentTime = 0;
       botonesSound.play();
     }
+
+    // Manejo del Saludo
+  document.addEventListener("DOMContentLoaded", () => {
+        const nombreUsuario = sessionStorage.getItem("nombre");
+        document.getElementById("saludo").innerText = `¡Bienvenido, ${nombreUsuario}!`;
+
+        // Mensaje de redirección
+        const params = new URLSearchParams(window.location.search);
+        const mensaje = params.get("mensaje");
+
+        if (mensaje) {
+            mostrarMensaje(decodeURIComponent(mensaje), "informativo");
+        }
+    });
+
+    // Función para mostrar mensajes
+    function mostrarMensaje(mensaje, tipo) {
+        const mensajeElement = document.getElementById("mensaje");
+        mensajeElement.textContent = mensaje;
+        mensajeElement.className = tipo; // Clase para estilos
+        mensajeElement.style.display = "block";
+
+        // Desaparecer el mensaje después de 8 segundos
+        setTimeout(() => {
+            mensajeElement.style.display = "none";
+        }, 8000);
+    }
+
+    // Función para cerrar sesión
+    function logout() {
+        sessionStorage.removeItem('authToken');
+        alert("Has cerrado sesión.");
+        window.location.href = "/";
+    }
+
 </script>
 <script>
     // Variables para la paginación y el estado de la selección
@@ -827,12 +930,12 @@
             const monstruoDiv = document.createElement("div");
             monstruoDiv.className = "monstruo-card"; // Clase para la tarjeta del monstruo
             monstruoDiv.innerHTML = `
-                      <img src="${monstruo.imagenUrl}" style="width: 200px; height: 350px; margin: 2rem auto;" alt="${monstruo.nombre}" class="foto-monstruo">
-                      <label class="checkbox-label" onmouseenter="playLogoSound()">
-                          <input type="checkbox" name="seleccion" value="${monstruo.id}" onchange="seleccionarMonstruo()" class="custom-checkbox-duelo">
-                          <span>${monstruo.nombre}</span>
-                      </label>
-                  `;
+                  <img src="${monstruo.imagenUrl}" style="width: 200px; height: 350px; margin: 2rem auto;" alt="${monstruo.nombre}" class="foto-monstruo">
+                  <label class="checkbox-label" onmouseenter="playLogoSound()">
+                      <input type="checkbox" name="seleccion" value="${monstruo.id}" onchange="seleccionarMonstruo()" class="custom-checkbox-duelo">
+                      <span>${monstruo.nombre}</span>
+                  </label>
+              `;
             listaMonstruos.appendChild(monstruoDiv);
           });
 
@@ -876,17 +979,17 @@
         .then((data) => {
           const { monstruo1, monstruo2 } = data;
           resultadoDiv.innerHTML = `
-                  <h3>Comparación de Monstruos</h3>
-                  <div class="resultado-duelo">
-                  ${crearCardMonstruo(monstruo1)}
-                  ${crearCardMonstruo(monstruo2)}
-                  </div>
-                  <h3>¿Quién es el más temido?</h3>
-                  <p style="color: purple;text-align: center; margin: 1rem auto; font-size: 3rem; font-family: 'New Rocker', cursive; font-weight: bolder;">${determinarMasTemido(
-                    monstruo1,
-                    monstruo2
-                  )} es el más temido.</p>
-              `;
+              <h3>Comparación de Monstruos</h3>
+              <div class="resultado-duelo">
+              ${crearCardMonstruo(monstruo1)}
+              ${crearCardMonstruo(monstruo2)}
+              </div>
+              <h3>¿Quién es el más temido?</h3>
+              <p style="color: purple;text-align: center; margin: 1rem auto; font-size: 3rem; font-family: 'New Rocker', cursive; font-weight: bolder;">${determinarMasTemido(
+                monstruo1,
+                monstruo2
+              )} es el más temido.</p>
+          `;
         })
         .catch((error) => {
           resultadoDiv.innerHTML = "<p>Error al cargar la comparación.</p>";
@@ -905,32 +1008,74 @@
     cargarMonstruosDuelo();
 </script>
 <script>
-    //Mostrar todos los monstruos
-    let currentPage = 0; // Página inicial
-    let totalPages = 0; // Total de páginas
+    // Variables globales
+    let index = 0;
+    let totalCardsLista = 0;
+    let intervalo;
+    let currentPage = 0; // Inicializar la página actual
+    let totalPages = 0; // Inicializar total de páginas
 
+    // Función para mover el carrusel de tarjetas
+    function moverCarruselLista() {
+      const gridContainer = document.getElementById("monstruos-grid");
+      const cardWidth = gridContainer.children[0].offsetWidth + 20; // Ancho de la tarjeta más margen
+
+      index += 1; // Incrementar índice
+
+      if (index === totalCardsLista) {
+        index = 0; // Volver al inicio si se llega al final
+      }
+
+      const desplazamiento = -index * cardWidth; // Calcular desplazamiento
+      gridContainer.style.transform = `translateX(${desplazamiento}px)`; // Aplicar desplazamiento
+    }
+
+    // Función para iniciar el carrusel
+    function iniciarCarruselLista() {
+      totalCardsLista =
+        document.getElementById("monstruos-grid").children.length; // Contar tarjetas
+      if (totalCardsLista > 0) {
+        intervalo = setInterval(moverCarruselLista, 4000); // Cambiar tiempo según sea necesario
+      }
+    }
+
+    // Función para detener el carrusel
+    function detenerCarruselLista() {
+      clearInterval(intervalo);
+    }
+
+    // Función para reiniciar el carrusel
+    function reiniciarCarruselLista() {
+      iniciarCarruselLista(); // Reiniciar el carrusel
+    }
+
+    // Función para obtener los monstruos desde la API
     async function fetchMonstruos(page) {
       try {
         const response = await fetch(`/monstruos?page=${page}`);
         if (response.ok) {
-          const data = await response.json();
-          totalPages = data.totalPages;
-          currentPage = data.number;
+          const data = await response.json(); // Parsear respuesta JSON
+          totalPages = data.totalPages; // Obtener total de páginas
+          currentPage = data.number; // Obtener número de página actual
 
           const gridContainer = document.getElementById("monstruos-grid");
           gridContainer.innerHTML = ""; // Limpiar el contenedor
 
-          // Crear tarjetas de monstruos y asignar evento de cierre
+          // Crear tarjetas de monstruos
           data.content.forEach((monstruo) => {
             const cardHtml = crearCardMonstruo(monstruo);
             gridContainer.insertAdjacentHTML("beforeend", cardHtml);
           });
-          asignarEventoCerrarCards();
+
+          totalCardsLista = gridContainer.children.length; // Actualizar el total de tarjetas
+          iniciarCarruselLista(); // Iniciar el carrusel
+
+          agregarEventosACardsLista(); // Agregar eventos a las tarjetas
 
           // Controlar botones de paginación
-          document.getElementById("prevPage").disabled = currentPage === 0;
+          document.getElementById("prevPage").disabled = currentPage === 0; // Deshabilitar si es la primera página
           document.getElementById("nextPage").disabled =
-            currentPage >= totalPages - 1;
+            currentPage >= totalPages - 1; // Deshabilitar si es la última página
         } else {
           console.error("Error al obtener los monstruos:", response.status);
         }
@@ -939,12 +1084,24 @@
       }
     }
 
+    // Función para agregar eventos a las tarjetas
+    function agregarEventosACardsLista() {
+      const gridItems = document.querySelectorAll(
+        "#monstruos-grid .card-monstruo"
+      );
+      gridItems.forEach((item) => {
+        item.addEventListener("focus", detenerCarruselLista); // Detener el carrusel al recibir foco
+        item.addEventListener("blur", reiniciarCarruselLista); // Reiniciar el carrusel al perder foco
+        item.tabIndex = 0; // Permitir que las tarjetas reciban foco
+      });
+    }
+
     // Eventos de los botones de paginación
     document.getElementById("prevPage").addEventListener("click", () => {
-      if (currentPage > 0) fetchMonstruos(currentPage - 1);
+      if (currentPage > 0) fetchMonstruos(currentPage - 1); // Cargar página anterior
     });
     document.getElementById("nextPage").addEventListener("click", () => {
-      if (currentPage < totalPages - 1) fetchMonstruos(currentPage + 1);
+      if (currentPage < totalPages - 1) fetchMonstruos(currentPage + 1); // Cargar página siguiente
     });
 
     // Llamada inicial para cargar los monstruos
@@ -1010,6 +1167,46 @@
       });
 </script>
 <script>
+    let currentIndex = 0;
+    let totalCards = 0;
+    let interval;
+
+    // Función para mover el carrusel
+    function moverCarrusel() {
+      const gridContainer = document.getElementById(
+        "resultados-top-monstruos"
+      );
+      const cardWidth = gridContainer.children[0].offsetWidth + 30; // Ancho de la tarjeta más el espacio
+
+      currentIndex += 1; // Incrementar el índice
+
+      if (currentIndex == totalCards) {
+        currentIndex = 0; // Volver al inicio si llegamos al final
+      }
+
+      const desplazamiento = -currentIndex * cardWidth; // Calcular el desplazamiento
+      gridContainer.style.transform = `translateX(${desplazamiento}px)`; // Aplicar el desplazamiento
+    }
+
+    // Función para iniciar el carrusel
+    function iniciarCarrusel() {
+      totalCards = document.getElementById("resultados-top-monstruos")
+        .children.length; // Contar tarjetas
+      if (totalCards > 0) {
+        interval = setInterval(moverCarrusel, 4000); // Cambiar el tiempo según lo necesites
+      }
+    }
+
+    // Función para detener el carrusel
+    function detenerCarrusel() {
+      clearInterval(interval);
+    }
+
+    // Función para reiniciar el carrusel
+    function reiniciarCarrusel() {
+      iniciarCarrusel(); // Reiniciar carrusel
+    }
+
     // Función para obtener y mostrar los monstruos más temibles
     async function mostrarMonstruosTemibles() {
       try {
@@ -1021,6 +1218,7 @@
           );
           resultadosContainer.innerHTML = ""; // Limpiar resultados anteriores
 
+          // Crear y agregar tarjetas
           monstruosTemibles.forEach((monstruo) => {
             const cardHtml = crearCardMonstruo(monstruo);
             resultadosContainer.insertAdjacentHTML("beforeend", cardHtml);
@@ -1030,11 +1228,11 @@
           document.getElementById("mostrarMasTerrorificos").style.display =
             "block";
 
-          // Reproducir el sonido
-          const sonidoMonstruo = document.getElementById("loginSound");
-          sonidoMonstruo.currentTime = 0; // Reiniciar el sonido
-          sonidoMonstruo.play(); // Reproducir el sonido
-          asignarEventoCerrarCards();
+          totalCards = resultadosContainer.children.length; // Actualizar el total de tarjetas
+          iniciarCarrusel(); // Iniciar el carrusel después de que se carguen las tarjetas
+
+          // Añadir eventos de foco y desenfoque a las tarjetas
+          agregarEventosACards();
         } else {
           console.error(
             "Error al obtener los monstruos temibles:",
@@ -1044,6 +1242,16 @@
       } catch (error) {
         console.error("Error en la conexión:", error);
       }
+    }
+
+    // Función para agregar eventos de foco y desenfoque a las tarjetas
+    function agregarEventosACards() {
+      const gridItems = document.querySelectorAll(".grid-item");
+      gridItems.forEach((item) => {
+        item.addEventListener("focus", detenerCarrusel); // Detener carrusel al recibir foco
+        item.addEventListener("blur", reiniciarCarrusel); // Reiniciar carrusel al perder foco
+        item.tabIndex = 0; // Permitir que las tarjetas reciban foco
+      });
     }
 
     // Llamar a la función para mostrar los monstruos temibles al cargar la página
@@ -1108,95 +1316,84 @@
     }
 </script>
 <script>
+    // Función para crear una tarjeta de monstruo
     function crearCardMonstruo(monstruo) {
-      return `
-      <div class="nueva-card">
-          <h2>${monstruo.nombre}</h2>
-          <img src="${monstruo.imagenUrl}" alt="${monstruo.nombre}">
-          <p><strong>Tipo:</strong> ${monstruo.tipo}</p>
-          <p><strong>Nivel de Terror:</strong> ${monstruo.nivelDeTerror}</p>
-          <p><strong>Descripción:</strong> ${monstruo.descripcion}</p>
-          <p><strong>Historia:</strong> ${monstruo.historia}</p>
-          <p><strong>Apariencia:</strong> ${monstruo.apariencia}</p>
-          <p><strong>Sonido:</strong> ${monstruo.sonido}</p>
-          <button onmouseenter="playBotonesSound()" class="actualizarCard" data-id="${monstruo.id}">Actualizar</button>
-          <button onmouseenter="playClickSound()" class="boton-cerrar-card">Cerrar</button>
-      </div>
-  `;
-    }
-    // Manejo del Saludo
-    document.addEventListener("DOMContentLoaded", () => {
-      const nombreUsuario = localStorage.getItem("nombreUsuario");
-      if (nombreUsuario) {
-        document.getElementById(
-          "saludo"
-        ).innerText = `¡Bienvenido, ${nombreUsuario}!`;
-      } else {
-        document.getElementById("saludo").innerText =
-          "¡Bienvenido! Por favor inicia sesión.";
-      }
-
-      // Mensaje de redirección
-      const params = new URLSearchParams(window.location.search);
-      const mensaje = params.get("mensaje");
-
-      if (mensaje) {
-        const mensajeElement = document.getElementById("mensaje");
-        mensajeElement.textContent = decodeURIComponent(mensaje);
-
-        // Haz que el mensaje desaparezca después de 2 segundos
-        setTimeout(() => {
-          mensajeElement.style.display = "none";
-        }, 8000);
-      }
-    });
-
-    // Función para mostrar mensajes
-    function mostrarMensaje(mensaje, tipo) {
-      const mensajeElement = document.getElementById("mensaje");
-      mensajeElement.textContent = mensaje;
-      mensajeElement.className = tipo; // Puedes agregar estilos CSS según el tipo
-      mensajeElement.style.display = "block";
-
-      // Haz que el mensaje desaparezca después de 8 segundos
-      setTimeout(() => {
-        mensajeElement.style.display = "none";
-      }, 8000);
+        return `
+        <div class="nueva-card grid-item">
+            <h2>${monstruo.nombre}</h2>
+            <img src="${monstruo.imagenUrl}" alt="${monstruo.nombre}">
+            <p><strong>Tipo:</strong> ${monstruo.tipo}</p>
+            <p><strong>Nivel de Terror:</strong> ${monstruo.nivelDeTerror}</p>
+            <p><strong>Descripción:</strong> ${monstruo.descripcion}</p>
+            <p><strong>Historia:</strong> ${monstruo.historia}</p>
+            <p><strong>Apariencia:</strong> ${monstruo.apariencia}</p>
+            <p><strong>Sonido:</strong> ${monstruo.sonido}</p>
+            <button onmouseenter="playBotonesSound()" class="actualizarCard" data-id="${monstruo.id}">Actualizar</button>
+            <button onmouseenter="playClickSound()" class="boton-cerrar-card">Cerrar</button>
+        </div>
+    `;
     }
 
     // Función para manejar el clic en el botón de actualización
     document.addEventListener("click", async (event) => {
-      if (event.target.classList.contains("actualizarCard")) {
-        const id = event.target.getAttribute("data-id");
-        const response = await fetch(`/monstruos/${id}`);
+        if (event.target.classList.contains("actualizarCard")) {
+            const id = event.target.getAttribute("data-id");
+            const response = await fetch(`/monstruos/${id}`);
 
-        if (response.ok) {
-          const monstruo = await response.json();
-          mostrarFormularioActualizar(monstruo);
-        } else {
-          console.error("Error al obtener el monstruo:", response.status);
+            if (response.ok) {
+                const monstruo = await response.json();
+                mostrarFormularioActualizar(monstruo);
+            } else {
+                console.error("Error al obtener el monstruo:", response.status);
+            }
         }
-      }
     });
 
-    // Función para cerrar sesión
-    function logout() {
-      // Implementa la lógica de cierre de sesión aquí
-      alert("Has cerrado sesión.");
-      window.location.href = "/";
-    }
-
+    // Asignar eventos a los botones de cerrar tarjetas
     function asignarEventoCerrarCards() {
-      document.querySelectorAll(".boton-cerrar-card").forEach((button) => {
-        button.addEventListener("click", function () {
-          const card = this.closest(".nueva-card"); // Selecciona el elemento card más cercano
-          if (card) {
-            card.style.display = "none"; // Oculta la card
-            document.getElementById("formContainer").style.display = "block"; // Muestra el formulario
-          }
+        document.querySelectorAll(".boton-cerrar-card").forEach((button) => {
+            button.addEventListener("click", function () {
+                const card = this.closest(".nueva-card"); // Selecciona el elemento card más cercano
+                if (card) {
+                    card.style.display = "none"; // Oculta la card
+                    document.getElementById("formContainer").style.display = "block"; // Muestra el formulario
+                }
+            });
         });
-      });
     }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const gridContainer = document.getElementById(
+        "resultados-top-monstruos"
+      );
+      if (!gridContainer) {
+        console.error("El elemento gridContainer no se encontró.");
+        return;
+      }
+
+      const totalCards = gridContainer.children.length;
+      console.log("Total de tarjetas:", totalCards); // Muestra el total de tarjetas
+
+      if (totalCards === 0) {
+        console.warn("No hay tarjetas en el carrusel.");
+        return;
+      }
+
+      let currentIndex = 0;
+
+      // Función para mover el carrusel
+      function moverCarrusel() {
+        console.log("Mover carrusel"); // Mensaje de depuración
+        const cardWidth = gridContainer.children[0].offsetWidth + 30; // +30 por el gap
+        const desplazamiento = -currentIndex * cardWidth; // Calcula el desplazamiento
+        gridContainer.style.transform = `translateX(${desplazamiento}px)`; // Aplica el desplazamiento
+        currentIndex = (currentIndex + 1) % totalCards; // Cicla a través de las tarjetas
+      }
+
+      // Llama a moverCarrusel cada 3 segundos
+      setInterval(moverCarrusel, 3000); // Cambia el tiempo según lo necesites
+    });
 </script>
 <script>
     // Cargar estadísticas
@@ -1326,7 +1523,6 @@
         console.error("Error al cargar las estadísticas:", error);
       }
     }
-
     // Llama a la función para cargar las estadísticas
     cargarEstadisticas();
 </script>
