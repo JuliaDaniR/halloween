@@ -137,8 +137,11 @@
     </div>
 </section>
 <section>
-    <div id="registrarPregunta" class="card" style="display: none">
-        <h2>Registrar Nueva Pregunta</h2>
+    <div id="registrarPregunta" class="card" style="display: none; text-align: center">
+        <h2 style="font-family: 'New Rocker', cursive; color: #81d50a; font-size: 2.5rem; padding: 3rem;">Registrar Nueva Pregunta</h2>
+        <p style="font-family: 'Creepster', cursive; color: #f44336; font-size: 1.5rem; margin-bottom: 20px;">
+            ¡Atrévete a dar vida a tus preguntas más aterradoras! En esta sección, podrás formular enigmas que pondrán a prueba el conocimiento de los valientes que se atrevan a jugar. ¿Qué secretos oscuros se esconden tras tus palabras? Crea preguntas que desafíen hasta a los más audaces. ¡Que el miedo y la curiosidad se entrelacen en cada respuesta!
+        </p>
         <form id="preguntaForm" style="width: 100%">
             <label for="texto">Texto de la Pregunta:</label>
             <input type="text" id="texto" name="texto" required />
@@ -181,7 +184,13 @@
     </div>
 </section>
 <section>
-    <div id="listarPreguntas" class="card" style="display: none">
+    <div id="listarPreguntas" class="card" style="display: none; text-align: center;">
+        <h2 style="font-family: 'New Rocker', cursive; color: #81d50a; font-size: 2.5rem; padding: 3rem;">
+            Lista de Preguntas
+        </h2>
+        <p style="font-family: 'Creepster', cursive; color: #f44336; font-size: 1.5rem; margin-bottom: 20px; padding: 1rem 5rem;">
+            Adéntrate en un laberinto de enigmas y desafíos. Aquí podrás explorar todas las preguntas que han sido creadas para poner a prueba tu conocimiento. ¿Estás listo para enfrentar lo desconocido y descubrir qué secretos se ocultan detrás de cada pregunta? Navega por las páginas y sumérgete en la aventura del saber.
+        </p>
         <div id="preguntasList"></div>
         <div class="paginacion">
             <button onmouseenter="playLogoSound()" id="prevPage" disabled>Anterior</button>
@@ -242,12 +251,30 @@
 <section>
     <div id="obtenerPuntajes" class="card" style="display: none; padding: 1rem; align-items: center;">
         <h2 style="color: #d5650a;text-align: center;font-size: 2.2rem;font-family: 'New Rocker';">"¿Listo para enfrentar la oscuridad y ver cómo te comparas con los demás?</h2>
-        <p style="padding: 2rem;text-align: center; color: #e81616;font-size: 1.5rem;font-family: 'Creepster';">
+        <p style="padding: 1rem 5rem;text-align: center; color: #e81616;font-size: 1.5rem;font-family: 'Creepster';">
             Sumérgete en el ranking de los osados y descubre si tu destreza es suficiente para escalar entre las sombras...<br>
-            <span style="font-weight: bold; color: #d00;">Solo los más valientes se atreverán a mirar.</span>
+            <span style="font-weight: bold; color: #d00;">🧟👻Solo los más valientes se atreverán a mirar.🧟👻</span>
         </p>
         <button class="boton-cerrar-card" onclick="obtenerDatosPuntajesYLogros()" onmouseenter="playLogoSound()">Ver Puntajes y Logros</button>
         <div id="obtenerPuntajesDelButton" style="display: none;padding: 3rem 8rem;"></div>
+    </div>
+</section>
+<section>
+    <div class="card" id="obtenerEstadisticas" style="display: none">
+        <h3 style="font-family: 'New Rocker', cursive; color: #81d50a; font-size: 2.5rem; padding: 3rem;">
+            Estadísticas de Trivia
+        </h3>
+        <p style="font-family: 'Creepster', cursive; color: #f44336; font-size: 1.5rem; margin-bottom: 20px; padding: 1rem 5rem;">
+            🧟¡Bienvenido a las profundidades de tu conocimiento! Aquí se revelan las estadísticas más escalofriantes de tus aventuras en la trivia. ¿Cuántas preguntas has logrado responder? ¿Qué porcentaje de respuestas correctas guardas en tu sombrío registro? Prepárate para descubrir si realmente eres un maestro del terror o si el miedo te ha hecho titubear. ¡Que comience el examen!👻
+        </p>
+        <div id="estadisticas-content">
+            <div>
+                <canvas id="estadisticasChartBar" width="400" height="400"></canvas>
+            </div>
+            <div>
+                <canvas id="estadisticasChartPie" width="400" height="400"></canvas>
+            </div>
+        </div>
     </div>
 </section>
 <footer class="footer">
@@ -582,6 +609,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const selectedCard = document.getElementById(option);
       if (selectedCard) {
         selectedCard.style.display = "flex";
+         if (option === 'obtenerEstadisticas') {
+            setTimeout(() => {
+                obtenerEstadisticas();
+            }, 100);
+        }
       }
     }
       // Manejo del Saludo
@@ -611,69 +643,97 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 8000);
     }
 
-     // Función para cerrar sesión
     function logout() {
-      sessionStorage.removeItem('jwtToken');
-      sessionStorage.removeItem('nombre');
-      sessionStorage.removeItem('id');
-      alert("Has cerrado sesión.");
-      window.location.href = "/";
+        sessionStorage.removeItem('tokenJWT');
+        sessionStorage.removeItem('nombre');
+        sessionStorage.removeItem('id');
+        sessionStorage.removeItem('usuarioAutenticado');
+        alert("Has cerrado sesión.");
+        window.location.href = "/";
     }
 </script>
 <script>
-   function registrarPregunta() {
-     const texto = document.getElementById("texto").value;
-     const dificultad = document.getElementById("dificultad").value;
-     const tipo = document.getElementById("tipo").value;
-     const breveHistoria = document.getElementById("breveHistoria").value;
+    function ajustarOpciones() {
+        const dificultad = document.getElementById("dificultad").value;
+        const opcionesDiv = document.getElementById("opciones");
 
-     const opcionesRespuesta = Array.from(
-       document.querySelectorAll(".opcionRespuesta")
-     ).map((opcion, index) => ({
-       texto: opcion.querySelector("input[name='opcionTexto']").value,
-       esCorrecta: opcion.querySelector("input[name='esCorrecta']").checked,
-     }));
+        // Limpiar las opciones actuales
+        opcionesDiv.innerHTML = "<h3>Opciones de Respuesta</h3>";
 
-     // Validación en frontend del número de opciones para confirmar antes de enviar
-     const opcionesEsperadas = { FACIL: 3, MEDIO: 4, DIFICIL: 5 };
-     if (opcionesRespuesta.length !== opcionesEsperadas[dificultad]) {
-       alert(
-         `La dificultad seleccionada requiere ${opcionesEsperadas[dificultad]} opciones.`
-       );
-       return;
-     }
+        // Definir el número de opciones según la dificultad
+        const opcionesEsperadas = { FACIL: 3, MEDIO: 4, DIFICIL: 5 };
+        const cantidadOpciones = opcionesEsperadas[dificultad] || 0;
 
-     const datosRegistroPregunta = {
-       texto,
-       dificultad,
-       tipo,
-       opciones: opcionesRespuesta,
-       breveHistoria,
-     };
+        // Crear las opciones de respuesta
+        for (let i = 0; i < cantidadOpciones; i++) {
+            const opcionDiv = document.createElement("div");
+            opcionDiv.classList.add("opcionRespuesta");
+            opcionDiv.innerHTML = `
+                <label for="opcionTexto${i}">Opción ${i + 1}:</label>
+                <input type="text" id="opcionTexto${i}" name="opcionTexto" required />
+                <label class="custom-checkbox-trivia">
+                <input type="checkbox" name="esCorrecta" class="checkbox-input" />
+                <span class="checkbox-label-trivia">¿Es correcta?</span>
+            </label>
+                <br/>
+            `;
+            opcionesDiv.appendChild(opcionDiv);
+        }
+    }
 
-     fetch("/preguntas", {
-       method: "POST",
-       headers: { "Content-Type": "application/json" },
-       body: JSON.stringify(datosRegistroPregunta),
-     })
-       .then((response) => {
-         if (response.ok) {
-           alert("Pregunta registrada exitosamente.");
-           document.getElementById("preguntaForm").reset();
-           ajustarOpciones(); // Restablecer opciones después de enviar
-         } else {
-           return response.json().then((error) => {
-             alert("Error al registrar la pregunta: " + error.message);
-           });
-         }
-       })
-       .catch((error) => {
-         console.error("Error en la solicitud:", error);
-         alert(
-           "Hubo un problema al enviar la pregunta. Inténtalo nuevamente."
-         );
-       });
-   }
+    function registrarPregunta() {
+        const texto = document.getElementById("texto").value;
+        const dificultad = document.getElementById("dificultad").value;
+        const tipo = document.getElementById("tipo").value;
+        const breveHistoria = document.getElementById("breveHistoria").value;
+
+        const opcionesRespuesta = Array.from(
+            document.querySelectorAll(".opcionRespuesta")
+        ).map((opcion) => ({
+            texto: opcion.querySelector("input[name='opcionTexto']").value,
+            esCorrecta: opcion.querySelector("input[name='esCorrecta']").checked,
+        }));
+
+        // Validación en frontend del número de opciones para confirmar antes de enviar
+        const opcionesEsperadas = { FACIL: 3, MEDIO: 4, DIFICIL: 5 };
+        if (opcionesRespuesta.length !== opcionesEsperadas[dificultad]) {
+            alert(
+                `La dificultad seleccionada requiere ${opcionesEsperadas[dificultad]} opciones.`
+            );
+            return;
+        }
+
+        const datosRegistroPregunta = {
+            texto,
+            dificultad,
+            tipo,
+            opciones: opcionesRespuesta,
+            breveHistoria,
+        };
+
+        fetch("/preguntas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosRegistroPregunta),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    alert("Pregunta registrada exitosamente.");
+                    document.getElementById("preguntaForm").reset();
+                    ajustarOpciones(); // Restablecer opciones después de enviar
+                } else {
+                    return response.json().then((error) => {
+                        alert("Error al registrar la pregunta: " + error.message);
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Error en la solicitud:", error);
+                alert(
+                    "Hubo un problema al enviar la pregunta. Inténtalo nuevamente."
+                );
+            });
+    }
 </script>
 <script>
     async function obtenerPreguntaAleatoria() {
@@ -842,6 +902,229 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
         }
     }
+</script>
+<script>
+    async function fetchWithAuth(url, options = {}) {
+        const token = sessionStorage.getItem("tokenJWT");
+        const nombre = sessionStorage.getItem("nombre");
+        const id = sessionStorage.getItem("id"); // Corregido: eliminé un paréntesis extra
+
+        // Agrega el ID a la URL si es una solicitud GET
+        if (options.method === 'GET' && id) {
+            const urlWithParams = new URL(url, window.location.origin);
+            urlWithParams.searchParams.append('id', id);
+            url = urlWithParams.toString();
+        }
+
+        const headers = {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+        };
+
+        try {
+            const response = await fetch(url, {
+                ...options,
+                headers: {
+                    ...headers,
+                    ...options.headers,
+                },
+            });
+
+            if (response.status === 401) {
+                alert("Tu sesión ha expirado. Inicia sesión nuevamente.");
+                window.location.href = "/login";
+                return;
+            }
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+            throw error;
+        }
+    }
+
+  async function obtenerEstadisticas() {
+    console.log("Función obtenerEstadisticas ejecutándose...");
+    try {
+        const estadisticas = await fetchWithAuth("/preguntas/estadisticas", { method: 'GET' });
+
+        if (estadisticas) {
+            console.log("Datos obtenidos:", estadisticas); // Verificar datos
+            mostrarEstadisticas(estadisticas);
+        } else {
+            console.error("No se obtuvieron estadísticas.");
+        }
+    } catch (error) {
+        console.error("Error en la conexión:", error);
+    }
+}
+
+       function mostrarEstadisticas(estadisticas) {
+         // Datos para el gráfico de barras
+         const dataBar = {
+           labels: [
+             "Total Preguntas",
+             "Respuestas Correctas",
+             "Respuestas Incorrectas",
+           ],
+           datasets: [
+             {
+               label: "Estadísticas de Trivia",
+               data: [
+                 estadisticas.totalPreguntas,
+                 estadisticas.respuestasCorrectas,
+                 estadisticas.respuestasIncorrectas,
+               ],
+               backgroundColor: [
+                 "rgba(255, 0, 0, 0.8)", // Rojo neón
+                 "rgba(255, 165, 0, 0.8)", // Naranja neón
+                 "rgba(0, 255, 0, 0.8)", // Verde neón
+               ],
+               borderColor: [
+                 "rgba(255, 0, 0, 1)", // Rojo neón
+                 "rgba(255, 165, 0, 1)", // Naranja neón
+                 "rgba(0, 255, 0, 1)", // Verde neón
+               ],
+               borderWidth: 2,
+             },
+           ],
+         };
+
+         // Configuración para el gráfico de barras
+         const configBar = {
+           type: "bar",
+           data: dataBar,
+           options: {
+             responsive: true,
+             scales: {
+               y: {
+                 beginAtZero: true,
+                 ticks: {
+                   color: "#d5d30a", // Color de las etiquetas del eje Y
+                 },
+               },
+               x: {
+                 ticks: {
+                   color: "#d5d30a", // Color de las etiquetas del eje X
+                 },
+               },
+             },
+             plugins: {
+               legend: {
+                 position: "top",
+                 labels: {
+                   color: "#d5d30a",
+                   font: {
+                     family: "New Rocker, cursive",
+                     size: 14,
+                   },
+                 },
+               },
+               title: {
+                 display: true,
+                 text: "¡Datos de Cantidad de Respuestas en tu Trivia!",
+                 color: "darkorange",
+                 font: {
+                   family: "New Rocker, cursive",
+                   size: 32,
+                 },
+               },
+             },
+           },
+         };
+
+         // Gráfico de cantidades
+         const ctxBar = document.getElementById("estadisticasChartBar");
+         if (ctxBar) {
+           const contextBar = ctxBar.getContext("2d");
+           if (
+             window.estadisticasBarChart &&
+             typeof window.estadisticasBarChart.destroy === "function"
+           ) {
+             window.estadisticasBarChart.destroy();
+           }
+           window.estadisticasBarChart = new Chart(contextBar, configBar);
+           console.log("Gráfico de barras creado exitosamente");
+         } else {
+           console.error(
+             "El canvas para el gráfico de barras no se encontró en el DOM."
+           );
+         }
+
+         // Datos para el gráfico circular
+         const dataPie = {
+           labels: ["Porcentaje Correctas", "Porcentaje Incorrectas"],
+           datasets: [
+             {
+               label: "Porcentajes de Trivia",
+               data: [
+                 estadisticas.porcentajeCorrectas,
+                 100 - estadisticas.porcentajeCorrectas, // Para obtener el porcentaje de incorrectas
+               ],
+               backgroundColor: [
+                 "rgba(255, 0, 0, 0.8)", // Rojo neón
+                 "rgba(0, 255, 0, 0.8)", // Verde neón
+               ],
+               borderColor: [
+                 "rgba(255, 0, 0, 1)", // Rojo neón
+                 "rgba(0, 255, 0, 1)", // Verde neón
+               ],
+               borderWidth: 2,
+             },
+           ],
+         };
+
+         // Configuración para el gráfico circular
+         const configPie = {
+           type: "pie", // Cambiar a gráfico circular
+           data: dataPie,
+           options: {
+             responsive: true,
+             plugins: {
+               legend: {
+                 position: "top",
+                 labels: {
+                   color: "#d5d30a",
+                   font: {
+                     family: "New Rocker, cursive",
+                     size: 14,
+                   },
+                 },
+               },
+               title: {
+                 display: true,
+                 text: "¡Porcentajes de Respuestas en tu Trivia!",
+                 color: "darkorange",
+                 font: {
+                   family: "New Rocker, cursive",
+                   size: 32,
+                 },
+               },
+             },
+           },
+         };
+
+         // Gráfico circular
+         const ctxPie = document.getElementById("estadisticasChartPie");
+         if (ctxPie) {
+           const contextPie = ctxPie.getContext("2d");
+           if (
+             window.estadisticasPieChart &&
+             typeof window.estadisticasPieChart.destroy === "function"
+           ) {
+             window.estadisticasPieChart.destroy();
+           }
+           window.estadisticasPieChart = new Chart(contextPie, configPie);
+           console.log("Gráfico circular creado exitosamente");
+         } else {
+           console.error(
+             "El canvas para el gráfico circular no se encontró en el DOM."
+           );
+         }
+       }
 </script>
 </body>
 </html>

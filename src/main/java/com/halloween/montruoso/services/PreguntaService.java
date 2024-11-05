@@ -181,13 +181,24 @@ public class PreguntaService {
     }
 
     public EstadisticasDTO calcularEstadisticas(Long usuarioId) {
-        int totalPreguntas = puntajeRepo.countByUsuarioId(usuarioId);
+
+        System.out.println("********Usuario " +usuarioId);
+
         int respuestasCorrectas = puntajeRepo.countCorrectasByUsuarioId(usuarioId);
+        System.out.println("Respuestas Correctas: " + respuestasCorrectas);
+
+        int respuestasIncorrectas = puntajeRepo.countInCorrectasByUsuarioId(usuarioId);
+        System.out.println("Respuestas Incorrectas: " + respuestasIncorrectas);
+
+        int totalPreguntas = respuestasCorrectas + respuestasIncorrectas;
+        System.out.println("Total Preguntas: " + totalPreguntas);
 
         double porcentajeCorrectas = totalPreguntas > 0 ? (double) respuestasCorrectas / totalPreguntas * 100 : 0;
+        double porcentajeIncorrectas = totalPreguntas > 0 ? (double) respuestasIncorrectas / totalPreguntas * 100 : 0;
 
-        return new EstadisticasDTO(totalPreguntas, respuestasCorrectas, porcentajeCorrectas);
+        return new EstadisticasDTO(totalPreguntas, respuestasIncorrectas, respuestasCorrectas, porcentajeCorrectas, porcentajeIncorrectas);
     }
+
 
     public List<LogroDTO> obtenerLogrosPorUsuario(Long usuarioId) {
         List<LogroDTO> logros = new ArrayList<>();

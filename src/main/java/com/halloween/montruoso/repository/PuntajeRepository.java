@@ -34,9 +34,11 @@ public interface PuntajeRepository extends JpaRepository<Puntaje, Long> {
     @Query("SELECT COUNT(p) FROM Puntaje p WHERE p.usuario.id = :usuarioId")
     int countByUsuarioId(@Param("usuarioId") Long usuarioId);
 
-    @Query("SELECT COUNT(r) FROM Respuesta r JOIN Puntaje p ON r.pregunta.id = p.pregunta.id " +
-            "WHERE p.usuario.id = :usuarioId AND r.esCorrecta = true")
+    @Query("SELECT COUNT(p) FROM Puntaje p WHERE p.usuario.id = :usuarioId AND p.puntos > 0")
     int countCorrectasByUsuarioId(@Param("usuarioId") Long usuarioId);
+
+    @Query("SELECT COUNT(p) FROM Puntaje p WHERE p.usuario.id = :usuarioId AND p.puntos < 0")
+    int countInCorrectasByUsuarioId(@Param("usuarioId") Long usuarioId);
 
     @Query("SELECT COUNT(DISTINCT DATE(p.fecha)) FROM Puntaje p WHERE p.usuario.id = :usuarioId")
     int countDiasJugados(@Param("usuarioId") Long usuarioId);

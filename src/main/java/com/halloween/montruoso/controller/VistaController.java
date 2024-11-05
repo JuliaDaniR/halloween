@@ -55,12 +55,6 @@ public class VistaController {
             return "redirect:/loguearUsuario";
         }
 
-        String username = principal.getName();
-        System.out.println("Usuario autenticado: " + username);
-
-        Usuario usuario = usuarioService.obtenerPorCorreoElectronico(username);
-
-        model.addAttribute("usuario", usuario);
         model.addAttribute("tiposMonstruo", Arrays.stream(TipoMonstruo.values()).toList());
         model.addAttribute("poderes", Arrays.stream(Poderes.values()).toList());
         model.addAttribute("debilidades", Arrays.stream(Debilidades.values()).toList());

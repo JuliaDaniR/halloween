@@ -856,7 +856,6 @@ form button:hover {
     }
   }
 }
-
 /*Trivia*/
 
 #listarPreguntas{
@@ -1087,3 +1086,52 @@ input[type="radio"]:checked + label::after {
     color: #f3eeee;
     font-size: 1.8rem;
 }
+
+#obtenerEstadisticas {
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    color: #d5d30a;
+    text-align: center;
+}
+
+#estadisticas-content div{
+    margin: 2rem auto;
+    border: 3px solid #d5d30a;
+    padding: 5rem;
+    width: 60%;
+    border-radius: 180px 40px 60px 120px;
+    box-shadow: 4px 6px 8px;
+}
+.custom-checkbox-trivia {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-checkbox-trivia input {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox-label-trivia {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #81d50a;
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.custom-checkbox-trivia input:checked + .checkbox-label-trivia {
+    background-color: #f44336;
+}
+
+.custom-checkbox-trivia:hover .checkbox-label-trivia {
+    background-color: #5cb85c;
+}
+

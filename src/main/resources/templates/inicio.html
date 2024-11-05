@@ -589,132 +589,143 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    console.log("Token almacenado:", sessionStorage.getItem("tokenJWT"));
-console.log("Nombre usuario:", sessionStorage.getItem("nombre"));
-console.log("Id usuario:", sessionStorage.getItem("id"));
-async function fetchWithAuth(url, options = {}) {
- const token = sessionStorage.getItem('tokenJWT');
- const headers = {
-     'Content-Type': 'application/json',
-     'Authorization': token ? `Bearer ${token}` : ''
- };
 
- const response = await fetch(url, {
-     ...options,
-     headers: {
-         ...headers,
-         ...options.headers
-     }
- });
+    async function fetchWithAuth(url, options = {}) {
+          const token = sessionStorage.getItem("tokenJWT");
+          const nombre = sessionStorage.getItem("nombre");
+          const id = sessionStorage.getItem("id"); // Corregido: eliminé un paréntesis extra
 
- if (!response.ok) {
-     const errorText = await response.text(); // Obtener el texto de error
-     console.error('Error en la solicitud:', errorText);
-     throw new Error(`Error en la solicitud: ${response.status}`);
- }
+          // Agrega el ID a la URL si es una solicitud GET
+          if (options.method === 'GET' && id) {
+              const urlWithParams = new URL(url, window.location.origin);
+              urlWithParams.searchParams.append('id', id);
+              url = urlWithParams.toString();
+          }
 
- const contentType = response.headers.get("content-type");
- if (contentType && contentType.includes("application/json")) {
-     return await response.json(); // Solo parsear si es JSON
- } else {
-     throw new Error("La respuesta no es JSON");
- }
-}
-function redirectToTrivia() {
-    const token = localStorage.getItem("tokenJWT");
-    if (!token) {
-        console.error("No hay token de autenticación disponible.");
-        alert("Debes estar autenticado para acceder a la trivia.");
-        return;
-    }
+          const headers = {
+              "Content-Type": "application/json",
+              Authorization: token ? `Bearer ${token}` : "",
+          };
 
-    window.location.href = "/trivia"; // Redirige sin `fetch`
-}
- //Actualizar
- function mostrarFormularioActualizar(monstruo) {
-   const formActualizar = document.getElementById(
-     "formActualizarMonstruo"
-   );
+          try {
+              const response = await fetch(url, {
+                  ...options,
+                  headers: {
+                      ...headers,
+                      ...options.headers,
+                  },
+              });
 
-   // Rellenar el formulario con los datos del monstruo
-   document.getElementById("nombreActualizar").value = monstruo.nombre;
-   document.getElementById("tipoActualizar").value = monstruo.tipo;
-   document.getElementById("nivelDeTerrorActualizar").value =
-     monstruo.nivelDeTerror;
-   document.getElementById("descripcionActualizar").value =
-     monstruo.descripcion;
-   document.getElementById("imagenUrlActualizar").value =
-     monstruo.imagenUrl;
+              if (response.status === 401) {
+                  alert("Tu sesión ha expirado. Inicia sesión nuevamente.");
+                  window.location.href = "/login";
+                  return;
+              }
+              if (!response.ok) {
+                  throw new Error(`Error en la solicitud: ${response.status}`);
+              }
 
-   console.log("Formulario de actualización mostrado para:", monstruo);
+              return await response.json();
+          } catch (error) {
+              console.error("Error en la solicitud:", error);
+              throw error;
+          }
+      }
+  function redirectToTrivia() {
+      const token = sessionStorage.getItem("tokenJWT"); // Cambiado a sessionStorage
+      if (!token) {
+          console.error("No hay token de autenticación disponible.");
+          alert("Debes estar autenticado para acceder a la trivia.");
+          return;
+      }
+      window.location.href = "/trivia"; // Redirige sin `fetch`
+  }
 
-   // Ocultar otros elementos de la página
-   const contenidoActual = document.querySelectorAll(".contenido");
-   contenidoActual.forEach((element) => {
-     element.style.display = "none";
-   });
+   //Actualizar
+   function mostrarFormularioActualizar(monstruo) {
+     const formActualizar = document.getElementById(
+       "formActualizarMonstruo"
+     );
 
-   // Mostrar el formulario
-   formActualizar.style.display = "block";
+     // Rellenar el formulario con los datos del monstruo
+     document.getElementById("nombreActualizar").value = monstruo.nombre;
+     document.getElementById("tipoActualizar").value = monstruo.tipo;
+     document.getElementById("nivelDeTerrorActualizar").value =
+       monstruo.nivelDeTerror;
+     document.getElementById("descripcionActualizar").value =
+       monstruo.descripcion;
+     document.getElementById("imagenUrlActualizar").value =
+       monstruo.imagenUrl;
 
-   // Llevar al usuario a la posición del formulario
-   formActualizar.scrollIntoView({ behavior: "smooth" });
+     console.log("Formulario de actualización mostrado para:", monstruo);
 
-   // Agregar evento para manejar el envío del formulario
-   formActualizar.onsubmit = async (event) => {
-     event.preventDefault();
-     console.log("Formulario de actualización enviado");
+     // Ocultar otros elementos de la página
+     const contenidoActual = document.querySelectorAll(".contenido");
+     contenidoActual.forEach((element) => {
+       element.style.display = "none";
+     });
 
-     const datosActualizar = {
-       nombre: document.getElementById("nombreActualizar").value,
-       tipo: document.getElementById("tipoActualizar").value,
-       nivelDeTerror: parseInt(
-         document.getElementById("nivelDeTerrorActualizar").value
-       ),
-       descripcion: document.getElementById("descripcionActualizar").value,
-       imagenUrl: document.getElementById("imagenUrlActualizar").value,
-     };
+     // Mostrar el formulario
+     formActualizar.style.display = "block";
 
-     console.log("Datos a actualizar:", datosActualizar);
+     // Llevar al usuario a la posición del formulario
+     formActualizar.scrollIntoView({ behavior: "smooth" });
 
-     try {
-       const actualizarResponse = await fetch(
-         `/monstruos/${monstruo.id}`,
-         {
-           method: "PUT",
-           headers: {
-             "Content-Type": "application/json",
-           },
-           body: JSON.stringify(datosActualizar),
-         }
-       );
+     // Agregar evento para manejar el envío del formulario
+     formActualizar.onsubmit = async (event) => {
+       event.preventDefault();
+       console.log("Formulario de actualización enviado");
 
-       console.log("Respuesta de actualización:", actualizarResponse);
+       const datosActualizar = {
+         nombre: document.getElementById("nombreActualizar").value,
+         tipo: document.getElementById("tipoActualizar").value,
+         nivelDeTerror: parseInt(
+           document.getElementById("nivelDeTerrorActualizar").value
+         ),
+         descripcion: document.getElementById("descripcionActualizar").value,
+         imagenUrl: document.getElementById("imagenUrlActualizar").value,
+       };
 
-       if (actualizarResponse.ok) {
-         // Mostrar mensaje de éxito
-         mostrarMensaje("Monstruo actualizado correctamente", "success");
-         formActualizar.reset();
-         fetchMonstruos(currentPage); // Recargar los monstruos
-       } else {
-         const errorData = await actualizarResponse.json();
-         mostrarMensaje(
-           "Error al actualizar el monstruo: " +
-             (errorData.message || "Revisa los datos ingresados."),
-           "error"
+       console.log("Datos a actualizar:", datosActualizar);
+
+       try {
+         const actualizarResponse = await fetch(
+           `/monstruos/${monstruo.id}`,
+           {
+             method: "PUT",
+             headers: {
+               "Content-Type": "application/json",
+             },
+             body: JSON.stringify(datosActualizar),
+           }
          );
+
+         console.log("Respuesta de actualización:", actualizarResponse);
+
+         if (actualizarResponse.ok) {
+           // Mostrar mensaje de éxito
+           mostrarMensaje("Monstruo actualizado correctamente", "success");
+           formActualizar.reset();
+           fetchMonstruos(currentPage); // Recargar los monstruos
+         } else {
+           const errorData = await actualizarResponse.json();
+           mostrarMensaje(
+             "Error al actualizar el monstruo: " +
+               (errorData.message || "Revisa los datos ingresados."),
+             "error"
+           );
+         }
+       } catch (error) {
+         console.error("Error en la conexión:", error);
+       } finally {
+         // Cerrar el formulario y volver a mostrar el contenido
+         formActualizar.style.display = "none"; // Ocultar el formulario
+         contenidoActual.forEach((element) => {
+           element.style.display = "block"; // Volver a mostrar el contenido
+         });
        }
-     } catch (error) {
-       console.error("Error en la conexión:", error);
-     } finally {
-       // Cerrar el formulario y volver a mostrar el contenido
-       formActualizar.style.display = "none"; // Ocultar el formulario
-       contenidoActual.forEach((element) => {
-         element.style.display = "block"; // Volver a mostrar el contenido
-       });
-     }
-   };
- }
+     };
+   }
 </script>
 <script>
     //Registrar Monstruo
@@ -899,7 +910,10 @@ function redirectToTrivia() {
 
     // Función para cerrar sesión
     function logout() {
-        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('tokenJWT');
+        sessionStorage.removeItem('nombre');
+        sessionStorage.removeItem('id');
+        sessionStorage.removeItem('usuarioAutenticado');
         alert("Has cerrado sesión.");
         window.location.href = "/";
     }
