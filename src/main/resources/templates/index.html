@@ -31,8 +31,10 @@
             href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
             rel="stylesheet"
     />
+    <link rel="icon" href="data:image/x-icon;base64,ICONO_EN_BASE64">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body class="page-container">
 <div class="navbar">
     <div class="contain-logo">
@@ -65,12 +67,13 @@
 </div>
 <header class="header">
     <h1>🧟 Monstruos de Halloween 🎃</h1>
-    <p>
+    <p style="font-size: 1.5rem;">
         Explora la API de Monstruos más terrorífica, donde encontrarás una gran
         variedad de criaturas con sus atributos, poderes y debilidades.
         ¡Autenticación segura y estadísticas incluidas!
     </p>
-    <a href="#funcionalidades" class="cta-button">Ver Funcionalidades</a>
+    <a href="#funcionalidades" class="cta-button" style=" font-size: 1.5rem;
+  font-family: 'New Rocker', cursive; background: darkred; cursor: pointer" onmouseenter="playLogoSound()">Ver Funcionalidades</a>
     <div class="alerta">
         <p id="mensaje" class="mensaje-exito" style="display: none"></p>
     </div>
@@ -125,6 +128,12 @@
                 control mental.
             </p>
         </div>
+        <div class="feature" onmouseenter="playCardSound()">
+            <h3>Trivia de Halloween 🎃</h3>
+            <p>
+                ¡La trivia más espeluznante! Responde preguntas aterradoras sobre mitos, leyendas y cuentos de Halloween.
+            </p>
+        </div>
     </div>
 </section>
 
@@ -132,8 +141,8 @@
     <h2>Acerca de</h2>
     <p>
         Esta API ha sido desarrollada, pensada para la gestión y exploración de
-        criaturas míticas de Halloween. El proyecto incluye autenticación
-        mediante tokens y documentación interactiva con Swagger.
+        criaturas míticas de Halloween.
+        El proyecto incluye autenticación mediante tokens y documentación interactiva con Swagger.
     </p>
 </section>
 
@@ -153,7 +162,8 @@
       const navbarLinks = document.getElementById("navbarLinks");
       navbarLinks.classList.toggle("active");
     }
-    const flashlight = document.querySelector(".page-container::before");
+
+    const flashlight = document.getElementById("flashlight");
 
     function getRandomPosition() {
       const top = Math.random() * 100;
@@ -169,6 +179,7 @@
 
     setInterval(updateFlashlightPosition, 3000); // Cambia cada 3 segundos
 
+    // Funciones de sonido
     function playGhostSound() {
       const ghostSound = document.getElementById("ghostSound");
       ghostSound.currentTime = 0;
@@ -192,6 +203,7 @@
       logoSound.currentTime = 0;
       logoSound.play();
     }
+
     function playClickSound() {
       const clickSound = document.getElementById("clickSound");
       clickSound.currentTime = 0;

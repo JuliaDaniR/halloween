@@ -246,6 +246,7 @@ h1 {
   background-color: #e5533d;
 }
 
+
 /* Features and About Sections */
 .features {
   padding: 40px 20px;
@@ -261,6 +262,19 @@ h1 {
   width: 60%;
   margin: 5rem auto;
 }
+
+.header p,
+.features h3{
+  font-size: 2rem;
+  font-family: "New Rocker", cursive;
+  margin-bottom: 20px;
+}
+
+.features p{
+font-size: 1.3rem;
+  font-family: "New Rocker", cursive;
+}
+
 .features h2,
 .about h2 {
   color: white;
@@ -271,6 +285,8 @@ h1 {
 
 .about p {
   color: white;
+  font-size: 2rem;
+  font-family: "New Rocker", cursive;
 }
 
 .feature-list {
@@ -278,16 +294,6 @@ h1 {
   flex-wrap: wrap;
   justify-content: center;
 }
-
-@keyframes movingShadow {
-  0% {
-    box-shadow: 4px 8px 12px rgba(255, 125, 0, 0.6);
-  }
-  100% {
-    box-shadow: 8px 16px 24px rgba(255, 125, 0, 0.6);
-  }
-}
-
 .feature {
   background-color: black;
   border-radius: 30px;
@@ -308,6 +314,15 @@ h1 {
   border-radius: 20px;
 }
 
+@keyframes movingShadow {
+  0% {
+    box-shadow: 4px 8px 12px rgba(255, 125, 0, 0.6);
+  }
+  100% {
+    box-shadow: 8px 16px 24px rgba(255, 125, 0, 0.6);
+  }
+}
+
 .footer {
   background-color: #333;
   color: red;
@@ -320,6 +335,16 @@ h1 {
 .card {
   flex-direction: column;
 }
+
+ .flashlight-effect {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    transition: top 0.5s ease, left 0.5s ease;
+  }
 
 /* Form Styles (Login/Register) */
 .container {

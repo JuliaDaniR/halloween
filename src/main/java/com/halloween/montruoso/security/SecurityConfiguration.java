@@ -46,7 +46,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/registrarUsuario").permitAll()
                         .requestMatchers(HttpMethod.GET, "/loguearUsuario").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/audios/**", "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuario/registrar").permitAll()
                         .requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/inicio").authenticated()

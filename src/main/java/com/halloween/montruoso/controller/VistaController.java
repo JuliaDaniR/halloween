@@ -49,11 +49,12 @@ public class VistaController {
         } else {
             System.out.println("ID de sesión: " + session.getId());
         }
+        System.out.println(session.getId()+ session.getAttributeNames());
 
-        if (principal == null) {
-            System.out.println("Usuario no autenticado, redirigiendo...");
-            return "redirect:/loguearUsuario";
-        }
+//        if (principal == null) {
+//            System.out.println("Usuario no autenticado, redirigiendo...");
+//            return "redirect:/loguearUsuario";
+//        }
 
         model.addAttribute("tiposMonstruo", Arrays.stream(TipoMonstruo.values()).toList());
         model.addAttribute("poderes", Arrays.stream(Poderes.values()).toList());
@@ -71,13 +72,13 @@ public class VistaController {
         } else {
             System.out.println("ID de sesión: " + session.getId());
         }
-
-        if (principal == null) {
-            System.out.println("Usuario no autenticado, redirigiendo...");
-            return "redirect:/loguearUsuario";
-        }
-
-        System.out.println("Principal " + principal.getName());
+//
+//        if (principal == null) {
+//            System.out.println("Usuario no autenticado, redirigiendo...");
+//            return "redirect:/loguearUsuario";
+//        }
+//
+//        System.out.println("Principal " + principal.getName());
         model.addAttribute("dificultades", Arrays.stream(Dificultad.values()).toList());
         model.addAttribute("tipos", Arrays.stream(Tipo.values()).toList());
 

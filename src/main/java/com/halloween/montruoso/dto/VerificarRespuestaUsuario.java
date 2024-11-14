@@ -1,4 +1,6 @@
 package com.halloween.montruoso.dto;
 
-public record VerificarRespuestaUsuario(Long preguntaId, Long respuestaId) {
+import com.halloween.montruoso.entidades.Usuario;
+
+public record VerificarRespuestaUsuario(Long preguntaId, Long respuestaId, Usuario usuarioAutenticado) {
 }

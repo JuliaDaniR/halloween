@@ -4,6 +4,7 @@ import com.halloween.montruoso.dto.*;
 import com.halloween.montruoso.entidades.Usuario;
 import com.halloween.montruoso.enumerador.Dificultad;
 import com.halloween.montruoso.enumerador.Tipo;
+import com.halloween.montruoso.repository.UsuarioRepository;
 import com.halloween.montruoso.services.PreguntaService;
 import com.halloween.montruoso.services.PuntajeService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -30,6 +33,8 @@ public class PreguntaController {
     @Autowired
     private PreguntaService preguntaService;
 
+    @Autowired
+    private UsuarioRepository usuarioRepo;
 
     @Autowired
     private PuntajeService puntajeService;
@@ -94,15 +99,22 @@ public class PreguntaController {
     }
 
     @PostMapping("/responder")
-    public ResponseEntity<String> responderPregunta(@RequestBody VerificarRespuestaUsuario datosRespuestaUsuario,
-                                                    @AuthenticationPrincipal Usuario usuario) {
-        boolean esCorrecta = preguntaService.jugar(datosRespuestaUsuario.preguntaId(), datosRespuestaUsuario.respuestaId(), usuario);
-
-        String mensaje = esCorrecta ? "Respuesta correcta, puntos añadidos." : "Respuesta incorrecta.";
-        return ResponseEntity.ok(mensaje);
+    public ResponseEntity<String> responderPregunta(@RequestBody VerificarRespuestaUsuario datosRespuestaUsuario) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("auth " + auth);
+        Object principal = auth.getPrincipal();
+        System.out.println(principal);
+        if (principal instanceof Usuario) {
+            Usuario usuario = (Usuario) principal;
+            boolean esCorrecta = preguntaService.jugar(datosRespuestaUsuario.preguntaId(), datosRespuestaUsuario.respuestaId(), usuario);
+            String mensaje = esCorrecta ? "Respuesta correcta, puntos añadidos." : "Respuesta incorrecta.";
+            return ResponseEntity.ok(mensaje);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado.");
+        }
     }
 
-    @GetMapping("/puntajes")
+        @GetMapping("/puntajes")
     public ResponseEntity<List<PuntajeUsuarioDTO>> obtenerPuntajesTodosLosUsuario() {
         List<PuntajeUsuarioDTO> puntajes = puntajeService.obtenerPuntajesPorDificultad();
         return ResponseEntity.ok(puntajes);

@@ -31,6 +31,7 @@
             href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
             rel="stylesheet"
     />
+    <link rel="icon" href="data:image/x-icon;base64,ICONO_EN_BASE64">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="page-container">
@@ -653,11 +654,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 </script>
 <script>
+    // Ajustar el número de opciones según la dificultad
     function ajustarOpciones() {
         const dificultad = document.getElementById("dificultad").value;
         const opcionesDiv = document.getElementById("opciones");
 
-        // Limpiar las opciones actuales
+        // Limpiar las opciones actuales antes de crear nuevas
         opcionesDiv.innerHTML = "<h3>Opciones de Respuesta</h3>";
 
         // Definir el número de opciones según la dificultad
@@ -672,21 +674,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 <label for="opcionTexto${i}">Opción ${i + 1}:</label>
                 <input type="text" id="opcionTexto${i}" name="opcionTexto" required />
                 <label class="custom-checkbox-trivia">
-                <input type="checkbox" name="esCorrecta" class="checkbox-input" />
-                <span class="checkbox-label-trivia">¿Es correcta?</span>
-            </label>
+                    <input type="checkbox" name="esCorrecta" class="checkbox-input" />
+                    <span class="checkbox-label-trivia">¿Es correcta?</span>
+                </label>
                 <br/>
             `;
             opcionesDiv.appendChild(opcionDiv);
         }
+
+        // Añadir el evento de cambio para asegurar que solo una opción puede ser correcta
+        const checkboxes = document.querySelectorAll("input[name='esCorrecta']");
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", (event) => {
+                if (event.target.checked) {
+                    // Desmarcar los otros checkboxes
+                    checkboxes.forEach((otherCheckbox) => {
+                        if (otherCheckbox !== event.target) {
+                            otherCheckbox.checked = false;
+                        }
+                    });
+                }
+            });
+        });
     }
 
+    // Registrar la pregunta
     function registrarPregunta() {
         const texto = document.getElementById("texto").value;
         const dificultad = document.getElementById("dificultad").value;
         const tipo = document.getElementById("tipo").value;
         const breveHistoria = document.getElementById("breveHistoria").value;
 
+        // Recoger las opciones de respuesta
         const opcionesRespuesta = Array.from(
             document.querySelectorAll(".opcionRespuesta")
         ).map((opcion) => ({
@@ -694,7 +713,7 @@ document.addEventListener("DOMContentLoaded", function () {
             esCorrecta: opcion.querySelector("input[name='esCorrecta']").checked,
         }));
 
-        // Validación en frontend del número de opciones para confirmar antes de enviar
+        // Validación del número de opciones según la dificultad
         const opcionesEsperadas = { FACIL: 3, MEDIO: 4, DIFICIL: 5 };
         if (opcionesRespuesta.length !== opcionesEsperadas[dificultad]) {
             alert(
@@ -703,6 +722,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // Enviar los datos al servidor
         const datosRegistroPregunta = {
             texto,
             dificultad,
@@ -843,71 +863,73 @@ document.addEventListener("DOMContentLoaded", function () {
         resultadoDiv.innerHTML = "";
     }
 
-    // Función para verificar respuesta
-    async function verificarRespuesta(preguntaId) {
-        const opciones = document.querySelectorAll('input[name="opcion"]');
-        let respuestaId = null;
+async function verificarRespuesta(preguntaId) {
+    const opciones = document.querySelectorAll('input[name="opcion"]');
+    const usuarioAutenticado = JSON.parse(localStorage.getItem("usuarioAutenticado"));
+    let respuestaId = null;
 
-        opciones.forEach((opcion) => {
-            if (opcion.checked) {
-                respuestaId = opcion.value; // Guardar el id de la opción seleccionada
-            }
+    opciones.forEach((opcion) => {
+        if (opcion.checked) {
+            respuestaId = opcion.value; // Guardar el id de la opción seleccionada
+        }
+    });
+
+    if (!respuestaId) {
+        alert("Por favor, selecciona una opción antes de verificar.");
+        return;
+    }
+
+    try {
+        // Usar fetchWithAuth y pasar solo las opciones necesarias
+        const mensaje = await fetchWithAuth("/preguntas/responder", {
+            method: "POST",
+            body: JSON.stringify({
+                preguntaId: preguntaId,
+                respuestaId: respuestaId,
+                usuarioAutenticado: { id: usuarioAutenticado.id }
+            })
         });
 
-        if (!respuestaId) {
-            alert("Por favor, selecciona una opción antes de verificar.");
-            return;
-        }
-
-        try {
-            const response = await fetch("/preguntas/responder", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    preguntaId: preguntaId,
-                    respuestaId: respuestaId
-                })
-            });
-
-            const mensaje = await response.text();
-            mostrarResultado(mensaje);
-        } catch (error) {
-            console.error("Error al verificar la respuesta:", error);
-        }
+        // Mostrar el mensaje recibido, que puede ser texto o JSON
+        mostrarResultado(mensaje);
+    } catch (error) {
+        console.error("Error al verificar la respuesta:", error);
     }
+}
 
-    // Función para mostrar el resultado de la respuesta
+
     function mostrarResultado(mensaje) {
-        const resultadoDiv = document.getElementById("resultado");
-        resultadoDiv.style.display = "block";
-        if (mensaje.includes("Respuesta correcta")) {
-            resultadoDiv.innerHTML = `
-                <div style="
-                background: url(/img/pergamino.png);
-                background-size: cover;
-                background-repeat: no-repeat;
-                padding: 4rem 8rem;">
-                <p style="color: green; font-size: 1.2rem; margin-top: 4rem; padding-top: 3rem;">¡Correcto! Has revelado el destino.</p>
-                <p><strong>Historia:</strong> ${window.preguntaActual.breveHistoria}</p>
-                </div>
-            `;
-        } else {
-            resultadoDiv.innerHTML = `
-             <div style="border: 2px solid red; padding: 2rem;">
-                <p style="color: red; font-size: 1.2rem;">Incorrecto. ¡Inténtalo de nuevo!</p>
-                <p style="color: red; font-size: 1.2rem;">Se han descontado puntos</p>
-             </div>
-            `;
-        }
+    const resultadoDiv = document.getElementById("resultado");
+    resultadoDiv.style.display = "block";
+
+    // Si el mensaje es texto y contiene "Respuesta correcta", mostrar mensaje adecuado
+    if (typeof mensaje === "string" && mensaje.includes("Respuesta correcta")) {
+        resultadoDiv.innerHTML = `
+            <div style="
+            background: url(/img/pergamino.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            padding: 4rem 8rem;">
+            <p style="color: green; font-size: 1.2rem; margin-top: 4rem; padding-top: 3rem;">¡Correcto! Has revelado el destino.</p>
+            <p><strong>Historia:</strong> ${window.preguntaActual.breveHistoria}</p>
+            </div>
+        `;
+    } else {
+        resultadoDiv.innerHTML = `
+         <div style="border: 2px solid red; padding: 2rem;">
+            <p style="color: red; font-size: 1.2rem;">Incorrecto. ¡Inténtalo de nuevo!</p>
+            <p style="color: red; font-size: 1.2rem;">Se han descontado puntos</p>
+         </div>
+        `;
     }
+}
+
 </script>
 <script>
     async function fetchWithAuth(url, options = {}) {
         const token = sessionStorage.getItem("tokenJWT");
         const nombre = sessionStorage.getItem("nombre");
-        const id = sessionStorage.getItem("id"); // Corregido: eliminé un paréntesis extra
+        const id = sessionStorage.getItem("id");
 
         // Agrega el ID a la URL si es una solicitud GET
         if (options.method === 'GET' && id) {
@@ -935,196 +957,205 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.location.href = "/login";
                 return;
             }
+
             if (!response.ok) {
                 throw new Error(`Error en la solicitud: ${response.status}`);
             }
 
-            return await response.json();
+            // Verificar si la respuesta es JSON o texto
+            const contentType = response.headers.get("Content-Type");
+            if (contentType && contentType.includes("application/json")) {
+                return await response.json(); // Si es JSON, lo parseamos
+            } else {
+                return await response.text(); // Si es texto, lo manejamos como texto
+            }
+
         } catch (error) {
             console.error("Error en la solicitud:", error);
             throw error;
         }
     }
 
-  async function obtenerEstadisticas() {
-    console.log("Función obtenerEstadisticas ejecutándose...");
-    try {
-        const estadisticas = await fetchWithAuth("/preguntas/estadisticas", { method: 'GET' });
 
-        if (estadisticas) {
-            console.log("Datos obtenidos:", estadisticas); // Verificar datos
-            mostrarEstadisticas(estadisticas);
-        } else {
-            console.error("No se obtuvieron estadísticas.");
+      async function obtenerEstadisticas() {
+        console.log("Función obtenerEstadisticas ejecutándose...");
+        try {
+            const estadisticas = await fetchWithAuth("/preguntas/estadisticas", { method: 'GET' });
+
+            if (estadisticas) {
+                console.log("Datos obtenidos:", estadisticas); // Verificar datos
+                mostrarEstadisticas(estadisticas);
+            } else {
+                console.error("No se obtuvieron estadísticas.");
+            }
+        } catch (error) {
+            console.error("Error en la conexión:", error);
         }
-    } catch (error) {
-        console.error("Error en la conexión:", error);
     }
-}
 
-       function mostrarEstadisticas(estadisticas) {
-         // Datos para el gráfico de barras
-         const dataBar = {
-           labels: [
-             "Total Preguntas",
-             "Respuestas Correctas",
-             "Respuestas Incorrectas",
-           ],
-           datasets: [
-             {
-               label: "Estadísticas de Trivia",
-               data: [
-                 estadisticas.totalPreguntas,
-                 estadisticas.respuestasCorrectas,
-                 estadisticas.respuestasIncorrectas,
+           function mostrarEstadisticas(estadisticas) {
+             // Datos para el gráfico de barras
+             const dataBar = {
+               labels: [
+                 "Total Preguntas",
+                 "Respuestas Correctas",
+                 "Respuestas Incorrectas",
                ],
-               backgroundColor: [
-                 "rgba(255, 0, 0, 0.8)", // Rojo neón
-                 "rgba(255, 165, 0, 0.8)", // Naranja neón
-                 "rgba(0, 255, 0, 0.8)", // Verde neón
+               datasets: [
+                 {
+                   label: "Estadísticas de Trivia",
+                   data: [
+                     estadisticas.totalPreguntas,
+                     estadisticas.respuestasCorrectas,
+                     estadisticas.respuestasIncorrectas,
+                   ],
+                   backgroundColor: [
+                     "rgba(255, 0, 0, 0.8)", // Rojo neón
+                     "rgba(255, 165, 0, 0.8)", // Naranja neón
+                     "rgba(0, 255, 0, 0.8)", // Verde neón
+                   ],
+                   borderColor: [
+                     "rgba(255, 0, 0, 1)", // Rojo neón
+                     "rgba(255, 165, 0, 1)", // Naranja neón
+                     "rgba(0, 255, 0, 1)", // Verde neón
+                   ],
+                   borderWidth: 2,
+                 },
                ],
-               borderColor: [
-                 "rgba(255, 0, 0, 1)", // Rojo neón
-                 "rgba(255, 165, 0, 1)", // Naranja neón
-                 "rgba(0, 255, 0, 1)", // Verde neón
-               ],
-               borderWidth: 2,
-             },
-           ],
-         };
+             };
 
-         // Configuración para el gráfico de barras
-         const configBar = {
-           type: "bar",
-           data: dataBar,
-           options: {
-             responsive: true,
-             scales: {
-               y: {
-                 beginAtZero: true,
-                 ticks: {
-                   color: "#d5d30a", // Color de las etiquetas del eje Y
+             // Configuración para el gráfico de barras
+             const configBar = {
+               type: "bar",
+               data: dataBar,
+               options: {
+                 responsive: true,
+                 scales: {
+                   y: {
+                     beginAtZero: true,
+                     ticks: {
+                       color: "#d5d30a", // Color de las etiquetas del eje Y
+                     },
+                   },
+                   x: {
+                     ticks: {
+                       color: "#d5d30a", // Color de las etiquetas del eje X
+                     },
+                   },
                  },
-               },
-               x: {
-                 ticks: {
-                   color: "#d5d30a", // Color de las etiquetas del eje X
-                 },
-               },
-             },
-             plugins: {
-               legend: {
-                 position: "top",
-                 labels: {
-                   color: "#d5d30a",
-                   font: {
-                     family: "New Rocker, cursive",
-                     size: 14,
+                 plugins: {
+                   legend: {
+                     position: "top",
+                     labels: {
+                       color: "#d5d30a",
+                       font: {
+                         family: "New Rocker, cursive",
+                         size: 14,
+                       },
+                     },
+                   },
+                   title: {
+                     display: true,
+                     text: "¡Datos de Cantidad de Respuestas en tu Trivia!",
+                     color: "darkorange",
+                     font: {
+                       family: "New Rocker, cursive",
+                       size: 32,
+                     },
                    },
                  },
                },
-               title: {
-                 display: true,
-                 text: "¡Datos de Cantidad de Respuestas en tu Trivia!",
-                 color: "darkorange",
-                 font: {
-                   family: "New Rocker, cursive",
-                   size: 32,
+             };
+
+             // Gráfico de cantidades
+             const ctxBar = document.getElementById("estadisticasChartBar");
+             if (ctxBar) {
+               const contextBar = ctxBar.getContext("2d");
+               if (
+                 window.estadisticasBarChart &&
+                 typeof window.estadisticasBarChart.destroy === "function"
+               ) {
+                 window.estadisticasBarChart.destroy();
+               }
+               window.estadisticasBarChart = new Chart(contextBar, configBar);
+               console.log("Gráfico de barras creado exitosamente");
+             } else {
+               console.error(
+                 "El canvas para el gráfico de barras no se encontró en el DOM."
+               );
+             }
+
+             // Datos para el gráfico circular
+             const dataPie = {
+               labels: ["Porcentaje Correctas", "Porcentaje Incorrectas"],
+               datasets: [
+                 {
+                   label: "Porcentajes de Trivia",
+                   data: [
+                     estadisticas.porcentajeCorrectas,
+                     100 - estadisticas.porcentajeCorrectas, // Para obtener el porcentaje de incorrectas
+                   ],
+                   backgroundColor: [
+                     "rgba(255, 0, 0, 0.8)", // Rojo neón
+                     "rgba(0, 255, 0, 0.8)", // Verde neón
+                   ],
+                   borderColor: [
+                     "rgba(255, 0, 0, 1)", // Rojo neón
+                     "rgba(0, 255, 0, 1)", // Verde neón
+                   ],
+                   borderWidth: 2,
                  },
-               },
-             },
-           },
-         };
-
-         // Gráfico de cantidades
-         const ctxBar = document.getElementById("estadisticasChartBar");
-         if (ctxBar) {
-           const contextBar = ctxBar.getContext("2d");
-           if (
-             window.estadisticasBarChart &&
-             typeof window.estadisticasBarChart.destroy === "function"
-           ) {
-             window.estadisticasBarChart.destroy();
-           }
-           window.estadisticasBarChart = new Chart(contextBar, configBar);
-           console.log("Gráfico de barras creado exitosamente");
-         } else {
-           console.error(
-             "El canvas para el gráfico de barras no se encontró en el DOM."
-           );
-         }
-
-         // Datos para el gráfico circular
-         const dataPie = {
-           labels: ["Porcentaje Correctas", "Porcentaje Incorrectas"],
-           datasets: [
-             {
-               label: "Porcentajes de Trivia",
-               data: [
-                 estadisticas.porcentajeCorrectas,
-                 100 - estadisticas.porcentajeCorrectas, // Para obtener el porcentaje de incorrectas
                ],
-               backgroundColor: [
-                 "rgba(255, 0, 0, 0.8)", // Rojo neón
-                 "rgba(0, 255, 0, 0.8)", // Verde neón
-               ],
-               borderColor: [
-                 "rgba(255, 0, 0, 1)", // Rojo neón
-                 "rgba(0, 255, 0, 1)", // Verde neón
-               ],
-               borderWidth: 2,
-             },
-           ],
-         };
+             };
 
-         // Configuración para el gráfico circular
-         const configPie = {
-           type: "pie", // Cambiar a gráfico circular
-           data: dataPie,
-           options: {
-             responsive: true,
-             plugins: {
-               legend: {
-                 position: "top",
-                 labels: {
-                   color: "#d5d30a",
-                   font: {
-                     family: "New Rocker, cursive",
-                     size: 14,
+             // Configuración para el gráfico circular
+             const configPie = {
+               type: "pie", // Cambiar a gráfico circular
+               data: dataPie,
+               options: {
+                 responsive: true,
+                 plugins: {
+                   legend: {
+                     position: "top",
+                     labels: {
+                       color: "#d5d30a",
+                       font: {
+                         family: "New Rocker, cursive",
+                         size: 14,
+                       },
+                     },
+                   },
+                   title: {
+                     display: true,
+                     text: "¡Porcentajes de Respuestas en tu Trivia!",
+                     color: "darkorange",
+                     font: {
+                       family: "New Rocker, cursive",
+                       size: 32,
+                     },
                    },
                  },
                },
-               title: {
-                 display: true,
-                 text: "¡Porcentajes de Respuestas en tu Trivia!",
-                 color: "darkorange",
-                 font: {
-                   family: "New Rocker, cursive",
-                   size: 32,
-                 },
-               },
-             },
-           },
-         };
+             };
 
-         // Gráfico circular
-         const ctxPie = document.getElementById("estadisticasChartPie");
-         if (ctxPie) {
-           const contextPie = ctxPie.getContext("2d");
-           if (
-             window.estadisticasPieChart &&
-             typeof window.estadisticasPieChart.destroy === "function"
-           ) {
-             window.estadisticasPieChart.destroy();
+             // Gráfico circular
+             const ctxPie = document.getElementById("estadisticasChartPie");
+             if (ctxPie) {
+               const contextPie = ctxPie.getContext("2d");
+               if (
+                 window.estadisticasPieChart &&
+                 typeof window.estadisticasPieChart.destroy === "function"
+               ) {
+                 window.estadisticasPieChart.destroy();
+               }
+               window.estadisticasPieChart = new Chart(contextPie, configPie);
+               console.log("Gráfico circular creado exitosamente");
+             } else {
+               console.error(
+                 "El canvas para el gráfico circular no se encontró en el DOM."
+               );
+             }
            }
-           window.estadisticasPieChart = new Chart(contextPie, configPie);
-           console.log("Gráfico circular creado exitosamente");
-         } else {
-           console.error(
-             "El canvas para el gráfico circular no se encontró en el DOM."
-           );
-         }
-       }
 </script>
 </body>
 </html>
